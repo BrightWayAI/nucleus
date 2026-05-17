@@ -55,76 +55,87 @@ A second brain that learns and forgets. A daily rhythm that compounds. A relatio
 /plugin marketplace add BrightWayAI/nucleus
 ```
 
-Then in Claude:
+Then in Claude, just say it:
 
-1. `/setup-identity` — answer 8 questions about who you are.
+> **"Start nucleus"** — or "let's get started," "set me up," "onboard me." The router suggests `/start-nucleus`, which walks every foundational setup in order (identity → voice → note sources → Obsidian vault → per-plugin setups → diagnostics → optional schedule registration). Idempotent — re-running picks up where you left off. ~15-30 minutes depending on how many plugins you install.
+
+Prefer to do it by hand? Run each setup explicitly:
+
+1. `/setup-identity` — answer ~8 questions about who you are.
 2. `/setup-voice` — paste two sample emails so cortex learns your voice.
-3. `/setup-obsidian` — scaffolds an Obsidian vault over your config root.
-4. Open `~/Documents/Claude/` in [Obsidian](https://obsidian.md) — graph view shows you and your context.
-5. Talk to Claude. The router takes it from there.
+3. `/setup-sources` — connect Granola / Gemini / Fireflies / Drive (optional but unlocks `/listen` overnight ingest).
+4. `/setup-obsidian` — scaffolds an Obsidian vault over your config root.
+5. Per-plugin `/setup-*` for each installed plugin (captures CRM, ICP, offerings, billing rates — whatever that plugin needs).
+6. `/diagnose` (in core-ops) — verify everything is wired.
+7. `/register-schedules` (in core-ops) — wire the standing daily/weekly/monthly automation.
 
-After install: `/route` prints the full cheat-sheet. You'll rarely need it.
+After setup: `/route` prints the full cheat-sheet. You'll rarely need it — just talk.
 
 ---
 
-## The catalog
+## Your AI staff
 
-14 plugins, organized by what they do. Each one is independently useful. Several get sharper when paired.
+14 plugins, but think of them as the team you wish you had — your AI org chart for solo operators who do everything. Each plugin is a teammate with a role; they work side-by-side, share context (identity + voice), and compound the longer you run them.
 
-### Front door
+### Foundation — your office of the operator
 
-| Plugin | What it does | Setup |
+These are always on. No commands needed; they run in the background.
+
+| Role | Plugin | What they do |
 |---|---|---|
-| **[nucleus-router](https://github.com/BrightWayAI/nucleus-router)** | The JARVIS layer. Always-loaded skill maps natural-language utterances ("what's on my plate," "I just met X," "wrap up the day") to the right Nucleus command and confirms before running. `/route` prints the full cheat sheet. | None — auto-loads at conversation start |
+| **Chief Knowledge Officer** | [claude-cortex](https://github.com/BrightWayAI/claude-cortex) | Your second brain. Typed memory nodes (people, clients, topics, domain knowledge), bidirectional learning (mining + decay), auto-maintained `memory/index.md` catalog, autonomous gap-finder (`/research-gaps`), `/listen` overnight ingest, `/morning` proposal walker, Obsidian vault scaffolding. v4.7+. |
+| **Chief of Staff** | [nucleus-router](https://github.com/BrightWayAI/nucleus-router) | The JARVIS layer. Maps natural-language utterances ("what's on my plate," "I just met X," "wrap up the day") to the right command, consults the autonomy slider, confirms before running. `/route` prints the cheat sheet. |
+| **Communications Director** | [writing-style](https://github.com/BrightWayAI/writing-style) | Keeps everything sounding like you. `/style` drafts in your voice. `/style-learn` updates the voice file from real edits (two-stage triage). `/style-review` audits style rules for contradictions. |
 
-### Memory & knowledge
+**CKO's subagents:** `memory-librarian`, `transcript-reviewer`, `conversation-miner`, `activity-miner`, `gap-researcher`.
 
-| Plugin | What it does | Setup |
+### Daily operations — your executive assistant
+
+The teammate who runs your day.
+
+| Role | Plugin | What they do |
 |---|---|---|
-| **[claude-cortex](https://github.com/BrightWayAI/claude-cortex)** | Your second brain. Typed memory nodes (people, clients, topics, domain knowledge), bidirectional learning (mining + decay), auto-maintained `memory/index.md` catalog, autonomous gap-finder (`/research-gaps`), Obsidian vault scaffolding (`/setup-obsidian`). v4.5+. | `/setup-identity`, `/setup-voice` |
+| **Executive Assistant** | [daily-brief](https://github.com/BrightWayAI/daily-brief) | Today's working surface. `/brief` builds a Cowork artifact with calendar + inbox + CRM + outreach + yesterday's reflection. `/process-brief` routes your annotations to Gmail drafts, CRM reschedules, outreach drafts. `/plan-tomorrow` blocks the next workday. As of v0.3+: meetings are read-only context cards; only inbox / tasks / outreach take annotations. |
 
-**Subagents:** `memory-librarian` (cross-node synthesis), `transcript-reviewer` (weekly commitment delta), `conversation-miner` + `activity-miner` (note-source extraction), `gap-researcher` (web-research for memory gaps).
+### Revenue & relationships — your AI BD team
 
-### Business development & relationships
+Four roles split the relationship-and-pipeline workload.
 
-| Plugin | What it does | Setup |
+| Role | Plugin | What they do |
 |---|---|---|
-| **[lead-engine](https://github.com/BrightWayAI/lead-engine)** | LinkedIn intent-based outbound. Catches buying signals, drafts warm DMs in your voice, runs 3-touch cadences, generates pre-call briefs. | `/lead-setup` |
-| **[bizdev-outreach](https://github.com/BrightWayAI/Biz-Dev)** | Per-contact research + voice-faithful drafted outreach. Works across HubSpot, Salesforce, Pipedrive, Close — and Gmail or Outlook. | `/setup` |
-| **[weekly-outreach](https://github.com/BrightWayAI/weekly-outreach)** | Weekly relationship management. Prioritized 10-12-contact queue, call prep for external meetings, drafted messages, CRM tasks. | `/setup-outreach` |
-| **[referral-engine](https://github.com/BrightWayAI/referral-engine)** | Latent revenue from connectors who've gone quiet. Weekly digest, drafted asks honoring cooling periods. | `/setup-referrals` |
+| **Head of Outbound** | [lead-engine](https://github.com/BrightWayAI/lead-engine) | LinkedIn intent-based outbound. Catches buying signals, drafts warm DMs in your voice, runs 3-touch cadences, generates pre-call briefs. |
+| **Account Executive** | [bizdev-outreach](https://github.com/BrightWayAI/Biz-Dev) | Per-contact deep research + voice-faithful drafted outreach. Works across HubSpot / Salesforce / Pipedrive / Close and Gmail / Outlook. |
+| **VP of Relationships** | [weekly-outreach](https://github.com/BrightWayAI/weekly-outreach) | Weekly relationship management. Prioritized 10-12-contact queue, call prep for external meetings, drafted messages, CRM tasks. |
+| **Head of Partnerships** | [referral-engine](https://github.com/BrightWayAI/referral-engine) | Latent revenue from connectors who've gone quiet. Weekly digest of who to re-engage, drafted asks honoring cooling periods. |
 
-**Subagent:** `contact-researcher` — deep single-contact research across CRM, email, and web.
+**Their shared subagent:** `contact-researcher` (deep single-contact dives across CRM / email / web).
 
-### Daily rhythm
+### Client delivery — your AI delivery team
 
-| Plugin | What it does | Setup |
+Three roles run the engagement lifecycle.
+
+| Role | Plugin | What they do |
 |---|---|---|
-| **[daily-brief](https://github.com/BrightWayAI/daily-brief)** | Today's working surface. `/brief` builds a Cowork artifact (calendar, inbox, CRM, outreach, yesterday's reflection — annotated by you). `/process-brief` routes annotations to drafts and reschedules. `/plan-tomorrow` blocks the next workday on your calendar. | `/setup-brief`, `/setup-plan` |
+| **Project Manager** | [project-setup](https://github.com/BrightWayAI/project-setup) | New-engagement initialization. One interview produces Drive folder structure, Claude Project system prompt, phased plan, and a memory node. Templates user-customizable. |
+| **Account Manager** | [client-status](https://github.com/BrightWayAI/client-status) | Weekly client status drafts auto-built from memory, project state, calendar, and CRM activity. Closes the retention loop most consultants leave on the table. |
+| **Chief Financial Agent** | [time-tracking](https://github.com/BrightWayAI/time-tracking) | The calendar-to-money loop. `/track-time` classifies billable time per client. `/generate-invoices` emits monthly invoice rows ready for QuickBooks / Wave / Stripe / manual delivery. |
 
-### Client & project operations
+### Marketing — your content team
 
-| Plugin | What it does | Setup |
+| Role | Plugin | What they do |
 |---|---|---|
-| **[project-setup](https://github.com/BrightWayAI/project-setup)** | New-engagement initialization. Drive folder structure, Claude Project system prompt, phased plan, memory node — one interview. Templates user-customizable. | `/setup-projects` |
-| **[client-status](https://github.com/BrightWayAI/client-status)** | Weekly client status drafts auto-built from memory, project state, calendar, and CRM activity. Closes the retention loop. | `/setup-status` |
-| **[time-tracking](https://github.com/BrightWayAI/time-tracking)** | Calendar-driven time tracking and monthly invoice generation. Classifies billable time per client; emits invoice rows ready for QuickBooks / Wave / Stripe / manual delivery. | `/setup-time` |
+| **Chief Marketing Agent** | [news-curator](https://github.com/BrightWayAI/news-curator) | Weekly LinkedIn news roundup. Scans newsletters and the open web, ranks the week's stories for your audience, drafts the post in your voice. |
 
-### Marketing & content
+(Voice itself is handled by your Communications Director in the foundation tier.)
 
-| Plugin | What it does | Setup |
+### Operations & insight — your ops team
+
+The teammates who keep the machine running and surface what needs attention.
+
+| Role | Plugin | What they do |
 |---|---|---|
-| **[news-curator](https://github.com/BrightWayAI/news-curator)** | Weekly LinkedIn news roundup. Scans + ranks + drafts in your voice. Configurable per topic / audience. | `/setup-news` |
-| **[writing-style](https://github.com/BrightWayAI/writing-style)** | Adaptive voice. `/style` drafts in your voice. `/style-learn` learns from real edits with two-stage triage. `/style-review` audits style files. Companion to cortex's `/setup-voice`. | `/setup-style` |
-
-**Subagents:** `news-curator` (scan + rank), `post-assembler` (drafts in your voice).
-
-### Cross-team & toolkit
-
-| Plugin | What it does | Setup |
-|---|---|---|
-| **[core-ops](https://github.com/BrightWayAI/core-ops)** | Generic business-ops toolkit. `pipeline-analyst` + `pipeline-forecast` subagents. `/review-deliverable` (QA on client docs/decks), `/diagnose` (ecosystem health), `/log-agent-run` + `/agent-metrics` (telemetry), `/register-schedules` (bulk-register standing schedules), `/nucleus-status` + `/nucleus-dashboard`. | `/setup-core` |
-| **[weekly-alignment](https://github.com/BrightWayAI/weekly-alignment)** | Weekly Slack cross-team alignment scanner. Surfaces overlapping initiatives, conflicting priorities, decisions affecting other teams. Monday morning brief. | `/setup` (via skills) |
+| **Chief Operating Officer** | [core-ops](https://github.com/BrightWayAI/core-ops) | Pipeline analytics (`pipeline-analyst` + `pipeline-forecast` subagents), deliverable QA (`/review-deliverable`), ecosystem health (`/diagnose`), telemetry (`/log-agent-run`, `/agent-metrics`), schedule library (`/register-schedules`), dashboards (`/nucleus-status`, `/nucleus-dashboard`). |
+| **Cross-Team Liaison** | [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment) | Weekly Slack cross-team alignment scanner. Surfaces overlapping initiatives, conflicting priorities, decisions that affect other teams. Monday morning brief. |
 
 ---
 
@@ -259,14 +270,17 @@ Memory + Slack alignment scan + daily calendar + deliverable QA + diagnostics.
 
 ## Setup flow
 
-Recommended order:
+The simplest path: say **"start nucleus"** to Claude. The router suggests `/start-nucleus` — the foundational walker that chains every setup in order, gates each step so you can skip what doesn't apply, and is safe to re-run any time (it picks up where you left off).
+
+Manual order if you'd rather drive it yourself:
 
 1. **`/setup-identity`** (cortex) — captures name/company/role/tools once.
 2. **`/setup-voice`** (cortex) — captures voice descriptors and banned phrases.
-3. **`/setup-obsidian`** (cortex, optional) — scaffolds Obsidian vault for graph view + mobile.
-4. Per-plugin **`/setup-*`** for each installed plugin (captures plugin-specific stuff: CRM, ICP, offerings catalog, billing rates).
-5. **`/diagnose`** (core-ops) — verify everything is wired up.
-6. **`/register-schedules`** (core-ops) — register daily / weekly / monthly automation.
+3. **`/setup-sources`** (cortex, optional) — connect Granola / Gemini / Fireflies / Drive so `/listen` can run overnight ingests.
+4. **`/setup-obsidian`** (cortex, optional) — scaffolds Obsidian vault for graph view + mobile.
+5. Per-plugin **`/setup-*`** for each installed plugin (captures plugin-specific stuff: CRM, ICP, offerings catalog, billing rates).
+6. **`/diagnose`** (core-ops) — verify everything is wired up.
+7. **`/register-schedules`** (core-ops) — register daily / weekly / monthly automation (nightly `/listen`, daily `/end-day`, weekly `/end-week`, monthly `/generate-invoices`, etc.).
 
 **Don't skip setup.** All plugins return "run `/setup-*` first" if their context file is missing or empty.
 
@@ -274,26 +288,36 @@ Recommended order:
 
 ## Customize for your firm
 
-Each plugin lives in its own GitHub repo. To customize one:
+**Customization happens automatically through setup.** Each plugin's `/setup-*` command interviews you about your specifics — CRM properties, ICP definitions, voice descriptors, offerings catalog, billing rates, template content — and writes the answers to `<config-root>/plugins/<plugin>.user-context.md`. Plugins read that file at runtime, so the same plugin behaves differently for every operator. No forking. No code edits. Re-run `/setup-*` any time to update.
+
+Plugins that ship with content templates (engagement plan structure in `project-setup`, invoice format in `time-tracking`, status update format in `client-status`, ask templates in `referral-engine`) put those templates in `references/templates/` inside the plugin repo. The starter content reflects BrightWay AI's defaults; on first run, the plugin copies a working template to your `<config-root>/plugins/<plugin>/templates/` directory. **Edit your local copy** to make it yours — the plugin reads from your local copy, not from the source repo. Updates to the plugin repo never overwrite your edited templates.
+
+### When forking is the right move
+
+Only fork if you want to change a plugin's **methodology** — not its content. Examples:
+
+- You want `lead-engine` to score signals with a different algorithm than BrightWay's.
+- You want `weekly-outreach` to produce a different shape of weekly plan.
+- You want to add a plugin that doesn't exist yet for your firm's specific workflow.
+
+For those cases:
 
 1. Fork the plugin repo (e.g., `BrightWayAI/lead-engine` → `yourfirm/lead-engine`).
-2. In your fork of `BrightWayAI/nucleus`, update `.claude-plugin/marketplace.json` to point at your repo.
-3. Edit, commit, push. Cowork picks up your changes on next startup.
+2. Fork `BrightWayAI/nucleus` and update `.claude-plugin/marketplace.json` to point at your fork.
+3. Edit the plugin's skill / command markdown, commit, push.
+4. Cowork picks up your fork on next startup.
 
-Templates inside plugins (e.g., `references/templates/` in `project-setup`, `time-tracking`, `client-status`, `referral-engine`) are intended to be edited per-firm. The starter content reflects BrightWay AI's offerings — replace it with your own.
+But for the **99% case — customizing what the plugin knows about you and your firm — `/start-nucleus` and `/setup-*` are the whole story.**
 
-See [`docs/multi-agent-patterns.md`](docs/multi-agent-patterns.md) for guidance on chaining subagents inside your own plugins.
+See [`docs/multi-agent-patterns.md`](docs/multi-agent-patterns.md) if you want to chain subagents inside a custom plugin.
 
 ---
 
 ## Roadmap and open proposals
 
-Active proposals at [`docs/proposals/`](docs/proposals/). Pick one up if you want to contribute:
+Active proposals at [`docs/proposals/`](docs/proposals/) — pick one up if you want to contribute. Shipped proposals are archived at [`docs/proposals/shipped/`](docs/proposals/shipped/) (read-only historical record of what was designed; see each plugin's `CHANGELOG.md` for what actually shipped).
 
-- **`nucleus-router.md`** — shipped 2026-05-16 as `BrightWayAI/nucleus-router` v0.1.1.
-- **`cortex-v4.5-legibility.md`** — shipped 2026-05-16 as cortex v4.5.0 (memory index, `/research-gaps`, gap-researcher).
-- **`obsidian-as-ui.md`** — shipped 2026-05-16 as part of cortex v4.5.0 (`/setup-obsidian`).
-- **`second-brain-extension.md`** — earlier proposal; mostly shipped across v4.2-4.5.
+As of 2026-05-16, all major proposals have shipped. The shipped archive includes nucleus-router, cortex v4.5 legibility (memory index + `/research-gaps` + Obsidian setup), the second-brain v2 spec, the Karpathy pattern survey, the SMB connector audit, and the productization plan. Future proposals will live in the top-level `docs/proposals/` until they ship; then move to `shipped/`.
 
 ---
 
