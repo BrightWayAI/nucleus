@@ -1,0 +1,63 @@
+# Nucleus
+
+> The operating system for solo operators running on AI. A marketplace of 14 plugins for Claude Cowork (Desktop) and Claude Code: JARVIS-style natural-language router, bidirectional memory (learning + decay), nightly autonomous ingest, adaptive voice, business-development engine, daily/weekly closing rituals, Obsidian-as-UI. 100% free OSS, MIT-licensed across every plugin. Maintained by BrightWay AI for solo consultants, fractional operators, and small consulting firms.
+
+This file follows the [llms.txt](https://llmstxt.org/) convention so an AI agent can onboard on Nucleus in one read.
+
+## Start here
+
+- [README.md](README.md): Full user-facing overview. Read this if you want the marketing pitch and install instructions.
+- [Plugin catalog (marketplace.json)](.claude-plugin/marketplace.json): Authoritative manifest of all 14 plugins with GitHub-repo pointers.
+- [CLAUDE.md](CLAUDE.md): Internal contributor notes — repo conventions, where pending work lives, layout philosophy.
+
+## Core architecture (the JARVIS layer)
+
+- [nucleus-router](https://github.com/BrightWayAI/nucleus-router): Always-loaded skill that maps natural-language utterances to slash commands. Suggest+confirm flow. Read its `skills/route/SKILL.md` to see the full intent table.
+- [claude-cortex](https://github.com/BrightWayAI/claude-cortex): The memory layer. Typed nodes, decay states, bidirectional learning (mining + forgetting), `/listen` nightly autonomous ingest, `memory/hot.md` rolling 7-day cache, `/research-gaps` web-research gap-fill, `/setup-obsidian` vault scaffolding. Read its [CLAUDE.md](https://raw.githubusercontent.com/BrightWayAI/claude-cortex/main/CLAUDE.md) for the memory schema — this is the most load-bearing file in Nucleus.
+
+## Design specs (docs/proposals/)
+
+Pending and shipped design work. Each proposal is self-contained — written to be picked up cold by a future session.
+
+- [docs/proposals/](docs/proposals/): All proposals.
+- [docs/proposals/nucleus-router.md](docs/proposals/nucleus-router.md): The JARVIS front door (shipped as nucleus-router v0.1).
+- [docs/proposals/cortex-v4.5-legibility.md](docs/proposals/cortex-v4.5-legibility.md): Memory index + `/research-gaps` + Obsidian setup (shipped as cortex v4.5.0).
+- [docs/proposals/obsidian-as-ui.md](docs/proposals/obsidian-as-ui.md): Obsidian-vault scaffolding (shipped as cortex v4.5.0 `/setup-obsidian`).
+- [docs/proposals/karpathy-pattern-survey.md](docs/proposals/karpathy-pattern-survey.md): Maps every Karpathy LLM-pattern (LLM wiki, autoresearch, Software 3.0) against Nucleus state. Identifies remaining gaps.
+- [docs/proposals/smb-connector-audit.md](docs/proposals/smb-connector-audit.md): Internal — connector parity vs Anthropic's Claude for Small Business bundle. Strategic positioning.
+- [docs/proposals/productization.md](docs/proposals/productization.md): Internal — free OSS + services monetization, ICP, demo script.
+
+## Plugin catalog (links to individual repos)
+
+- [nucleus-router](https://github.com/BrightWayAI/nucleus-router) — JARVIS-style natural-language router.
+- [claude-cortex](https://github.com/BrightWayAI/claude-cortex) — Memory layer (the core).
+- [daily-brief](https://github.com/BrightWayAI/daily-brief) — Today's working surface + tomorrow's calendar planning.
+- [lead-engine](https://github.com/BrightWayAI/lead-engine) — LinkedIn intent-based outbound.
+- [bizdev-outreach](https://github.com/BrightWayAI/Biz-Dev) — Per-contact research + drafted outreach.
+- [weekly-outreach](https://github.com/BrightWayAI/weekly-outreach) — Weekly relationship management.
+- [referral-engine](https://github.com/BrightWayAI/referral-engine) — Latent revenue from quiet connectors.
+- [news-curator](https://github.com/BrightWayAI/news-curator) — Weekly LinkedIn news roundup.
+- [client-status](https://github.com/BrightWayAI/client-status) — Auto-drafted client status updates.
+- [project-setup](https://github.com/BrightWayAI/project-setup) — New-engagement initialization.
+- [time-tracking](https://github.com/BrightWayAI/time-tracking) — Calendar-driven time logging + invoice generation.
+- [writing-style](https://github.com/BrightWayAI/writing-style) — Adaptive voice plugin.
+- [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment) — Weekly cross-team alignment scanner.
+- [core-ops](https://github.com/BrightWayAI/core-ops) — Generic business-ops toolkit (pipeline subagents, deliverable QA, telemetry, schedule library).
+
+## How an agent onboards on Nucleus
+
+If you're a fresh LLM agent encountering Nucleus for the first time, read in this order:
+
+1. This file (`llms.txt`) for the index.
+2. `README.md` for the user-facing story.
+3. `claude-cortex/CLAUDE.md` for the memory schema — this is the central abstraction.
+4. `nucleus-router/skills/route/SKILL.md` for the natural-language → command map (the JARVIS layer).
+5. `docs/proposals/karpathy-pattern-survey.md` for the architecture-pattern frame.
+
+After that, individual plugin repos are explorable independently.
+
+## How a Nucleus user reaches a person
+
+- Marketplace-level questions: [BrightWayAI/nucleus issues](https://github.com/BrightWayAI/nucleus/issues).
+- Plugin-specific issues: each plugin's own GitHub issues (linked from README.md).
+- Implementation, customization, voice-tuning services for solo operators and small consulting firms: [BrightWay AI](https://brightwayai.com), `zach@brightwayai.com`.
