@@ -6,12 +6,12 @@ The actual plugin source code lives in separate GitHub repos under `BrightWayAI/
 
 **Renamed from `claude-plugins` → `nucleus` on 2026-05-12.** GitHub auto-redirects old URLs. Local directory at `~/lab-bench/nucleus/`.
 
-**Catalog currently lists 13 plugins.** Started at 12, gained `writing-style` and `daily-brief`, lost `plan-tomorrow` (folded into daily-brief). Net 13.
+**Catalog currently lists 14 plugins.** Started at 12, gained `writing-style` and `daily-brief`, lost `plan-tomorrow` (folded into daily-brief), gained `nucleus-router` (JARVIS-style natural-language front door). Net 14.
 
 ## Layout
 
 ```
-.claude-plugin/marketplace.json   ← the catalog (13 plugins)
+.claude-plugin/marketplace.json   ← the catalog (14 plugins)
 README.md                          ← user-facing marketplace overview
 CONTRIBUTING.md                    ← contributor guide for any plugin
 SECURITY.md / LICENSE              ← standard repo files
@@ -31,10 +31,11 @@ Currently open proposals:
 
 ## How plugins are organized
 
-The marketplace contains 13 plugins, each in its own GitHub repo:
+The marketplace contains 14 plugins, each in its own GitHub repo:
 
 | Plugin | Repo | Purpose |
 |---|---|---|
+| nucleus-router | BrightWayAI/nucleus-router | JARVIS-style natural-language router. Always-loaded skill maps utterances to slash commands and confirms before running. `/route` prints the cheat sheet. |
 | claude-cortex | BrightWayAI/claude-cortex | Always-on memory + shared `/setup-identity` and `/setup-voice` |
 | core-ops | BrightWayAI/core-ops | Pipeline analyst + forecast subagents, /diagnose, /log-agent-run, /agent-metrics, /register-schedules |
 | lead-engine | BrightWayAI/lead-engine | LinkedIn intent-based outbound + contact-researcher subagent |
@@ -74,6 +75,10 @@ This is the canonical write location for plugin runtime data. Don't write plugin
 - Plugins are individually versioned in their own `plugin.json`.
 - Marketplace itself doesn't track per-plugin versions (Cowork resolves the latest from each plugin's GitHub repo on next pull).
 - Bump pattern: minor for new commands/agents, patch for fixes or non-breaking refactors, major for breaking API or config-layout changes.
+
+## Open proposals (newly added)
+
+- **`docs/proposals/nucleus-router.md`** — Phase 1 of the "Nucleus as JARVIS" initiative. Spec for a new standalone plugin that adds a natural-language router as the always-loaded front door. Decisions locked: new plugin (not folded into cortex), suggest+confirm (no auto-dispatch), bootstrapped at `~/lab-bench/nucleus-router/` v0.1.0. Catalog already updated to 14 plugins.
 
 ## Recently completed work
 

@@ -6,6 +6,15 @@
   },
   "plugins": [
     {
+      "name": "nucleus-router",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/nucleus-router"
+      },
+      "description": "JARVIS front door for Nucleus. Always-loaded skill maps natural-language utterances to the right slash command and asks for confirmation before running — so you never have to memorize 57 commands across 13 plugins. /route prints the full cheat sheet.",
+      "author": { "name": "BrightWay AI" }
+    },
+    {
       "name": "claude-cortex",
       "source": {
         "source": "github",

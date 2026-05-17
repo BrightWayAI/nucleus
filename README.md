@@ -6,7 +6,9 @@ BrightWay AI's curated marketplace of plugins, agents, and shared memory. Turns 
 
 Compatible with **Cowork (Claude Desktop)** and **Claude Code**.
 
-**13 plugins. 7 subagents. Shared identity and voice. Bidirectional learning (mining + decay). Daily/weekly closing rituals. Telemetry. Schedule library.**
+**14 plugins. 7 subagents. JARVIS-style natural-language router. Shared identity and voice. Bidirectional learning (mining + decay). Daily/weekly closing rituals. Telemetry. Schedule library.**
+
+> **New: speak how you think.** [nucleus-router](https://github.com/BrightWayAI/nucleus-router) is an always-loaded skill that maps natural-language utterances to the right Nucleus command and asks before running. Say "what's on my plate today" — it suggests `/brief`. Say "I just met Sarah at the conference" — it suggests `/remember`. No more memorizing 57 commands.
 
 ---
 
@@ -26,7 +28,13 @@ Updates flow automatically — push to a plugin's repo on GitHub → marketplace
 
 ## What's in the marketplace
 
-13 plugins, organized by what they do.
+14 plugins, organized by what they do.
+
+### Front door
+
+| Plugin | What it does | Setup |
+|---|---|---|
+| **[nucleus-router](https://github.com/BrightWayAI/nucleus-router)** | JARVIS-style natural-language router. Always-on skill matches utterances ("what's on my plate," "I just met X," "wrap up the day") to the right Nucleus command and asks for confirmation before running. `/route` prints the full cheat sheet of every capability. | None — auto-loads at conversation start |
 
 ### Memory & knowledge
 
@@ -249,6 +257,7 @@ Each plugin manages its own issues:
 - [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment/issues)
 - [writing-style](https://github.com/BrightWayAI/writing-style/issues)
 - [daily-brief](https://github.com/BrightWayAI/daily-brief/issues)
+- [nucleus-router](https://github.com/BrightWayAI/nucleus-router/issues)
 
 For marketplace-level issues (manifest problems, install errors, discovery), use [BrightWayAI/nucleus](https://github.com/BrightWayAI/nucleus/issues).
 
