@@ -76,9 +76,17 @@ This is the canonical write location for plugin runtime data. Don't write plugin
 - Marketplace itself doesn't track per-plugin versions (Cowork resolves the latest from each plugin's GitHub repo on next pull).
 - Bump pattern: minor for new commands/agents, patch for fixes or non-breaking refactors, major for breaking API or config-layout changes.
 
-## Open proposals (newly added)
+## Open proposals (newly added — 2026-05-16)
 
-- **`docs/proposals/nucleus-router.md`** — Phase 1 of the "Nucleus as JARVIS" initiative. Spec for a new standalone plugin that adds a natural-language router as the always-loaded front door. Decisions locked: new plugin (not folded into cortex), suggest+confirm (no auto-dispatch), bootstrapped at `~/lab-bench/nucleus-router/` v0.1.0. Catalog already updated to 14 plugins.
+The "Nucleus as JARVIS" initiative has three phases. Phase 1 (router) is shipped to GitHub; Phases 1 (cortex v4.5) and 2 (Obsidian) are specced.
+
+- **`docs/proposals/nucleus-router.md`** — Phase 1 front door. New standalone plugin adds a natural-language router that maps utterances to slash commands and asks before running. Decisions locked: new plugin (not folded into cortex), suggest+confirm (no auto-dispatch). **Shipped** at `~/lab-bench/nucleus-router/` v0.1.0 and pushed to `https://github.com/BrightWayAI/nucleus-router`. Catalog updated to 14 plugins.
+
+- **`docs/proposals/cortex-v4.5-legibility.md`** — Phase 1 finish. Two cortex additions: (a) auto-maintained `memory/index.md` catalog (Karpathy borrow — zero LLM cost, makes Obsidian's home page possible and gives non-cortex agents a one-file entry point); (b) `/research-gaps` + new `gap-researcher` subagent (wiki-self-heal borrow — scans memory for thin/stale/contradictory/orphan/under-cited content, web-researches with ≥2 sources, writes findings to `.research-drafts/` for user merge). Status: spec-ready, not implemented.
+
+- **`docs/proposals/obsidian-as-ui.md`** — Phase 2 human UI. Add `/setup-obsidian` to cortex that scaffolds a `.obsidian/` workspace config + `VAULT.md` home page over `<config-root>/`. Daily-brief snapshots automatically become Obsidian daily notes (config-only — no plugin code change). Documents recommended Obsidian community plugins (Dataview, Tasks, Calendar). Status: spec-ready, not implemented.
+
+Phase 3 (productization vs Anthropic's Claude for Small Business bundle: positioning, connector parity audit for QuickBooks/HubSpot/Canva/DocuSign, pricing/packaging) is **deferred per user decision** until Phases 1+2 are shipped and dogfooded.
 
 ## Recently completed work
 
