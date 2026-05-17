@@ -40,7 +40,7 @@ Updates flow automatically — push to a plugin's repo on GitHub → marketplace
 
 | Plugin | What it does | Setup |
 |---|---|---|
-| **[claude-cortex](https://github.com/BrightWayAI/claude-cortex)** | Always-on learning system. Passively observes preferences, captures knowledge, adapts every conversation. Ships `/setup-identity` and `/setup-voice` (shared config), `/end-day` and `/end-week` (closing rituals), and the existing memory commands. The memory layer for everything else. | None — auto-recall works out of the box; run `/setup-identity` and `/setup-voice` for shared config |
+| **[claude-cortex](https://github.com/BrightWayAI/claude-cortex)** | Always-on learning system. v4.5+: auto-maintained `memory/index.md` catalog, `/research-gaps` autonomous gap-fill, `/setup-obsidian` for graph-viewable mobile-ready vault. Passively observes preferences, captures knowledge, adapts every conversation. Ships `/setup-identity` and `/setup-voice` (shared config), `/end-day` and `/end-week` (closing rituals), and the existing memory commands. The memory layer for everything else. | None — auto-recall works out of the box; run `/setup-identity` and `/setup-voice` for shared config |
 
 **Hosts subagents:** `memory-librarian` (broad-query memory synthesis), `transcript-reviewer` (weekly call commitment delta).
 

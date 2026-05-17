@@ -76,17 +76,33 @@ This is the canonical write location for plugin runtime data. Don't write plugin
 - Marketplace itself doesn't track per-plugin versions (Cowork resolves the latest from each plugin's GitHub repo on next pull).
 - Bump pattern: minor for new commands/agents, patch for fixes or non-breaking refactors, major for breaking API or config-layout changes.
 
-## Open proposals (newly added — 2026-05-16)
+## Nucleus as JARVIS — shipped (2026-05-16)
 
-The "Nucleus as JARVIS" initiative has three phases. Phase 1 (router) is shipped to GitHub; Phases 1 (cortex v4.5) and 2 (Obsidian) are specced.
+Phases 1 and 2 are live. Phase 3 (productization) is deferred until dogfooding.
 
-- **`docs/proposals/nucleus-router.md`** — Phase 1 front door. New standalone plugin adds a natural-language router that maps utterances to slash commands and asks before running. Decisions locked: new plugin (not folded into cortex), suggest+confirm (no auto-dispatch). **Shipped** at `~/lab-bench/nucleus-router/` v0.1.0 and pushed to `https://github.com/BrightWayAI/nucleus-router`. Catalog updated to 14 plugins.
+### Phase 1 — Front door + memory legibility
 
-- **`docs/proposals/cortex-v4.5-legibility.md`** — Phase 1 finish. Two cortex additions: (a) auto-maintained `memory/index.md` catalog (Karpathy borrow — zero LLM cost, makes Obsidian's home page possible and gives non-cortex agents a one-file entry point); (b) `/research-gaps` + new `gap-researcher` subagent (wiki-self-heal borrow — scans memory for thin/stale/contradictory/orphan/under-cited content, web-researches with ≥2 sources, writes findings to `.research-drafts/` for user merge). Status: spec-ready, not implemented.
+- **`nucleus-router` v0.1.1** — Shipped at `https://github.com/BrightWayAI/nucleus-router`. Always-loaded skill matches natural-language utterances to the right Nucleus command and asks for confirmation. No more memorizing 57 commands. Intent table covers all 13 plugins; v0.1.1 added rows for cortex v4.5 commands. Spec: `docs/proposals/nucleus-router.md`.
 
-- **`docs/proposals/obsidian-as-ui.md`** — Phase 2 human UI. Add `/setup-obsidian` to cortex that scaffolds a `.obsidian/` workspace config + `VAULT.md` home page over `<config-root>/`. Daily-brief snapshots automatically become Obsidian daily notes (config-only — no plugin code change). Documents recommended Obsidian community plugins (Dataview, Tasks, Calendar). Status: spec-ready, not implemented.
+- **cortex v4.5.0** — Shipped at `https://github.com/BrightWayAI/claude-cortex`. Three additions:
+  - `/reindex` + indexer skill — auto-maintained `memory/index.md` catalog (zero-LLM, deterministic). Runs from `/end-day` Step 5.5, `/cleanup` Step 4.5, and on `/remember` writes via `.reindex-queue` marker.
+  - `/research-gaps` + `gap-researcher` subagent + `/merge-research-draft` — autonomous gap-finder. Seven detection rules; web research with ≥2 independent sources; private-individual privacy rule; user-gated merge. Optional Step 5.5 of `/end-week`.
+  - Spec: `docs/proposals/cortex-v4.5-legibility.md`.
 
-Phase 3 (productization vs Anthropic's Claude for Small Business bundle: positioning, connector parity audit for QuickBooks/HubSpot/Canva/DocuSign, pricing/packaging) is **deferred per user decision** until Phases 1+2 are shipped and dogfooded.
+### Phase 2 — Human UI substrate
+
+- **`/setup-obsidian` (cortex v4.5.0)** — Config-only scaffolding for `.obsidian/` workspace + `VAULT.md` home page over `<config-root>/`. Idempotent and non-destructive. Daily-brief snapshots become Obsidian daily notes via folder config — zero plugin code change. Mobile-readable via Obsidian's iOS/Android apps + iCloud or Obsidian Sync. Spec: `docs/proposals/obsidian-as-ui.md`.
+
+### Phase 3 — Productization (deferred)
+
+Positioning vs Anthropic's Claude for Small Business bundle, connector parity audit (QuickBooks/HubSpot/Canva/DocuSign), pricing/packaging. **Deferred per user decision** until Phases 1+2 are dogfooded.
+
+### How to use the JARVIS flow
+
+1. Speak naturally to Claude with cortex + nucleus-router installed.
+2. Router suggests the right command; user confirms.
+3. Output writes to `<config-root>/` markdown files.
+4. Open `<config-root>/` in Obsidian to see the graph view; same files visible on phone.
 
 ## Recently completed work
 
@@ -97,4 +113,8 @@ Phase 3 (productization vs Anthropic's Claude for Small Business bundle: positio
 - **Known design note:** `daily-brief` and `plan-tomorrow` overlap significantly on data sources (calendar / CRM / inbox / cortex). Different verbs (`/brief` = today's working surface with annotations + `/process-brief` action loop; `/plan-tomorrow` = tomorrow's calendar blocks). Decision to keep both was deferred — revisit once both are in daily use.
 - **cortex v4.3.0 — `/end-day` mining layer (2026-05-12):** three read-only agents at Step 2a (`transcript-reviewer` expanded to two output streams, `conversation-miner` new, `activity-miner` new — scoped to events). Source-agnostic via adapter pattern at `agents/lib/note-source-adapters.md` (Granola / Gemini / Fireflies / Otter / Notion / generic Drive / generic Gmail / custom). Step 2b unified review gate with high-confidence-only toggle, auto-expanded cross-refs, dismissal log. Domain-node Scope convention via one-time migration in `/end-day` Pre-chain B (generic detection, no hardcoded names). New `/setup-sources` command with mandatory adapter health-check. `code-miner` deferred. `[confirmed/recalled]` substrate tags added on knowledge entries.
 - **cortex v4.4.0 — forgetting / decay layer (2026-05-12):** the other half of the bidirectional second-brain. Decay model with four states (Fresh / Stale / Dormant / Cold) driven by `[confirmed:...]` age. Defaults at `<config-root>/memory/.decay-config.md` (60/180/365 days; GOTCHA and RECIPE decay 1.5× slower; CORRECTION immune). Per-node `decay_profile: fast | normal | slow` front-matter override. `/recall` flags aging entries inline and offers recall-time triage (re-confirm / demote / archive). `/remember` runs concept-drift detection on new INSIGHT/MODEL/GOTCHA/LESSON writes (Haiku-tier) and prompts the user on supersede/keep-both/edit/skip. New `/rehearse` command + skill: active retention loop, picks 3-5 aging entries weekly via `/end-week` Step 3.5. `/cleanup` deepened with section I for dormant knowledge and section H for cooling/dormant/cold-archive person pages (auto-archive to `memory/person/archive/`). `memory-librarian` ranks Fresh higher and skips `## Demoted knowledge` by default. Content is never auto-deleted; every transition is user-gated.
+
+- **cortex v4.5.0 — legibility upgrade: memory index + research-gaps + Obsidian (2026-05-16):** Phase 1 finish + Phase 2 of the Nucleus-as-JARVIS initiative. Three additions: (1) `/reindex` + indexer skill auto-maintains `<config-root>/memory/index.md` (zero-LLM, deterministic walk + decay classification; runs from `/end-day` Step 5.5, `/cleanup` Step 4.5, and via `/remember`'s `.reindex-queue` marker). (2) `/research-gaps` + new `gap-researcher` subagent + `/merge-research-draft` — seven gap-detection rules (thin entity, stale fact in active rotation, contradiction within a node, orphan, under-cited high-confidence claim, decision gap, sparse domain), web research with ≥2-source rule, private-individual privacy rule enforced, user-gated merge; optional Step 5.5 of `/end-week`. (3) `/setup-obsidian` + `references/obsidian-config-templates/` — idempotent config-only scaffolding for `.obsidian/` + `VAULT.md` over `<config-root>/`; daily-brief snapshots become Obsidian daily notes via folder config; no plugin code change. All shipped to `BrightWayAI/claude-cortex` main.
+
+- **nucleus-router v0.1.0 + v0.1.1 (2026-05-16):** new standalone plugin shipped to `BrightWayAI/nucleus-router`. Always-loaded `route` skill translates natural-language utterances to the right Nucleus slash command and asks for confirmation. Suggest+confirm flow (never auto-dispatches). Initial table covers all 57 commands across 13 prior plugins; v0.1.1 added rows for cortex v4.5 commands. Catalog updated to 14 plugins. Pushed to `BrightWayAI/nucleus`.
 - **Nucleus visibility + consolidation (2026-05-12):** core-ops 0.2.3 → 0.3.0 — new `/nucleus-status` (terse text snapshot) and `/nucleus-dashboard` v1 (Cowork HTML artifact with 6 section cards: stack overview, this-week activity, memory health, outreach pipeline, time+invoicing, impact-loop placeholder). daily-brief 0.1.0 → 0.2.0 — absorbs the deprecated plan-tomorrow plugin (`/plan-tomorrow` + `/setup-plan` now live in daily-brief; user-context backward-compatible). Marketplace catalog count drops 14 → 13. Standalone plan-tomorrow repo deprecated with a redirect README and archived on GitHub.
