@@ -93,9 +93,19 @@ Phases 1 and 2 are live. Phase 3 (productization) is deferred until dogfooding.
 
 - **`/setup-obsidian` (cortex v4.5.0)** — Config-only scaffolding for `.obsidian/` workspace + `VAULT.md` home page over `<config-root>/`. Idempotent and non-destructive. Daily-brief snapshots become Obsidian daily notes via folder config — zero plugin code change. Mobile-readable via Obsidian's iOS/Android apps + iCloud or Obsidian Sync. Spec: `docs/proposals/obsidian-as-ui.md`.
 
-### Phase 3 — Productization (deferred)
+### Phase 3 — Productization (shipped 2026-05-16, same session)
 
-Positioning vs Anthropic's Claude for Small Business bundle, connector parity audit (QuickBooks/HubSpot/Canva/DocuSign), pricing/packaging. **Deferred per user decision** until Phases 1+2 are dogfooded.
+Strategic decisions locked:
+- **Monetization:** free OSS, MIT-licensed everywhere; BrightWay AI sells consulting / setup / customization / training on top. Nucleus is the lead magnet.
+- **Audience:** solo operators / fractional consultants. Not general SMBs, not enterprise teams.
+- **Vs Anthropic SMB bundle:** position purely on Nucleus's own merits; do **not** mention Anthropic SMB in public docs. Internal competitive context lives in `docs/proposals/smb-connector-audit.md`.
+
+Deliverables:
+- `docs/proposals/smb-connector-audit.md` — internal-only audit of connector parity vs Anthropic's Claude for Small Business bundle. Confirms Nucleus differentiates on memory + voice + relationships + daily flow; defers finance/contracts/content/payments to Anthropic.
+- `README.md` — production-quality rewrite. JARVIS-forward, talk-don't-memorize hero, full catalog organized by domain, install in 5 min, Obsidian-as-UI section, recommended install combos, daily/weekly rhythm, who-this-is-for, customization, BrightWay services contact at the bottom.
+- `docs/proposals/productization.md` — internal strategy doc. ICP profile, monetization, BrightWay services menu (setup-in-a-day / custom plugin dev / memory-voice training / team rollout / retainer), onboarding flow, demo script (8 min), distribution channels (direct outbound > content > ecosystem visibility), what's explicitly NOT in scope.
+
+Open items for future sessions: optional `/onboarding` chained command, marketplace.json description polishing pass, 6-minute demo screen recording.
 
 ### How to use the JARVIS flow
 
