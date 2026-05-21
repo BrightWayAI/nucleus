@@ -18,7 +18,7 @@ That leaves an 8-hour gap where learnings happen, get said in conversations with
 
 **`/sweep` fills the gap.** A new heartbeat fires every 3 hours during work hours, reviews recent work surfaces *and* in-progress Claude conversations, and stages proposed memory entries for review at the next `/end-day`. It never modifies active memory. It never sends anything. It just *notices* and stages.
 
-This is Liu's "Chief of Staff" heartbeat pattern adapted to cortex's mining substrate: same agents (`transcript-reviewer`, `conversation-miner`, `activity-miner`), same write surface (`.heartbeat-drafts/<today>.md` mirroring `/listen`'s `.commit-drafts/<date>.md`), same review UX (walk-through merge at the closing ritual).
+This is Liu's "Chief of Staff" heartbeat pattern adapted to cortex's mining substrate: same agents (`transcript-reviewer`, `conversation-miner`, `activity-miner`), same write surface (`staged/heartbeat-drafts/<today>.md` mirroring `/listen`'s `.commit-drafts/<date>.md`), same review UX (walk-through merge at the closing ritual).
 
 ---
 
@@ -26,7 +26,7 @@ This is Liu's "Chief of Staff" heartbeat pattern adapted to cortex's mining subs
 
 | Loop | Cadence | Sources | Drafts to | Reviewed at |
 |---|---|---|---|---|
-| `/sweep` (new) | every 3h, work hours | Today's surfaces + in-progress Claude conversations | `<config-root>/memory/.heartbeat-drafts/<today>.md` | `/end-day` |
+| `/sweep` (new) | every 3h, work hours | Today's surfaces + in-progress Claude conversations | `<config-root>/memory/staged/heartbeat-drafts/<today>.md` | `/end-day` |
 | `/listen` (v4.7) | nightly | Yesterday's full archive (`archive/<yesterday>/`) | `<config-root>/memory/.commit-drafts/<yesterday>.md` | `/morning` |
 
 `/sweep` catches the day in flight. `/listen` catches the previous full day at rest. Together they provide bidirectional mining coverage with one user-review event per period.
@@ -40,7 +40,7 @@ This is Liu's "Chief of Staff" heartbeat pattern adapted to cortex's mining subs
 ```
 <config-root>/
 ├── memory/
-│   ├── .heartbeat-drafts/
+│   ├── staged/heartbeat-drafts/
 │   │   ├── 2026-05-20.md           ← today's running pool (append-only across ticks)
 │   │   ├── 2026-05-19.md           ← yesterday's (still pending if /end-day was skipped)
 │   │   ├── archive/
@@ -65,7 +65,7 @@ Every 3h work-hours (Cowork cron, or daemon fallback)
    │
    ├──▶ Check focus signal: did observe skill flag user as in deep work? (TODO v2 — skip in v1)
    │
-   ├──▶ Read .heartbeat-drafts/.state.json
+   ├──▶ Read staged/heartbeat-drafts/.state.json
    │      ├─ last_run timestamp
    │      ├─ today's tick count
    │      └─ today's cumulative proposal list (for dedup)
@@ -77,11 +77,11 @@ Every 3h work-hours (Cowork cron, or daemon fallback)
    │
    ├──▶ Dedup proposals against:
    │      ├─ Active memory (semantic match via Haiku-tier classifier)
-   │      ├─ .heartbeat-drafts/<today>.md (cumulative across ticks)
+   │      ├─ staged/heartbeat-drafts/<today>.md (cumulative across ticks)
    │      ├─ triage-log.md entries for today (explicit /remember / /learn)
    │      └─ Yesterday's .commit-drafts/ (in case /listen already captured)
    │
-   ├──▶ Append surviving proposals to .heartbeat-drafts/<today>.md
+   ├──▶ Append surviving proposals to staged/heartbeat-drafts/<today>.md
    │
    ├──▶ Update .state.json (last_run, tick count, proposal list)
    │
@@ -110,7 +110,7 @@ For each candidate proposal, in order:
 
 1. **Against active memory.** For each candidate, semantic-match (Haiku-tier classifier) against existing knowledge entries on the target node. Threshold: similarity ≥ 0.75. If match → skip with reason "already in memory."
 
-2. **Against today's running pool.** Read `.heartbeat-drafts/<today>.md`. Same semantic-match. If match → skip with reason "already proposed this tick or earlier today."
+2. **Against today's running pool.** Read `staged/heartbeat-drafts/<today>.md`. Same semantic-match. If match → skip with reason "already proposed this tick or earlier today."
 
 3. **Against explicit captures.** Read `memory/triage-log.md` for entries today (last 12h). If a `/remember` / `/learn` / `/note` already wrote on the same node with the same content shape → skip with reason "user captured explicitly."
 
@@ -128,16 +128,16 @@ The 0.75 similarity threshold is a v1 guess. Real usage will tell us if it's too
 
 | Piece | Change |
 |---|---|
-| **`/end-day` quick mode** | New **Step 3.5 — Review sweep drafts**. Walks `.heartbeat-drafts/<today>.md` proposal-by-proposal (accept/reject/edit/defer) — same UX as `/morning` walks `.commit-drafts/`. After walk, archives the file to `.heartbeat-drafts/archive/<today>-reviewed.md`. Step 3 (auto-commit) becomes a *final sweep* for whatever the heartbeat missed. |
-| **`/end-day` full mode** | The original heavy mining steps (1, 2, 2a, 2b) still run, but with dedup against today's `.heartbeat-drafts/` file. They cover the gap between the last `/sweep` tick and `/end-day`, plus anything the heartbeat skipped or missed. |
-| **`/listen` overnight** | When `/listen` mines yesterday's archive, it now also dedups against `.heartbeat-drafts/archive/<yesterday>-reviewed.md`. Entries the user already accepted via `/end-day` don't get re-proposed. Entries the user rejected during `/end-day` review get suppressed for 7 days. |
+| **`/end-day` quick mode** | New **Step 3.5 — Review sweep drafts**. Walks `staged/heartbeat-drafts/<today>.md` proposal-by-proposal (accept/reject/edit/defer) — same UX as `/morning` walks `.commit-drafts/`. After walk, archives the file to `staged/heartbeat-drafts/archive/<today>-reviewed.md`. Step 3 (auto-commit) becomes a *final sweep* for whatever the heartbeat missed. |
+| **`/end-day` full mode** | The original heavy mining steps (1, 2, 2a, 2b) still run, but with dedup against today's `staged/heartbeat-drafts/` file. They cover the gap between the last `/sweep` tick and `/end-day`, plus anything the heartbeat skipped or missed. |
+| **`/listen` overnight** | When `/listen` mines yesterday's archive, it now also dedups against `staged/heartbeat-drafts/archive/<yesterday>-reviewed.md`. Entries the user already accepted via `/end-day` don't get re-proposed. Entries the user rejected during `/end-day` review get suppressed for 7 days. |
 | **`/morning` walker** | If `/end-day` was skipped yesterday, today's `/morning` includes a section: "Yesterday's `/sweep` proposals still pending — review now alongside `/listen` draft?" Carries unmerged drafts forward. After 3 consecutive missed `/end-day`s, `/sweep` pauses for that user (clearly not reviewing). |
 | **`memory/log.md`** | One aggregated entry per day, updated in-place each tick. Not one entry per tick (would flood the log). |
-| **`memory/hot.md`** | Cumulative `.heartbeat-drafts/<today>.md` content participates in hot.md regeneration's "recent activity" section. Tomorrow's `/recall` auto-fire sees the staged-but-unreviewed pool as a "[pending end-of-day review]" tier. |
+| **`memory/hot.md`** | Cumulative `staged/heartbeat-drafts/<today>.md` content participates in hot.md regeneration's "recent activity" section. Tomorrow's `/recall` auto-fire sees the staged-but-unreviewed pool as a "[pending end-of-day review]" tier. |
 | **`memory-librarian`** | When responding to a `/recall` or `/search` query, includes pending-heartbeat proposals tagged as "[pending review — not yet committed]." Tier-ranks them below confirmed entries but above demoted ones. |
 | **Autonomy slider** | New mapping: `autonomy: heartbeat.sweep: <mode>`. Values: `suggest` (default — heartbeat runs, stages drafts silently), `manual` (heartbeat disabled — explicit `/sweep` only), `confirm` (heartbeat asks before each tick — useful for testing, annoying for daily use). `auto` is meaningless here since sweep doesn't act. |
 | **`/diagnose`** | Reports sweep health: last run timestamp, ticks/day average, proposals/tick average, dedup rate, drift between expected vs actual cadence (Cowork cron reliability check). |
-| **`/cleanup`** | Adds a section that walks old `.heartbeat-drafts/archive/` files; offers to delete reviewed drafts > 60 days old. |
+| **`/cleanup`** | Adds a section that walks old `staged/heartbeat-drafts/archive/` files; offers to delete reviewed drafts > 60 days old. |
 | **`core-ops` schedule library** | Adds row: `sweep-hourly` cron `0 */3 8-18 * *` (every 3h between 8am-6pm). Actual hours come from identity.md working hours — schedule entry is a hint, /sweep enforces. |
 | **`/start-nucleus` walker** | Adds an offer in the post-foundational stage: "Want to enable the `/sweep` heartbeat? Fires every 3h during work hours; stages proposed memory entries for `/end-day` review. (y / skip)" |
 
@@ -177,12 +177,12 @@ The `/sweep` heartbeat reads **today's in-progress data**:
 - Drive files modified since last tick (metadata only)
 - Cowork session metadata for today's in-progress sessions (via session-info MCP)
 
-All of this lands in `<config-root>/memory/.heartbeat-drafts/<today>.md` — same privacy posture as `.commit-drafts/`. Already covered by the cortex v4.7.2 gitignore template. Add `memory/.heartbeat-drafts/` to the explicit exclusion list (probably already implicit via `memory/.*`).
+All of this lands in `<config-root>/memory/staged/heartbeat-drafts/<today>.md` — same privacy posture as `.commit-drafts/`. Already covered by the cortex v4.7.2 gitignore template. Add `memory/staged/heartbeat-drafts/` to the explicit exclusion list (probably already implicit via `memory/.*`).
 
 **One new concern:** Cowork conversation mining could surface sensitive content from in-progress sessions (e.g., a client confidential discussion the user is having with Claude). This was already a concern in `/end-day` mining but the smaller temporal window (hours, not a full day) made it less acute. With `/sweep` running every 3h, the proposals will frequently quote recent conversations.
 
 **Mitigation:**
-- `.heartbeat-drafts/` content is the most sensitive directory in `<config-root>/`. Hard-block from git via `.gitignore` (already done). Recommend symlinking to `~/.cache/nucleus/heartbeat-drafts/` for cloud-sync users (like `archive/`).
+- `staged/heartbeat-drafts/` content is the most sensitive directory in `<config-root>/`. Hard-block from git via `.gitignore` (already done). Recommend symlinking to `~/.cache/nucleus/heartbeat-drafts/` for cloud-sync users (like `archive/`).
 - The cortex CLAUDE.md should note this: conversation-mining of in-progress sessions writes summaries of *what was discussed*, not verbatim transcripts. Mining agents must paraphrase before writing to drafts.
 - Add an explicit opt-out: `cortex.user-context.md` `sweep.mine_conversations: false` disables the conversation-miner inside `/sweep` (still surfaces / Slack / Gmail / Calendar). Default `true`.
 
@@ -206,7 +206,7 @@ For v1, prefer scenario 1. If we discover scenario 2, defer `/sweep` until the O
 
 - Verify Cowork sub-daily cron support (or document fallback to launchd/systemd).
 - Add `sweep-hourly` row to `core-ops/references/schedules.template.md` (cron `0 */3 * * *`, narrowed to work hours by `/sweep` itself).
-- Add `<config-root>/memory/.heartbeat-drafts/` directory creation to `/setup-identity` Step 3.5 (alongside `.gitignore` write).
+- Add `<config-root>/memory/staged/heartbeat-drafts/` directory creation to `/setup-identity` Step 3.5 (alongside `.gitignore` write).
 - Write the heartbeat state schema (`.state.json` shape).
 
 ### Days 3-5 — /sweep command + skill
@@ -220,7 +220,7 @@ For v1, prefer scenario 1. If we discover scenario 2, defer `/sweep` until the O
 ### Days 6-8 — Dedup layer
 
 - Implement three-layer dedup with semantic-match threshold (0.75 default).
-- Write `<config-root>/memory/.heartbeat-drafts/<today>.md` as append-only across ticks.
+- Write `<config-root>/memory/staged/heartbeat-drafts/<today>.md` as append-only across ticks.
 - Update `.state.json` with cumulative proposal list for fast in-process dedup.
 - Validate dedup against test fixtures (same fact mentioned in 3 different surfaces → only 1 proposal stages).
 
@@ -235,7 +235,7 @@ For v1, prefer scenario 1. If we discover scenario 2, defer `/sweep` until the O
 
 ### Days 11-12 — Privacy + opt-outs
 
-- Verify gitignore template covers `.heartbeat-drafts/`.
+- Verify gitignore template covers `staged/heartbeat-drafts/`.
 - Add `sweep.mine_conversations: false` opt-out to cortex.user-context.md.
 - Add cost-spike detection: if proposals/tick > 10 or input tokens > 20K, surface a `/diagnose` warning.
 - Update cortex CHANGELOG, plugin.json (v4.9.0 — minor for new command + agent param), router intent table (`"any new learnings from today" / "what should I capture from this session" / "sweep my work surfaces"` → `/sweep`).

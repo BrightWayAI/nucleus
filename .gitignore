@@ -1,2 +1,7 @@
+# Slack MCP local caches — never commit
+.channels_cache_v2.json
+.users_cache.json
+
+# macOS metadata
 .DS_Store
-*.zip
+**/.DS_Store

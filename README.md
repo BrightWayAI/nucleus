@@ -77,6 +77,8 @@ After setup: `/route` prints the full cheat-sheet. You'll rarely need it — jus
 
 14 plugins, but think of them as the team you wish you had — your AI org chart for solo operators who do everything. Each plugin is a teammate with a role; they work side-by-side, share context (identity + voice), and compound the longer you run them.
 
+> **Start here.** The minimum-viable Nucleus is three plugins: **nucleus-router** + **claude-cortex** + **core-ops**. Install those, run `/start-nucleus`, and add specialists (BD, content, delivery) as you need them. Don't try to install all 14 on day one. The recommended install combos further down show common bundles by operator archetype.
+
 ### Foundation — your office of the operator
 
 These are always on. No commands needed; they run in the background.
