@@ -12,40 +12,53 @@ Compatible with **Claude Cowork (Desktop)** and **Claude Code**. 100% free and o
 
 ## Talk, don't memorize
 
-> *"What's on my plate today?"* → Claude runs `/brief`.
+> *"What's on my plate today?"*
+> Chief of Staff: "On it — pulling your calendar, inbox, CRM tasks, and yesterday's reflection. ~10 seconds."
 >
-> *"I just met Sarah at the AI Summit — VP Eng, sharp."* → Claude runs `/remember`, creates her person page, links it to the conference.
+> *"I just met Sarah at the AI Summit — VP Eng, sharp."*
+> Chief: "Capturing — creating Sarah's person page, linking to the conference."
 >
-> *"Wrap up the day."* → Claude runs `/end-day` — five-minute reflection, commits to memory, pre-stages tomorrow's brief.
+> *"Research Acme before our 2pm."*
+> Chief: "Looking into Acme. I have a client node and Sarah's person page; kicking off fresh contact research in parallel. ~30 seconds."
 >
-> *"What's missing from my memory?"* → Claude runs `/research-gaps`, finds thin pages and stale facts, researches them via the web, hands you a draft.
+> *"Wrap up the day."*
+> Chief: "Closing the day — quick mode. Capturing reflection, pre-staging tomorrow's brief, refreshing the index and hot cache."
 
-Nucleus ships 14 plugins. You never have to remember which one does what. The always-loaded **router** maps natural-language utterances to the right capability and asks before running.
+You talk in **verbs** — *catch me up, research, draft, capture, plan, track, review, status, bill, what's on my plate, what's missing, clean up, close day, close week, start day*. The Chief of Staff (the nucleus-router skill, v0.2+) routes each verb to the right specialist on your AI staff, invokes parallel work where independent, and narrates what it's doing.
+
+You can also **address agents by role**: *"ask my Chief Financial Agent to bill this month"*, *"have my VP of Relationships prep the week"*. Each plugin's AI staff role title is a real handle.
+
+The 60+ underlying slash commands are still there — power users can type `/lead-draft` directly when they want to — but they're plumbing, not the surface.
 
 ---
 
 ## What you get
 
-A second brain that learns and forgets. A daily rhythm that compounds. A relationship engine that doesn't let connectors go cold. A voice that gets sharper every week. A graph view in Obsidian on desktop and phone.
+A second brain that learns and forgets. A daily rhythm that compounds. A relationship engine that doesn't let connectors go cold. A voice that gets sharper every week. A graph view in Obsidian on desktop and phone. A Chief of Staff who runs the orchestration.
 
-**14 plugins. 7 subagents. JARVIS-style natural-language router. Bidirectional memory (learning + decay). Daily/weekly closing rituals. Obsidian-as-UI. Adaptive voice. Pipeline analytics. Calendar-to-invoice loop.**
+**14 plugins. 7+ subagents. Chief of Staff orchestrator with 15-verb surface + role-addressable fallback. Bidirectional memory (learning + decay). Workstream + DECISION node types. Daily/weekly closing rituals. Overnight ingest + morning review. Obsidian-as-UI. Adaptive voice. Pipeline analytics. Calendar-to-invoice loop.**
 
-| What you say | What runs |
+### The 15 verbs (your daily surface)
+
+| Verb | What happens under the hood |
 |---|---|
-| *"What's on my plate today"* | `/brief` (your daily working surface) |
-| *"Plan tomorrow"* | `/plan-tomorrow` (blocks the next workday on your calendar) |
-| *"I just met X"* | `/remember` (capture + person page) |
-| *"What do we know about X"* | `/recall` (surface relevant memory) |
-| *"Draft outreach to X"* | `/lead-draft` or `/bizdev-outreach` (voice-faithful) |
-| *"Plan this week's outreach"* | `/weekly-outreach` (prioritized 10-12-contact plan) |
-| *"Weekly LinkedIn news roundup"* | `/ai-roundup` (curated, drafted in your voice) |
-| *"Status update for Acme"* | `/client-status` (drafted from memory + calendar + CRM) |
-| *"Log my time"* | `/track-time` (calendar → billable log) |
-| *"Generate invoices"* | `/generate-invoices` (monthly billing) |
-| *"Wrap up the day"* | `/end-day` (reflection + commit + pre-stage tomorrow) |
-| *"Wrap up the week"* | `/end-week` (transcript review + cleanup + retro + Monday prep) |
-| *"Set up Obsidian"* | `/setup-obsidian` (graph view + mobile sync) |
-| *"What's missing from my memory"* | `/research-gaps` (autonomous gap-fill) |
+| **start day** / *what's on my plate* | Today's brief — calendar, inbox, CRM tasks, outreach, yesterday's reflection (parallel pulls) |
+| **catch me up on X** | Memory recall against the person / client / topic / workstream node |
+| **research X** | Memory lookup + (parallel) external research where appropriate |
+| **capture / remember X** | Typed memory write; auto-graduates person pages; detects DECISION-shaped content |
+| **draft X to Y** | Recipient context + voice + specialist (lead-engine, bizdev-outreach, client-status, news-curator) |
+| **plan X** | Disambiguated: tomorrow's calendar / week's outreach / new project / new workstream |
+| **track X** | Disambiguated: time / pipeline / outreach touchpoint |
+| **review X** | Doc QA / voice audit / memory hygiene / pipeline cleanup |
+| **status update for X** | Client status draft from memory + project state + calendar + CRM |
+| **bill / invoice** | Monthly invoicing from the time log |
+| **what's missing in my memory** | Autonomous gap-finder + web research with ≥2 sources |
+| **clean up X** | Memory / voice / pipeline |
+| **close day** | Reflection + commit + pre-stage tomorrow + refresh index + refresh hot cache |
+| **close week** | Transcript review + cleanup + rehearse + research-gaps + Monday outreach pre-stage |
+| **start a workstream X** | Create a new ongoing-initiative node — current state, pinned context, linked entities |
+
+Plus role-addressable fallback: *"ask my [Chief Knowledge Officer / Chief Financial Agent / Chief Marketing Agent / Communications Director / Executive Assistant / Head of Outbound / ...] to X"* routes directly to that plugin.
 
 ---
 
@@ -85,8 +98,8 @@ These are always on. No commands needed; they run in the background.
 
 | Role | Plugin | What they do |
 |---|---|---|
-| **Chief Knowledge Officer** | [claude-cortex](https://github.com/BrightWayAI/claude-cortex) | Your second brain. Typed memory nodes (people, clients, topics, domain knowledge), bidirectional learning (mining + decay), auto-maintained `memory/index.md` catalog, autonomous gap-finder (`/research-gaps`), `/listen` overnight ingest, `/morning` proposal walker, Obsidian vault scaffolding. v4.7+. |
-| **Chief of Staff** | [nucleus-router](https://github.com/BrightWayAI/nucleus-router) | The JARVIS layer. Maps natural-language utterances ("what's on my plate," "I just met X," "wrap up the day") to the right command, consults the autonomy slider, confirms before running. `/route` prints the cheat sheet. |
+| **Chief Knowledge Officer** | [claude-cortex](https://github.com/BrightWayAI/claude-cortex) | Your second brain. Typed memory nodes (people, clients, topics, domain knowledge, **workstreams**), bidirectional learning (mining + decay), auto-maintained `memory/index.md` catalog, autonomous gap-finder (`/research-gaps`), `/listen` overnight ingest, `/morning` proposal walker, Obsidian vault scaffolding. **DECISION** knowledge entries with Revisit-when triggers (v4.9+). |
+| **Chief of Staff** | [nucleus-router](https://github.com/BrightWayAI/nucleus-router) | The orchestrator (v0.2+). 15 verbs at the user-facing surface + role-addressable fallback. Routes verbs to specialists by context, invokes parallel work where independent, narrates execution instead of asking permission. The 60+ underlying slash commands are plumbing; verbs are the interface. `/route` prints the cheat sheet. |
 | **Communications Director** | [writing-style](https://github.com/BrightWayAI/writing-style) | Keeps everything sounding like you. `/style` drafts in your voice. `/style-learn` updates the voice file from real edits (two-stage triage). `/style-review` audits style rules for contradictions. |
 
 **CKO's subagents:** `memory-librarian`, `transcript-reviewer`, `conversation-miner`, `activity-miner`, `gap-researcher`.
@@ -319,7 +332,25 @@ See [`docs/multi-agent-patterns.md`](docs/multi-agent-patterns.md) if you want t
 
 Active proposals at [`docs/proposals/`](docs/proposals/) — pick one up if you want to contribute. Shipped proposals are archived at [`docs/proposals/shipped/`](docs/proposals/shipped/) (read-only historical record of what was designed; see each plugin's `CHANGELOG.md` for what actually shipped).
 
-As of 2026-05-16, all major proposals have shipped. The shipped archive includes nucleus-router, cortex v4.5 legibility (memory index + `/research-gaps` + Obsidian setup), the second-brain v2 spec, the Karpathy pattern survey, the SMB connector audit, and the productization plan. Future proposals will live in the top-level `docs/proposals/` until they ship; then move to `shipped/`.
+### Shipped (as of 2026-05-20)
+
+In `docs/proposals/shipped/`:
+- **nucleus-router** v0.1 (May 2026) — the original JARVIS front door
+- **cortex v4.5 legibility** — `memory/index.md`, `/research-gaps`, `/setup-obsidian`
+- **Obsidian-as-UI** — graph view + daily notes + mobile substrate
+- **second-brain v2 spec** + **Karpathy pattern survey** — architecture context
+- **SMB connector audit** + **productization plan** — internal strategy docs
+
+In the top-level `docs/proposals/`:
+- **chief-of-staff-evolution.md** — router v0.2.0 + cortex v4.9.0. Shipped 2026-05-20. 15-verb surface + role-addressable fallback + workstream + DECISION primitives.
+- **cleanup-pass-1.md** — items A-D shipped (staged-substrates reorg, migrations doc, contracts doc, README callout). Items E-G (mining-agent consolidation, /end-day decomposition, autonomy slider full coverage) deferred for next pass.
+
+### Specced, not yet built
+
+In the top-level `docs/proposals/`:
+- **memory-as-git.md** — Liu's "git diff as review surface" pattern formalized. `<config-root>/memory/` becomes a git repo; `/end-day` auto-commits; `/morning` surfaces overnight diff. Three privacy levels. ~half-day build.
+- **sweep-heartbeat.md** — every-3h work-hours heartbeat that mines today's surfaces + in-progress Cowork conversations, dedups, stages proposals to `staged/heartbeat-drafts/`. Reviewed at `/end-day` Step 3.5. ~1-2 week build. Recommend dogfooding `/listen` + `/morning` first.
+- **jarvis-app.md** — standalone Tauri desktop app (voice-first cockpit, 21st.dev orb, prompt-cached cortex). $39/mo Pro tier opens SaaS revenue. ~12-week single-engineer build.
 
 ---
 
