@@ -256,7 +256,7 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 `<config-root>/memory/person/<slug>.md` (cortex-owned; relationships reads + appends additively)
 - **Existing writer:** cortex (graduation, /recall, /remember)
 - **New behavior:** relationships `/relationships` Step 7 appends to **## Recent interactions** log when the user marks a card "done." Never modifies Identity, Notes, or other sections.
-- **Schema additions (additive YAML frontmatter under the `relationships:` namespace):** `tier`, `buckets`, `relationship_class`, `icp_fit`, `next_touch_target`, `preferred_channel`, `generosity_ledger`. See relationships `references/person-page-extensions.md` for the full schema.
+- **Schema additions (additive YAML frontmatter under the `relationships:` namespace):** `tier`, `buckets`, `relationship_class`, `icp_fit`, `next_touch_target`, `preferred_channels` (array, v0.1.2+; single `preferred_channel` accepted for backward compat), `generosity_ledger`. See relationships `references/person-page-extensions.md` for the full schema.
 - **Cortex coordination:** small additive schema bump (candidate cortex v4.12.0). Existing pages remain valid; plugin treats missing frontmatter as sensible defaults. Future plugins writing to person pages should use their own frontmatter namespace (e.g., `referral_engine:`, `weekly_outreach:`) to avoid collisions.
 
 ---
