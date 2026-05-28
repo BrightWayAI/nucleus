@@ -256,13 +256,88 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 `<config-root>/memory/team/<slug>.md` (cortex-owned; internal team members)
 - **Convention emerging from relationships v0.1.x:** internal team members (BrightWay contractors, employees) live under `memory/team/` instead of `memory/person/`. The relationships plugin **explicitly does not scope `team/` into its daily-brief candidate pool** — internal team are collaborators, not subjects of relationship maintenance.
 - **Migration trigger:** `/network-rebalance` proposes migrating a `person/` page to `team/` when the page indicates an internal-team role (same-domain email, "Role at BrightWay" section, contractor agreement, etc.). User-gated.
-- **Cortex coordination candidate (v4.12):** formalize `team/` as a recognized node type in `cortex/references/node-taxonomy.md`. Update `/remember` Step 1 to route accordingly. Optionally update graduation rules in `cortex/CLAUDE.md` to detect internal team (same-domain Gmail) and create at `team/` instead of `person/`.
+- **Cortex coordination (still pending formal cortex schema bump):** formalize `team/` as a recognized node type in `cortex/references/node-taxonomy.md`. Cortex v4.12.0 shipped memory-as-git + sync-linked-entities + DASHBOARD provenance but did NOT include the `team/` taxonomy formalization — that remains a separate cortex PR. Until then, `team/` works because cortex is permissive about new prefixes (the indexer walks all `memory/*/` subdirs).
 
 `<config-root>/memory/person/<slug>.md` (cortex-owned; relationships reads + appends additively)
 - **Existing writer:** cortex (graduation, /recall, /remember)
 - **New behavior:** relationships `/relationships` Step 7 appends to **## Recent interactions** log when the user marks a card "done." Never modifies Identity, Notes, or other sections.
 - **Schema additions (additive YAML frontmatter under the `relationships:` namespace):** `tier`, `intent` (v0.2.0+), `buckets`, `relationship_class`, `icp_fit`, `next_touch_target`, `cadence_days_override` (v0.2.0+), `preferred_channels` (array, v0.1.2+; single `preferred_channel` accepted for backward compat), `generosity_ledger`. The `intent` field encodes the dynamic of engagement (client_delivery / drive_active / door_opening / reciprocal / advising / content_share / keep_warm / passive_visibility / awaiting_reply) as an axis orthogonal to but constrained by `tier`. See relationships `references/person-page-extensions.md` for the full schema and validation rules.
 - **Cortex coordination:** small additive schema bump (candidate cortex v4.12.0). Existing pages remain valid; plugin treats missing frontmatter as sensible defaults. Future plugins writing to person pages should use their own frontmatter namespace (e.g., `referral_engine:`, `weekly_outreach:`) to avoid collisions.
+
+---
+
+## Memory-as-git (cortex v4.12.0+)
+
+`<config-root>/memory/.git/`
+- **Writer:** cortex `/setup-identity` Step 3.6 (init) · cortex `/end-day` Step 5.8 (daily commit) · cortex `/morning` Step 0.5 (read for diff)
+- **Readers:** cortex `/morning` Step 0.5 (`git diff HEAD~1..HEAD`); humans via Obsidian Git plugin if installed; optional remote (private GitHub / self-hosted)
+- **Format:** standard git repo at memory/ root. Initial commit by `/setup-identity`; per-day commits by `/end-day`.
+- **Version:** added cortex v4.12.0. Backward compat: `/end-day` Step 5.8 is a no-op if `.git/` doesn't exist (memory-as-git not enabled).
+
+`<config-root>/memory/.gitignore`
+- **Writer:** cortex `/setup-identity` Step 3.6 (from `cortex/references/memory-gitignore-template.md`)
+- **Readers:** git itself; humans editing memory-tracking rules
+- **Format:** see `cortex/references/memory-gitignore-template.md`. Excludes `staged/`, `hot.md`, `index.md`, `log.md`, `.state.json`, deprecated pre-v4.8.1 dotfiles.
+- **Version:** added cortex v4.12.0
+
+`<config-root>/plugins/cortex.user-context.md` — `memory_as_git:` section (additive)
+- **Writer:** cortex `/setup-identity` Step 3.6 (writes section when user opts in to a remote); user-editable thereafter
+- **Readers:** cortex `/end-day` Step 5.8 (reads `push_on_close`); cortex `/morning` Step 0.5 (reads `morning_diff`)
+- **Fields:** `enabled`, `remote`, `push_on_close`, `morning_diff`
+- **Version:** added cortex v4.12.0
+
+---
+
+## DASHBOARD line provenance (cortex v4.12.0+)
+
+`<config-root>/memory/DASHBOARD.md` — provenance comments on every line
+- **Writer:** cortex `/remember` Step 3 emits `<!-- by:<command> @ <YYYY-MM-DD> -->` on every DASHBOARD line write/update
+- **Reader:** cortex `/cleanup` Section L (DASHBOARD staleness scan) — surfaces lines whose owning command hasn't refreshed in N days, lines with missing provenance, and lines referencing archived/renamed nodes
+- **Format:** HTML-comment syntax renders invisibly in Markdown previews. Per-line stale thresholds: auto-mining commands (7d), user-driven (30d), manual (60d). Override per-line via `<!-- by:<cmd> @ <date> · stale-after:<days> -->`.
+- **Version:** added cortex v4.12.0. Backward compat: lines without provenance still parse; `/cleanup` Section L surfaces them as "missing-provenance" candidates.
+
+---
+
+## Cross-plugin: daily-brief artifact id ↔ cortex /end-day Step 5
+
+`mcp__cowork__update_artifact(id: "todays-brief", ...)` — the canonical interactive brief surface
+- **Writers:**
+  - daily-brief `/brief` (Steps 3-3a — render full artifact)
+  - cortex `/end-day` Step 5 (pre-stage tomorrow's brief; uses same `todays-brief` id and same 6-section canonical format)
+- **Readers:**
+  - daily-brief `/process-brief` Step 1 (reads annotations + tasks_checked dictionary via `read_widget_context`)
+  - cortex `/end-day` Step 4 (reads tasks_checked to know what got done before reflection prompts)
+  - humans via Cowork artifact UI
+- **Artifact id rule:** the id is ALWAYS `todays-brief` — both plugins reference the same persistent surface. **Never** create a new artifact with a different id. Never produce a markdown-only fallback when Cowork is available.
+- **Canonical 6-section format (locked in daily-brief v0.4 + cortex v4.12):**
+  1. Sticky header (date badge, generated-at, total counts, progress bar)
+  2. Day-at-a-glance timeline strip
+  3. Meetings card (read-only)
+  4. Priority tasks card (interactive — P0 only, checkboxes + progress bar)
+  5. Bizdev outreach queue (tiered: today / next week / early next month / backlog)
+  6. Yesterday's reflection (read-only)
+- **localStorage state contract:** `brief-YYYY-MM-DD` keys for `tasks_checked`, `annotations`, `outreach_tier_collapsed`. Cortex `/end-day` Step 4 reads via `read_widget_context`.
+- **Version:** daily-brief v0.4.0 + cortex v4.12.0 (shipped together 2026-05-28)
+
+---
+
+## Sync linked entities (cortex v4.12.0+)
+
+`<config-root>/memory/staged/skip-logs/sync-linked.md`
+- **Writer:** cortex `/sync-linked-entities` on user `(s)kip` action (logs candidates suppressed for 30 days)
+- **Reader:** cortex `/sync-linked-entities` (consults to skip recently-suppressed candidates)
+- **Format:** append-only `(source-slug, linked-slug, candidate-id, skip-date, reason)` tuples
+- **Version:** added cortex v4.12.0
+
+---
+
+## /touchpoint event log addition (relationships v0.2.1+)
+
+`<config-root>/relationships/events.jsonl` — additional writer
+- **Existing writer (v0.1.1+):** relationships `/relationships-action`, `/relationships` Step 7
+- **New writer (v0.2.1+):** relationships `/touchpoint`
+- **Event shape extension:** `/touchpoint` events use `action: "touchpoint"` (vs `copied | sent | skipped | snoozed` for `/relationships-action`); add `direction: "in" | "out"`, `summary: <free-form>`, `intent_at_time`, `tier_at_time`. `brief_id` and `option_id` are null (touchpoints aren't tied to a brief card).
+- **Reader contract unchanged:** UI consumers handle the additional fields gracefully (null → ignore).
 
 ---
 
