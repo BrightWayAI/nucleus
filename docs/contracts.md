@@ -206,9 +206,10 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 `<config-root>/plugins/relationships.user-context.md`
 - **Writer:** relationships `/setup-relationships`
-- **Readers:** relationships `/relationships`, `/network-rebalance` (Phase 3), `/draft-touchpoint` (Phase 2); any future web-app or Operator desktop reader of `today.json`
-- **Sections:** `## Identity`, `## Business context and current focus`, `## Tiers`, `## Buckets`, `## Voices` (one block per named voice), `## Time budget`, `## CRM`, `## Apollo`, `## Companion plugins`, `## Network expansion sources`, optional `## Scoring overrides`
-- **Version:** added in relationships v0.1.0
+- **Readers:** relationships `/relationships`, `/network-rebalance`, `/draft-touchpoint`, `/relationships-action`
+- **Sections (v0.1.1 — slimmed):** `## Identity` (minimal — for template variable filling only), `## Companion plugins` (runtime-detected), `## Tiers`, `## Close personal track`, `## Buckets`, `## Network-expansion voices`, `## Time budget`, `## Scoring overrides` (optional), `## Standalone-install fallbacks` (only populated when a peer file is missing), `## Provenance` (tracks which fields came from which peer file).
+- **Peer-import behavior (v0.1.1+):** at `/setup-relationships` time, the plugin reads from `<config-root>/identity.md`, `<config-root>/voice.md`, `<config-root>/plugins/{lead-engine,core-ops,referral-engine,bizdev-outreach,weekly-outreach,writing-style}.user-context.md` and cortex workstream nodes. **One-time import only — not runtime reads.** Identity, voice, ICP, CRM, Apollo, cooling rules live at their canonical peer files; the relationships plugin reads them live at runtime via the peer paths above.
+- **Version:** added in relationships v0.1.0; slimmed in v0.1.1
 
 `<config-root>/relationships/today.md`
 - **Writer:** relationships `/relationships` (Phase 2)
@@ -223,9 +224,28 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 `<config-root>/relationships/today.json`
 - **Writer:** relationships `/relationships`
-- **Readers:** future web-app, Operator desktop, daily-brief render layer (if tight coupling adopted later)
-- **Format:** see relationships `references/today-json-schema.md` (TBD Phase 2)
-- **Version:** added in relationships v0.1.0
+- **Readers:** future web-app, Operator desktop, daily-brief render layer (if tight coupling adopted later), sync daemon
+- **Format:** see relationships `references/today-json-schema.md`. Schema version `0.1.0`. Includes `brief_id` (UUID v4) and stable option IDs in form `<bucket>_<slug>_<date>`.
+- **Version:** added in relationships v0.1.0; stable-ID + brief_id added in v0.1.1
+
+`<config-root>/relationships/events.jsonl`
+- **Writer:** relationships `/relationships-action` (and inline path in `/relationships` Step 7 — both write the same event shape)
+- **Readers:** future web-app (analytics: completion rate, channel mix, response time, late-action patterns), `/relationships-stats` (future)
+- **Format:** append-only newline-delimited JSON. One event per line. See relationships `commands/relationships-action.md` Step 3 for the event shape.
+- **Append rule:** never modify prior entries. Atomic appends only.
+- **Version:** added in relationships v0.1.1
+
+`<config-root>/relationships/snoozes.json`
+- **Writer:** relationships `/relationships-action` when `action: snoozed`
+- **Readers:** relationships `/relationships` Step 3 (filter candidate pool against active snoozes), future web-app
+- **Format:** JSON array of `{ slug, until_date, reason?, snoozed_at, brief_id }` objects. Entries with `until_date < today` are auto-expired (kept for audit).
+- **Version:** added in relationships v0.1.1
+
+`<config-root>/relationships/inbox/` (directory)
+- **Writer:** future UI / sync daemon — drops `<uuid>.json` event payloads here
+- **Reader:** relationships `/relationships-action --file=<path>` — processes one event per invocation, moves file to `inbox/processed/` on success or `inbox/quarantine/` if malformed
+- **Format:** JSON event payload per file. See relationships `commands/relationships-action.md` Step 1 for the schema.
+- **Version:** added in relationships v0.1.1
 
 `<config-root>/relationships/templates/<channel>/<scenario>.md` (optional user overrides)
 - **Writer:** user (manually)
