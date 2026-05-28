@@ -36,7 +36,7 @@ The 60+ underlying slash commands are still there — power users can type `/lea
 
 A second brain that learns and forgets. A daily rhythm that compounds. A relationship engine that doesn't let connectors go cold. A voice that gets sharper every week. A graph view in Obsidian on desktop and phone. A Chief of Staff who runs the orchestration.
 
-**14 plugins. 7+ subagents. Chief of Staff orchestrator with 15-verb surface + role-addressable fallback. Bidirectional memory (learning + decay). Workstream + DECISION node types. Daily/weekly closing rituals. Overnight ingest + morning review. Obsidian-as-UI. Adaptive voice. Pipeline analytics. Calendar-to-invoice loop.**
+**13 plugins. 7+ subagents. Chief of Staff orchestrator with 15-verb surface + role-addressable fallback. Bidirectional memory (learning + decay). Workstream + DECISION node types. Daily/weekly closing rituals. Overnight ingest + morning review. Obsidian-as-UI. Adaptive voice. Pipeline analytics. Calendar-to-invoice loop.**
 
 ### The 15 verbs (your daily surface)
 
@@ -46,7 +46,7 @@ A second brain that learns and forgets. A daily rhythm that compounds. A relatio
 | **catch me up on X** | Memory recall against the person / client / topic / workstream node |
 | **research X** | Memory lookup + (parallel) external research where appropriate |
 | **capture / remember X** | Typed memory write; auto-graduates person pages; detects DECISION-shaped content |
-| **draft X to Y** | Recipient context + voice + specialist (lead-engine, bizdev-outreach, client-status, news-curator) |
+| **draft X to Y** | Recipient context + voice + specialist (lead-engine, relationships, client-status, news-curator) |
 | **plan X** | Disambiguated: tomorrow's calendar / week's outreach / new project / new workstream |
 | **track X** | Disambiguated: time / pipeline / outreach touchpoint |
 | **review X** | Doc QA / voice audit / memory hygiene / pipeline cleanup |
@@ -88,9 +88,9 @@ After setup: `/route` prints the full cheat-sheet. You'll rarely need it — jus
 
 ## Your AI staff
 
-14 plugins, but think of them as the team you wish you had — your AI org chart for solo operators who do everything. Each plugin is a teammate with a role; they work side-by-side, share context (identity + voice), and compound the longer you run them.
+13 plugins, but think of them as the team you wish you had — your AI org chart for solo operators who do everything. Each plugin is a teammate with a role; they work side-by-side, share context (identity + voice), and compound the longer you run them.
 
-> **Start here.** The minimum-viable Nucleus is three plugins: **nucleus-router** + **claude-cortex** + **core-ops**. Install those, run `/start-nucleus`, and add specialists (BD, content, delivery) as you need them. Don't try to install all 14 on day one. The recommended install combos further down show common bundles by operator archetype.
+> **Start here.** The minimum-viable Nucleus is three plugins: **nucleus-router** + **claude-cortex** + **core-ops**. Install those, run `/start-nucleus`, and add specialists (BD, content, delivery) as you need them. Don't try to install all 13 on day one. The recommended install combos further down show common bundles by operator archetype.
 
 ### Foundation — your office of the operator
 
@@ -114,13 +114,12 @@ The teammate who runs your day.
 
 ### Revenue & relationships — your AI BD team
 
-Four roles split the relationship-and-pipeline workload.
+Three roles split the relationship-and-pipeline workload.
 
 | Role | Plugin | What they do |
 |---|---|---|
 | **Head of Outbound** | [lead-engine](https://github.com/BrightWayAI/lead-engine) | LinkedIn intent-based outbound. Catches buying signals, drafts warm DMs in your voice, runs 3-touch cadences, generates pre-call briefs. |
-| **Account Executive** | [bizdev-outreach](https://github.com/BrightWayAI/Biz-Dev) | Per-contact deep research + voice-faithful drafted outreach. Works across HubSpot / Salesforce / Pipedrive / Close and Gmail / Outlook. |
-| **VP of Relationships** | [weekly-outreach](https://github.com/BrightWayAI/weekly-outreach) | Weekly relationship management. Prioritized 10-12-contact queue, call prep for external meetings, drafted messages, CRM tasks. |
+| **VP of Relationships** | [relationships](https://github.com/BrightWayAI/relationships) | Daily relationship cockpit. `/relationships` produces a prioritized 3-bucket brief (new business / relationship building / network expansion) with 3 actions per bucket — each ships with a recommended channel, time estimate, and a copy-ready draft from a 17-template library. `/draft-touchpoint` drafts on demand per contact. `/network-rebalance` re-tags tiers quarterly. Drafts only — never sends. |
 | **Head of Partnerships** | [referral-engine](https://github.com/BrightWayAI/referral-engine) | Latent revenue from connectors who've gone quiet. Weekly digest of who to re-engage, drafted asks honoring cooling periods. |
 
 **Their shared subagent:** `contact-researcher` (deep single-contact dives across CRM / email / web).
@@ -164,8 +163,8 @@ Two canonical files live at your `<config-root>/` (typically `~/Documents/Claude
 
 | File | Created by | Read by |
 |---|---|---|
-| `identity.md` | `cortex /setup-identity` | All 13 other plugins (no duplicate questions in their setups) |
-| `voice.md` | `cortex /setup-voice` | All drafting plugins (bizdev-outreach, weekly-outreach, lead-engine, news-curator's post-assembler, client-status, referral-engine, writing-style) |
+| `identity.md` | `cortex /setup-identity` | All 12 other plugins (no duplicate questions in their setups) |
+| `voice.md` | `cortex /setup-voice` | All drafting plugins (relationships, lead-engine, news-curator's post-assembler, client-status, referral-engine, writing-style) |
 
 Without these, every plugin asks the same questions over and over. With these, identity and voice live in one place — you update them in one place.
 
@@ -177,8 +176,9 @@ Without these, every plugin asks the same questions over and over. With these, i
 | `transcript-reviewer` | claude-cortex | `/end-week`, weekly scheduled run |
 | `conversation-miner` / `activity-miner` | claude-cortex | `/end-day` Step 2a (v4.3+) |
 | `gap-researcher` | claude-cortex | `/research-gaps` (v4.5+) |
-| `contact-researcher` | lead-engine | bizdev-outreach, lead-brief, lead-pull, weekly-outreach, referral-ask |
-| `pipeline-analyst` | core-ops | weekly-outreach, plan-tomorrow, ad-hoc pipeline review |
+| `contact-researcher` | lead-engine | relationships (`/relationships`, `/draft-touchpoint`), lead-brief, lead-pull, referral-ask |
+| `pipeline-analyst` | core-ops | relationships (new-business bucket), plan-tomorrow, ad-hoc pipeline review |
+| `relationship-ranker` | relationships | `/relationships` (one call per bucket) |
 | `pipeline-forecast` | core-ops | monthly forecasting, board prep |
 | `news-curator` | news-curator | `/ai-roundup` (scan + rank) |
 | `post-assembler` | news-curator | `/ai-roundup` (drafts in your voice) |
@@ -232,9 +232,9 @@ Every Friday
   Afternoon   → /referrals (latent network surfacing)
   Afternoon   → /client-status (drafts for active engagements)
 
-Every Monday morning
-  → /weekly-outreach plan ready for review (staged Friday)
-  → pipeline-analyst snapshot ready (scheduled 6am)
+Every workday morning
+  → /relationships brief — 3 buckets × 3 actions × copy-ready drafts
+  → pipeline-analyst snapshot (Monday 6am, scheduled)
 
 Monthly
   1st         → /generate-invoices (bill last month from time-log)
@@ -257,21 +257,21 @@ Nucleus is built for the operator's workflow: relationships, daily rhythm, clien
 
 **Solo consultant running BD on Claude:**
 ```
-nucleus-router + claude-cortex + core-ops + lead-engine + bizdev-outreach + weekly-outreach + referral-engine + time-tracking
+nucleus-router + claude-cortex + core-ops + lead-engine + relationships + referral-engine + time-tracking
 ```
-Memory + pipeline + signal-driven outbound + per-contact drafting + weekly prep + referral engine + billing.
+Memory + pipeline + signal-driven outbound + daily relationship cockpit (orchestration + per-contact drafting + quarterly tier review) + referral engine + billing.
 
 **Agency operator with multiple client engagements:**
 ```
-nucleus-router + claude-cortex + core-ops + project-setup + weekly-outreach + daily-brief + time-tracking + client-status
+nucleus-router + claude-cortex + core-ops + project-setup + relationships + daily-brief + time-tracking + client-status
 ```
-Memory + pipeline + new-engagement onboarding + daily flow + billing + client retention.
+Memory + pipeline + new-engagement onboarding + daily relationship cockpit + daily flow + billing + client retention.
 
 **Content-focused operator:**
 ```
-nucleus-router + claude-cortex + writing-style + news-curator + bizdev-outreach + referral-engine
+nucleus-router + claude-cortex + writing-style + news-curator + relationships + referral-engine
 ```
-Memory + voice + weekly LinkedIn roundup + per-contact outreach + referral engine.
+Memory + voice + weekly LinkedIn roundup + daily relationship cockpit + referral engine.
 
 **Cross-team operator (manager / chief-of-staff):**
 ```
@@ -312,7 +312,7 @@ Plugins that ship with content templates (engagement plan structure in `project-
 Only fork if you want to change a plugin's **methodology** — not its content. Examples:
 
 - You want `lead-engine` to score signals with a different algorithm than BrightWay's.
-- You want `weekly-outreach` to produce a different shape of weekly plan.
+- You want `relationships` to produce a different shape of daily brief.
 - You want to add a plugin that doesn't exist yet for your firm's specific workflow.
 
 For those cases:
@@ -362,8 +362,7 @@ Each plugin manages its own issues:
 - [claude-cortex](https://github.com/BrightWayAI/claude-cortex/issues)
 - [core-ops](https://github.com/BrightWayAI/core-ops/issues)
 - [lead-engine](https://github.com/BrightWayAI/lead-engine/issues)
-- [bizdev-outreach](https://github.com/BrightWayAI/Biz-Dev/issues)
-- [weekly-outreach](https://github.com/BrightWayAI/weekly-outreach/issues)
+- [relationships](https://github.com/BrightWayAI/relationships/issues)
 - [news-curator](https://github.com/BrightWayAI/news-curator/issues)
 - [daily-brief](https://github.com/BrightWayAI/daily-brief/issues)
 - [project-setup](https://github.com/BrightWayAI/project-setup/issues)

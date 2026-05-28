@@ -6,12 +6,12 @@ The actual plugin source code lives in separate GitHub repos under `BrightWayAI/
 
 **Renamed from `claude-plugins` → `nucleus` on 2026-05-12.** GitHub auto-redirects old URLs. Local directory at `~/lab-bench/nucleus/`.
 
-**Catalog currently lists 14 plugins.** Started at 12, gained `writing-style` and `daily-brief`, lost `plan-tomorrow` (folded into daily-brief), gained `nucleus-router` (JARVIS-style natural-language front door). Net 14.
+**Catalog currently lists 13 plugins.** Started at 12, gained `writing-style` and `daily-brief`, lost `plan-tomorrow` (folded into daily-brief), gained `nucleus-router` (JARVIS-style natural-language front door), gained `relationships` while retiring `weekly-outreach` + `bizdev-outreach` (both consolidated into the new `relationships` daily cockpit, 2026-05-28). Net 13.
 
 ## Layout
 
 ```
-.claude-plugin/marketplace.json   ← the catalog (14 plugins)
+.claude-plugin/marketplace.json   ← the catalog (13 plugins)
 README.md                          ← user-facing marketplace overview
 CONTRIBUTING.md                    ← contributor guide for any plugin
 SECURITY.md / LICENSE              ← standard repo files
@@ -31,7 +31,7 @@ Currently open proposals:
 
 ## How plugins are organized
 
-The marketplace contains 14 plugins, each in its own GitHub repo:
+The marketplace contains 13 plugins, each in its own GitHub repo:
 
 | Plugin | Repo | Purpose |
 |---|---|---|
@@ -39,8 +39,7 @@ The marketplace contains 14 plugins, each in its own GitHub repo:
 | claude-cortex | BrightWayAI/claude-cortex | Always-on memory + shared `/setup-identity` and `/setup-voice` |
 | core-ops | BrightWayAI/core-ops | Pipeline analyst + forecast subagents, /diagnose, /log-agent-run, /agent-metrics, /register-schedules |
 | lead-engine | BrightWayAI/lead-engine | LinkedIn intent-based outbound + contact-researcher subagent |
-| bizdev-outreach | BrightWayAI/Biz-Dev | Per-contact research + drafted outreach |
-| weekly-outreach | BrightWayAI/weekly-outreach | Weekly BD prep |
+| relationships | BrightWayAI/relationships | Daily relationship cockpit. `/relationships` 3-bucket brief, `/draft-touchpoint` per-contact drafting, `/network-rebalance` quarterly tier review. 17-template library + `relationship-ranker` subagent. Absorbs and supersedes the retired `weekly-outreach` and `bizdev-outreach` plugins (as of 2026-05-28). |
 | referral-engine | BrightWayAI/referral-engine | Connector network + referral asks |
 | news-curator | BrightWayAI/news-curator | Weekly LinkedIn AI roundup (news-curator + post-assembler subagents) |
 | client-status | BrightWayAI/client-status | Weekly client status drafts |
@@ -49,6 +48,8 @@ The marketplace contains 14 plugins, each in its own GitHub repo:
 | weekly-alignment | BrightWayAI/weekly-alignment | Slack cross-team alignment scanner |
 | writing-style | BrightWayAI/writing-style | Adaptive voice learning — drafts, edit-detection, pattern-based style-guide refinement |
 | daily-brief | BrightWayAI/daily-brief | Daily flow plugin. /brief = today's working surface (Cowork artifact); /process-brief acts on annotations; /plan-tomorrow blocks the next business day. As of v0.2.0 absorbs the deprecated plan-tomorrow plugin. |
+
+**Archived (retired) repos under BrightWayAI/:** `weekly-outreach`, `Biz-Dev`. Both deprecated 2026-05-28 with redirect READMEs pointing at `relationships`. Local clones removed from `~/lab-bench/`.
 
 Each plugin has its own repo with `commands/`, `skills/`, `agents/`, `references/`, `CHANGELOG.md`, `SECURITY.md`, `LICENSE`. Local dev clones live as siblings to this marketplace repo in `~/lab-bench/`.
 
@@ -115,6 +116,8 @@ Open items for future sessions: optional `/onboarding` chained command, marketpl
 4. Open `<config-root>/` in Obsidian to see the graph view; same files visible on phone.
 
 ## Recently completed work
+
+- **relationships plugin shipped + BD consolidation (2026-05-28):** new plugin `relationships` v0.1.0 shipped to `BrightWayAI/relationships`. Daily 3-bucket cockpit (new business / relationship building / network expansion), 17-template library, channel-aware drafting, `relationship-ranker` subagent, `/network-rebalance` for quarterly tier review on cortex person pages. Introduces additive `relationships:` YAML frontmatter namespace on cortex person pages (additive, non-breaking; treated as candidate cortex v4.12.0 schema bump). **Coordinated retirement:** `weekly-outreach` (BrightWayAI/weekly-outreach) and `bizdev-outreach` (BrightWayAI/Biz-Dev) both archived on GitHub with redirect READMEs pointing at relationships; marketplace entries removed; local clones deleted from `~/lab-bench/`. Marketplace catalog 14 → 13. Proposal at `docs/proposals/relationships-plugin.md`. Contracts at `docs/contracts.md`.
 
 - **v0.2 refactor (2026-05-11):** all 12 plugins migrated from plugin-folder-relative paths to `<config-root>/plugins/` paths, eliminating writes to Cowork's read-only mount. See each plugin's CHANGELOG for the v0.2.0 / v0.2.1 entries.
 - **Phase 0 platform-agnostic Step 0 (2026-05-12):** every `request_cowork_directory(...)` call in setup commands is wrapped in a Cowork/Claude-Code conditional so the same plugin source works in both runtimes. All 13 plugin patch versions bumped: cortex 4.1.3, weekly-alignment 1.4.3, writing-style 0.1.1, the rest 0.2.3.

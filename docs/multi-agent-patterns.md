@@ -2,7 +2,7 @@
 
 Patterns for chaining subagents inside a single skill or slash command. Use this when a workflow needs research → analyze → synthesize → draft → review across multiple specialist agents.
 
-This is a pattern doc for plugin authors, not a runtime artifact. The patterns here are already used implicitly in `news-curator/ai-roundup` (news-curator → user-pick → post-assembler) and `weekly-outreach` (pipeline-analyst → contact-researcher per top-N). Documenting them so future plugins can use the same shape consistently.
+This is a pattern doc for plugin authors, not a runtime artifact. The patterns here are already used implicitly in `news-curator/ai-roundup` (news-curator → user-pick → post-assembler) and `relationships` (relationship-ranker per bucket → optional contact-researcher per thin candidate). Documenting them so future plugins can use the same shape consistently.
 
 ---
 
@@ -51,7 +51,7 @@ Skill (parent context)
    - Skip Agent 2 and report the gap directly
    - Proceed with the chain but flag the limitation in the final output
 
-   See "Confidence-aware delegation" pattern in any consumer skill (e.g., `bizdev-outreach`, `lead-brief`, `weekly-outreach`).
+   See "Confidence-aware delegation" pattern in any consumer skill (e.g., `relationships`, `lead-brief`, `client-status`).
 
 5. **Don't re-invoke an agent for the same brief twice.** Cache outputs in the conversation context; reference them by structure rather than re-querying. Agents are expensive — re-running them in a chain step that already has the data is waste.
 
@@ -77,38 +77,40 @@ Skill (parent context)
 
 **Why this shape:** scanning is expensive (web fetches), drafting is voice-sensitive. The user gate after scanning lets editorial judgment shape the input to drafting. Without the gate, the post would draft from whatever the agent ranked highest — which is fine, but loses voice control.
 
-### `weekly-outreach` — fan-out chain
+### `relationships` — per-bucket fan-out with optional deepening
 
 ```
-/weekly-outreach
+/relationships
   ↓
-  Step 1: contact-researcher agent (per upcoming external call) → call prep
+  Step 0-1: Read user-context, gate on time-budget
   ↓
-  Step 2: pipeline-analyst agent → ranked outreach queue
+  Step 2: For each bucket (new_biz, relationship, network):
+            relationship-ranker agent → ranked candidates with score + why-now
+            (For new_biz: optionally delegate to pipeline-analyst before ranking)
   ↓
-  Step 3 (optional): Apollo enrichment for net-new prospects
+  Step 3: Filter (cooling, DNE, "should we even send?") → top 3 per bucket
   ↓
-  Step 4 (optional): contact-researcher agent (per top 3-5 in queue) → deeper dossier
+  Step 4 (optional, per thin-data card): contact-researcher agent → fill missing context
   ↓
-  Skill drafts messages from queue + dossiers
+  Step 5: Parent picks channel + template, fills variables, drafts in voice
   ↓
-  USER GATE — show full plan, user reviews
+  USER GATE — render brief, user copies / skips / snoozes per card
   ↓
-  Step 7-8: Create CRM tasks + calendar placeholders after approval
+  Step 6-8: Write today.md + today.json, optional person-page side-effects on "mark sent"
 ```
 
-**Why this shape:** pipeline analysis is the spine, contact research deepens individual contacts. The fan-out (research the top N) is parallelizable in principle; sequential in practice because token budgets limit how many agent calls we want per skill.
+**Why this shape:** ranking + scoring is heavy context work (per-candidate signal aggregation across cortex + CRM + Gmail + hot.md) — the parent skill would bloat if it ran the math inline. Delegating per-bucket lets each ranking call load only what it needs. Drafting stays in the parent context because voice rules + templates + user-context all live there. Per-thin-card delegation to `contact-researcher` is opt-in and only fires for candidates with Low confidence from the ranker.
 
-### `bizdev-outreach` — single agent, parent-driven analysis
+### `referral-engine` — single-agent parent-driven flow
 
 ```
-Skill (bizdev-outreach SKILL)
+Skill (referral-engine /referrals or /referral-ask)
   ↓
-  Phase 1: contact-researcher agent → dossier
+  Phase 1: contact-researcher agent → connector dossier (when needed)
   ↓
-  Phase 2: Skill analyzes dossier (parent-context — no agent)
+  Phase 2: Skill applies cooling-period rules + positive-moment triggers in parent context
   ↓
-  Phase 3: Skill drafts message (parent-context — no agent)
+  Phase 3: Skill drafts ask in user's voice
 ```
 
 **Why this shape:** drafting is voice-faithful and context-heavy; doing it in the parent context (which knows the user's voice rules from `~/Documents/Claude/voice.md`) avoids the round-trip of passing voice rules to a drafter agent. Single-agent chain.

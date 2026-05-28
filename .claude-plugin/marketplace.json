@@ -24,15 +24,6 @@
       "author": { "name": "BrightWay AI" }
     },
     {
-      "name": "bizdev-outreach",
-      "source": {
-        "source": "github",
-        "repo": "BrightWayAI/Biz-Dev"
-      },
-      "description": "Research a contact and draft personalized business development outreach.",
-      "author": { "name": "BrightWay AI" }
-    },
-    {
       "name": "lead-engine",
       "source": {
         "source": "github",
@@ -69,15 +60,6 @@
       "author": { "name": "BrightWay AI" }
     },
     {
-      "name": "weekly-outreach",
-      "source": {
-        "source": "github",
-        "repo": "BrightWayAI/weekly-outreach"
-      },
-      "description": "Weekly relationship management and BD prep. Pulls from CRM, email, and calendar; produces a prioritized outreach plan in chat plus CRM tasks and calendar placeholders. Delegates pipeline analysis to pipeline-analyst and per-contact research to contact-researcher when installed. Configurable per user via /setup-outreach.",
-      "author": { "name": "BrightWay AI" }
-    },
-    {
       "name": "project-setup",
       "source": {
         "source": "github",
@@ -111,6 +93,15 @@
         "repo": "BrightWayAI/referral-engine"
       },
       "description": "Latent revenue engine. /referrals produces a weekly digest of connectors gone quiet, recent positive moments worth following up, fiscal-year and seasonal triggers — caps at top 3 actions for the week. /referral-ask drafts a voice-faithful ask for a specific connector. Honors cooling periods. Configurable per user via /setup-referrals.",
+      "author": { "name": "BrightWay AI" }
+    },
+    {
+      "name": "relationships",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/relationships"
+      },
+      "description": "Daily relationship cockpit. /relationships produces a prioritized 3-bucket brief (new business, relationship building, network expansion) with 3 actions per bucket — each one ships with a recommended channel, time estimate, and a copy-ready draft drawn from a template library. /setup-relationships captures your ICP, tier definitions, voices, and time-budget preferences. Builds on cortex person pages + voice + identity; delegates research to contact-researcher and pipeline-analyst when installed. Drafts only — never sends.",
       "author": { "name": "BrightWay AI" }
     },
     {

@@ -19,7 +19,7 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 `<config-root>/voice.md`
 - **Writer:** cortex `/setup-voice` and writing-style `/style-learn`
-- **Readers:** bizdev-outreach, weekly-outreach, lead-engine, news-curator (post-assembler), client-status, referral-engine, writing-style `/style`
+- **Readers:** relationships, lead-engine, news-curator (post-assembler), client-status, referral-engine, writing-style `/style`
 - **Format:** markdown with `## Tone`, `## Vocabulary`, `## Banned phrases`, `## Style rules` sections
 - **Version:** stable since cortex v4.0
 - **Note:** writing-style v0.x adds entries via `/style-learn` two-stage triage; format remains compatible with cortex readers.
@@ -188,17 +188,56 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Contract:** writes only to `staged/research-drafts/` (post-reorg)
 
 `contact-researcher` (lead-engine)
-- **Called by:** bizdev-outreach, lead-brief, lead-pull, weekly-outreach, referral-ask
+- **Called by:** relationships (`/relationships`, `/draft-touchpoint`), lead-brief, lead-pull, referral-ask
 - **Returns:** deep single-contact research summary
 - **Contract:** read-only against external systems (CRM, email, web); never writes
 
 `pipeline-analyst`, `pipeline-forecast` (core-ops)
-- **Called by:** weekly-outreach, plan-tomorrow, monthly forecast schedule
+- **Called by:** relationships (new-business bucket), plan-tomorrow, monthly forecast schedule
 - **Returns:** ranked pipeline analysis / forward projection
 
 `news-curator`, `post-assembler` (news-curator)
 - **Called by:** `/ai-roundup`
 - **Returns:** scanned-and-ranked stories / drafted post in user's voice
+
+---
+
+## Relationships plugin
+
+`<config-root>/plugins/relationships.user-context.md`
+- **Writer:** relationships `/setup-relationships`
+- **Readers:** relationships `/relationships`, `/network-rebalance` (Phase 3), `/draft-touchpoint` (Phase 2); any future web-app or Operator desktop reader of `today.json`
+- **Sections:** `## Identity`, `## Business context and current focus`, `## Tiers`, `## Buckets`, `## Voices` (one block per named voice), `## Time budget`, `## CRM`, `## Apollo`, `## Companion plugins`, `## Network expansion sources`, optional `## Scoring overrides`
+- **Version:** added in relationships v0.1.0
+
+`<config-root>/relationships/today.md`
+- **Writer:** relationships `/relationships` (Phase 2)
+- **Readers:** humans, Obsidian, daily-brief (loose-coupling integration TBD), future web-app / Operator desktop reader
+- **Format:** markdown brief — header + 3 buckets × 3 options × (person + why-now + channel + time + draft body) + carrying footnote
+- **Version:** added in relationships v0.1.0
+
+`<config-root>/relationships/<YYYY-MM-DD>.md`
+- **Writer:** relationships `/relationships` (date-stamped copy of today.md; today.md is symlinked or duplicated)
+- **Readers:** historical audit, Obsidian daily-notes (if folder is included in daily-notes config), future web-app
+- **Version:** added in relationships v0.1.0
+
+`<config-root>/relationships/today.json`
+- **Writer:** relationships `/relationships`
+- **Readers:** future web-app, Operator desktop, daily-brief render layer (if tight coupling adopted later)
+- **Format:** see relationships `references/today-json-schema.md` (TBD Phase 2)
+- **Version:** added in relationships v0.1.0
+
+`<config-root>/relationships/templates/<channel>/<scenario>.md` (optional user overrides)
+- **Writer:** user (manually)
+- **Readers:** relationships template loader — overrides bundled defaults by filename
+- **Format:** frontmatter schema documented at relationships `references/templates/README.md`
+- **Version:** added in relationships v0.1.0
+
+`<config-root>/memory/person/<slug>.md` (cortex-owned; relationships reads + appends additively)
+- **Existing writer:** cortex (graduation, /recall, /remember)
+- **New behavior:** relationships `/relationships` Step 7 appends to **## Recent interactions** log when the user marks a card "done." Never modifies Identity, Notes, or other sections.
+- **Schema additions (additive YAML frontmatter under the `relationships:` namespace):** `tier`, `buckets`, `relationship_class`, `icp_fit`, `next_touch_target`, `preferred_channel`, `generosity_ledger`. See relationships `references/person-page-extensions.md` for the full schema.
+- **Cortex coordination:** small additive schema bump (candidate cortex v4.12.0). Existing pages remain valid; plugin treats missing frontmatter as sensible defaults. Future plugins writing to person pages should use their own frontmatter namespace (e.g., `referral_engine:`, `weekly_outreach:`) to avoid collisions.
 
 ---
 
