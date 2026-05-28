@@ -253,6 +253,11 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Format:** frontmatter schema documented at relationships `references/templates/README.md`
 - **Version:** added in relationships v0.1.0
 
+`<config-root>/memory/team/<slug>.md` (cortex-owned; internal team members)
+- **Convention emerging from relationships v0.1.x:** internal team members (BrightWay contractors, employees) live under `memory/team/` instead of `memory/person/`. The relationships plugin **explicitly does not scope `team/` into its daily-brief candidate pool** — internal team are collaborators, not subjects of relationship maintenance.
+- **Migration trigger:** `/network-rebalance` proposes migrating a `person/` page to `team/` when the page indicates an internal-team role (same-domain email, "Role at BrightWay" section, contractor agreement, etc.). User-gated.
+- **Cortex coordination candidate (v4.12):** formalize `team/` as a recognized node type in `cortex/references/node-taxonomy.md`. Update `/remember` Step 1 to route accordingly. Optionally update graduation rules in `cortex/CLAUDE.md` to detect internal team (same-domain Gmail) and create at `team/` instead of `person/`.
+
 `<config-root>/memory/person/<slug>.md` (cortex-owned; relationships reads + appends additively)
 - **Existing writer:** cortex (graduation, /recall, /remember)
 - **New behavior:** relationships `/relationships` Step 7 appends to **## Recent interactions** log when the user marks a card "done." Never modifies Identity, Notes, or other sections.
