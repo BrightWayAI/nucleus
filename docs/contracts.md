@@ -316,8 +316,9 @@ Use this doc as a checklist before merging plugin changes that touch any path li
   4. Priority tasks card (interactive — P0 only, checkboxes + progress bar)
   5. Bizdev outreach queue (tiered: today / next week / early next month / backlog)
   6. Yesterday's reflection (read-only)
-- **localStorage state contract:** `brief-YYYY-MM-DD` keys for `tasks_checked`, `annotations`, `outreach_tier_collapsed`. Cortex `/end-day` Step 4 reads via `read_widget_context`.
-- **Version:** daily-brief v0.4.0 + cortex v4.12.0 (shipped together 2026-05-28)
+- **localStorage state contract (canonical v0.4.1):** SINGLE JSON-blob at key `brief-YYYY-MM-DD` containing `{schema_version, tasks_checked: {<task_id>: bool}, annotations: {<item_id>: str}, outreach_tier_collapsed: {...}, last_interaction_at: iso8601}`. NOT per-task sub-keys; NOT nested namespaces. Cortex `/end-day` Step 4.0 reads via `mcp__cowork__read_widget_context(artifact_id="todays-brief")` and parses the JSON blob.
+- **Data-flow trace for annotations (v0.4.1+):** annotation content may transit through this path: browser localStorage → `mcp__cowork__read_widget_context` → cortex `/end-day` Step 4.0 → reflection prompts → optionally written to `<config-root>/briefs/<today>.md` `## Reflection` section → if memory-as-git enabled, committed to memory git. **`/end-day` Step 4.0 sanitizes annotations** (paraphrase + summarize; do NOT copy verbatim) to keep sensitive client content out of the committed memory trail.
+- **Version:** daily-brief v0.4.0 + cortex v4.12.0 (shipped together 2026-05-28). Canonical localStorage shape locked in v0.4.1 + cortex v4.12.2.
 
 ---
 
@@ -331,13 +332,37 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 ---
 
-## /touchpoint event log addition (relationships v0.2.1+)
+## events.jsonl unified shape (relationships v0.2.2+)
 
-`<config-root>/relationships/events.jsonl` — additional writer
-- **Existing writer (v0.1.1+):** relationships `/relationships-action`, `/relationships` Step 7
-- **New writer (v0.2.1+):** relationships `/touchpoint`
-- **Event shape extension:** `/touchpoint` events use `action: "touchpoint"` (vs `copied | sent | skipped | snoozed` for `/relationships-action`); add `direction: "in" | "out"`, `summary: <free-form>`, `intent_at_time`, `tier_at_time`. `brief_id` and `option_id` are null (touchpoints aren't tied to a brief card).
-- **Reader contract unchanged:** UI consumers handle the additional fields gracefully (null → ignore).
+`<config-root>/relationships/events.jsonl`
+- **Writers:** relationships `/relationships-action`, `/relationships` Step 7, `/touchpoint`. All three append using the unified v0.2.2 shape.
+- **Reader contract — v0.2.2 unified shape:**
+  ```json
+  {
+    "schema_version": "0.2.2",
+    "ts": "<ISO 8601 with TZ>",
+    "brief_id": "<UUID or null>",
+    "option_id": "<id or null>",
+    "person_slug": "<slug>",
+    "bucket": "<bucket or null>",
+    "channel": "<channel>",
+    "action": "copied" | "sent" | "skipped" | "snoozed" | "touchpoint",
+    "notes": "<user-supplied text; truncated to keep total event <4KB>",
+    "meta": {
+      "snooze_until": "<YYYY-MM-DD or null>",
+      "late_action": "<bool or null>",
+      "source": "<inline|file|natural-language|explicit-args or null>",
+      "direction": "<in|out or null>",         // touchpoint-only
+      "intent_at_time": "<intent value or null>",  // touchpoint-only
+      "tier_at_time": "<tier value or null>"       // touchpoint-only
+    }
+  }
+  ```
+- **Backward-compat reader rule:** if `schema_version` missing → treat as v0.2.0 (pre-meta) format; read top-level `snooze_until`, `late_action`, `source` directly. If `meta` missing on a v0.2.0 event, fields read from the top level.
+- **Forward-compat rule:** readers MUST ignore unknown `action` enum values gracefully (treat as a generic logged event) and unknown fields inside `meta`.
+- **Atomic-append safety (v0.2.2+):** each event line MUST be ≤ 4000 bytes to guarantee POSIX `O_APPEND` atomicity (PIPE_BUF is typically 4096 on macOS/Linux). Writers truncate `notes` if needed and append a `[truncated]` marker; full text lives on the person page Recent Interactions section. Use single `write()` system call (not multiple appends — they're not atomic across calls).
+- **Concurrent-writer guarantee:** with the 4KB cap + O_APPEND, three writers in parallel can safely append without corruption. Without the cap, interleaving would corrupt the JSONL.
+- **Version history:** v0.1.1 introduced events.jsonl. v0.2.0 added `schema_version` and basic event shape. v0.2.1 added `/touchpoint` with divergent shape (bug). v0.2.2 unified the shape with `meta` nesting + atomic-append cap.
 
 ---
 
