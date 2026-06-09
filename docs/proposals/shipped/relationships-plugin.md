@@ -1,3 +1,7 @@
+> **SHIPPED** — `relationships` v0.1.0 (2026-05-28), now at v0.2.3. Daily 3-bucket cockpit, 17-template library, `relationship-ranker`, `/network-rebalance`. Absorbed + retired weekly-outreach + bizdev-outreach. Archived for historical context.
+
+---
+
 # Proposal — `relationships` plugin (daily relationship cockpit)
 
 **Status:** Open. Scaffold landed locally 2026-05-28; awaiting user review before deepening commands and shipping to GitHub.

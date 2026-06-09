@@ -1,3 +1,7 @@
+> **SHIPPED** — cortex v4.10.0 (`/relink-memory` + wikilink-emitting writes). Archived for historical context.
+
+---
+
 # Wikilink density — make the graph view actually show edges
 
 _Created: 2026-05-20_

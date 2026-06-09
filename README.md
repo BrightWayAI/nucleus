@@ -328,29 +328,41 @@ See [`docs/multi-agent-patterns.md`](docs/multi-agent-patterns.md) if you want t
 
 ---
 
+## Plugin versions
+
+Most-up-to-date version of each plugin (also recorded per-entry in [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json); authoritative source is each plugin's own `plugin.json`). Cowork still resolves the latest from each repo on pull — this table is for at-a-glance reference.
+
+| Plugin | Version |
+|---|---|
+| nucleus-router | 0.2.1 |
+| claude-cortex (cortex) | 4.13.0 |
+| core-ops | 0.3.2 |
+| lead-engine | 0.2.4 |
+| relationships | 0.2.3 |
+| referral-engine | 0.2.4 |
+| news-curator | 0.2.3 |
+| client-status | 0.2.4 |
+| project-setup | 0.2.4 |
+| time-tracking | 0.2.3 |
+| weekly-alignment | 1.4.3 |
+| writing-style | 0.1.2 |
+| daily-brief | 0.5.0 |
+
 ## Roadmap and open proposals
 
-Active proposals at [`docs/proposals/`](docs/proposals/) — pick one up if you want to contribute. Shipped proposals are archived at [`docs/proposals/shipped/`](docs/proposals/shipped/) (read-only historical record of what was designed; see each plugin's `CHANGELOG.md` for what actually shipped).
+The active roadmap lives at [`docs/proposals/ROADMAP.md`](docs/proposals/ROADMAP.md). Convention: **top-level `docs/proposals/*.md` = open / not-yet-built**; [`docs/proposals/shipped/`](docs/proposals/shipped/) = archived (with a SHIPPED banner); [`docs/proposals/parked/`](docs/proposals/parked/) = deferred indefinitely, not on the roadmap.
 
-### Shipped (as of 2026-05-20)
+### 🟢 Active / next up
+- **sweep-heartbeat.md** — every-3h work-hours heartbeat that mines today's surfaces + in-progress Cowork conversations, dedups, stages proposals reviewed at `/end-day`. ~1–2 week build. Gated on dogfooding `/listen` + `/morning` first.
+- **cleanup-pass-1 items E–G** (deferred from cortex v4.8.1) — mining-agent consolidation, `/end-day` decomposition, autonomy-slider coverage. See `shipped/cleanup-pass-1.md`.
 
-In `docs/proposals/shipped/`:
-- **nucleus-router** v0.1 (May 2026) — the original JARVIS front door
-- **cortex v4.5 legibility** — `memory/index.md`, `/research-gaps`, `/setup-obsidian`
-- **Obsidian-as-UI** — graph view + daily notes + mobile substrate
-- **second-brain v2 spec** + **Karpathy pattern survey** — architecture context
-- **SMB connector audit** + **productization plan** — internal strategy docs
+### ✅ Recently shipped (in `docs/proposals/shipped/`)
+- **End-Day Routine Improvement** — daily-brief v0.5.0 + cortex v4.13.0 + core-ops v0.3.2 (5-section brief, brief mining, cost gate, forgettings, reflections store, taxonomy consolidation).
+- **memory-as-git** — cortex v4.12.0 + v4.13.0 + core-ops v0.3.2 (versioned vault, daily commit, `/morning` diff review, `/diagnose` health).
+- **chief-of-staff-evolution** (router v0.2.0 + cortex v4.9.0), **relationships-plugin** (v0.1.0 → v0.2.3), **wikilink-density** (cortex v4.10.0), **cleanup-pass-1 A–D** (cortex v4.8.1), plus earlier cortex v4.5–4.7, nucleus-router v0.1, Obsidian, and productization specs.
 
-In the top-level `docs/proposals/`:
-- **chief-of-staff-evolution.md** — router v0.2.0 + cortex v4.9.0. Shipped 2026-05-20. 15-verb surface + role-addressable fallback + workstream + DECISION primitives.
-- **cleanup-pass-1.md** — items A-D shipped (staged-substrates reorg, migrations doc, contracts doc, README callout). Items E-G (mining-agent consolidation, /end-day decomposition, autonomy slider full coverage) deferred for next pass.
-
-### Specced, not yet built
-
-In the top-level `docs/proposals/`:
-- **memory-as-git.md** — Liu's "git diff as review surface" pattern formalized. `<config-root>/memory/` becomes a git repo; `/end-day` auto-commits; `/morning` surfaces overnight diff. Three privacy levels. ~half-day build.
-- **sweep-heartbeat.md** — every-3h work-hours heartbeat that mines today's surfaces + in-progress Cowork conversations, dedups, stages proposals to `staged/heartbeat-drafts/`. Reviewed at `/end-day` Step 3.5. ~1-2 week build. Recommend dogfooding `/listen` + `/morning` first.
-- **jarvis-app.md** — standalone Tauri desktop app (voice-first cockpit, 21st.dev orb, prompt-cached cortex). $39/mo Pro tier opens SaaS revenue. ~12-week single-engineer build.
+### ⏸️ Parked (in `docs/proposals/parked/` — not on the roadmap)
+- **jarvis-app.md** — standalone Tauri "Operator" desktop app. Separate product bet; revisit only on a strong marketplace-demand signal.
 
 ---
 

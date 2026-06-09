@@ -7,120 +7,159 @@
   "plugins": [
     {
       "name": "nucleus-router",
+      "version": "0.2.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/nucleus-router"
       },
       "description": "JARVIS front door for Nucleus. Always-loaded skill maps natural-language utterances to the right slash command and asks for confirmation before running — so you never have to memorize 57 commands across 13 plugins. /route prints the full cheat sheet.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "claude-cortex",
+      "version": "4.13.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/claude-cortex"
       },
       "description": "Always-on learning system — Claude gets smarter about you with every conversation. Passively observes preferences, captures knowledge, and adapts.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "lead-engine",
+      "version": "0.2.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/lead-engine"
       },
       "description": "Turn your LinkedIn network into a warm-lead engine. Catches buying signals, warms prospects via comments and connection requests, drafts DMs in your voice, runs a 3-touch cadence, and generates pre-call briefs.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "weekly-alignment",
+      "version": "1.4.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/weekly-alignment"
       },
       "description": "Weekly cross-team alignment scanner. Monitors Slack channels for overlapping initiatives, conflicting priorities, and decisions that affect other teams — then delivers a Monday morning brief.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "core-ops",
+      "version": "0.3.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/core-ops"
       },
       "description": "Generic business-ops toolkit. Pipeline Analyst (subagent) ranks your CRM pipeline by recency × signal × stage. Deliverable Reviewer (slash command) runs a structured QA pass on client decks/docs/spreadsheets against your brand guide. Configurable per user via /setup-core.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "news-curator",
+      "version": "0.2.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/news-curator"
       },
       "description": "Curate and draft a weekly LinkedIn news roundup. News Curator (subagent) scans newsletters and the open web for the week's most important stories ranked for your audience. Post Assembler (subagent) drafts the post in your voice. Configurable per user via /setup-news.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "project-setup",
+      "version": "0.2.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/project-setup"
       },
       "description": "End-to-end client engagement initialization. Interviews you about a new engagement, then produces Drive folder structure, Claude Project system prompt, phased project plan with immediate next step, and a memory node (if claude-cortex is installed). Templates are user-customizable for your offerings. Configurable per user via /setup-projects.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "time-tracking",
+      "version": "0.2.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/time-tracking"
       },
       "description": "Calendar-driven time tracking and monthly invoice generation. /track-time pulls calendar events, classifies billable time per client, logs to ~/Documents/Claude/time-log.csv. /generate-invoices reads the log, applies each client's billing model, drafts invoices ready for delivery. Closes the calendar-to-money loop. Configurable per user via /setup-time.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "client-status",
+      "version": "0.2.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/client-status"
       },
       "description": "Weekly client status updates auto-drafted from cortex memory, project-setup engagement data, calendar, and CRM activity. /client-status produces a draft per active engagement (what we did, what we learned, what's next, anything we need from you). User reviews and sends. Closes the retention loop most consultants leave on the table.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "referral-engine",
+      "version": "0.2.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/referral-engine"
       },
       "description": "Latent revenue engine. /referrals produces a weekly digest of connectors gone quiet, recent positive moments worth following up, fiscal-year and seasonal triggers — caps at top 3 actions for the week. /referral-ask drafts a voice-faithful ask for a specific connector. Honors cooling periods. Configurable per user via /setup-referrals.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "relationships",
+      "version": "0.2.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/relationships"
       },
       "description": "Daily relationship cockpit. /relationships produces a prioritized 3-bucket brief (new business, relationship building, network expansion) with 3 actions per bucket — each one ships with a recommended channel, time estimate, and a copy-ready draft drawn from a template library. /setup-relationships captures your ICP, tier definitions, voices, and time-budget preferences. Builds on cortex person pages + voice + identity; delegates research to contact-researcher and pipeline-analyst when installed. Drafts only — never sends.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "writing-style",
+      "version": "0.1.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/writing-style"
       },
       "description": "Adaptive writing-style plugin. Learns your voice from real edits over time. /style drafts in your voice (email, social, doc, dm); never sends directly. /style-learn analyzes draft-vs-final diffs with two-stage triage — updates style files only after 2+ pattern recurrences. /style-review audits style files for contradictions and stale rules. Companion to cortex's /setup-voice — one-time capture + continuous learning.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     },
     {
       "name": "daily-brief",
+      "version": "0.5.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/daily-brief"
       },
       "description": "Daily flow plugin. /brief builds today's working surface as a Cowork artifact (calendar, inbox, CRM tasks, outreach queue, yesterday's reflection — annotated by you). /process-brief routes the annotations (Gmail drafts, CRM reschedules, meeting talking points). /plan-tomorrow blocks the next business day on your calendar with full context baked in. As of v0.2.0 absorbs the deprecated plan-tomorrow plugin. Drafts only — never sends.",
-      "author": { "name": "BrightWay AI" }
+      "author": {
+        "name": "BrightWay AI"
+      }
     }
   ]
 }
