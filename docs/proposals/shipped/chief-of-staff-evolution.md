@@ -1,3 +1,7 @@
+> **SHIPPED** — nucleus-router v0.2.0 + cortex v4.9.0 (2026-05-20): 15-verb surface, role-addressable fallback, workstream + DECISION primitives. Archived for historical context.
+
+---
+
 # Chief-of-Staff evolution — router becomes orchestrator, verbs become the surface
 
 _Created: 2026-05-20_

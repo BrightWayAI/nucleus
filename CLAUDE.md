@@ -17,17 +17,22 @@ CONTRIBUTING.md                    ← contributor guide for any plugin
 SECURITY.md / LICENSE              ← standard repo files
 docs/
 ├── multi-agent-patterns.md        ← pattern guide for chaining subagents inside plugins
-└── proposals/                     ← future work / design specs awaiting pickup
-    └── second-brain-extension.md  ← entity wiki pages, daily brief, /listen archive, etc.
+└── proposals/
+    ├── ROADMAP.md                 ← the active roadmap (start here)
+    ├── *.md                       ← OPEN / not-yet-built specs
+    ├── shipped/                   ← archived specs (SHIPPED banner) + README index
+    └── parked/                    ← deferred indefinitely, NOT on the roadmap (e.g. jarvis-app)
 ```
 
 ## When picking up work on plugins
 
-**Pending work lives in `docs/proposals/`.** Before starting any new feature, check that folder for an existing spec. Each proposal is a self-contained brief with motivation, architecture, per-plugin changes, implementation steps, and acceptance criteria — write was designed to be picked up cold by a future Claude Code session.
+**The roadmap lives at `docs/proposals/ROADMAP.md`.** Convention: **top-level `docs/proposals/*.md` = open / not-yet-built**; `shipped/` = done (each archived with a SHIPPED banner; see also each plugin's `CHANGELOG.md`); `parked/` = deferred indefinitely, not on the roadmap. Each proposal is a self-contained brief designed to be picked up cold.
 
-Currently open proposals:
+Currently open (as of 2026-06-08):
 
-- **`docs/proposals/second-brain-extension.md`** — entity wiki pages in cortex, interactive daily brief plugin, two-stage triage for memory commits, nightly `/listen` archive pipeline, `/end-day` orchestration chain. Based on Omar Ismail's second-brain pattern, adapted to this marketplace's existing stack.
+- **`docs/proposals/sweep-heartbeat.md`** — every-3h heartbeat that mines the day's surfaces into staged proposals reviewed at `/end-day`. Not started; gated on dogfooding `/listen` + `/morning` first.
+- **cleanup-pass-1 items E–G** (deferred from cortex v4.8.1) — mining-agent consolidation, `/end-day` decomposition, autonomy-slider coverage. Tracked in `ROADMAP.md`; spec in `shipped/cleanup-pass-1.md`.
+- **Parked:** `docs/proposals/parked/jarvis-app.md` — standalone Tauri desktop app; revisit only on strong marketplace-demand signal.
 
 ## How plugins are organized
 
@@ -73,8 +78,8 @@ This is the canonical write location for plugin runtime data. Don't write plugin
 
 ## Versioning
 
-- Plugins are individually versioned in their own `plugin.json`.
-- Marketplace itself doesn't track per-plugin versions (Cowork resolves the latest from each plugin's GitHub repo on next pull).
+- Plugins are individually versioned in their own `plugin.json` (the authoritative source).
+- **As of 2026-06-08, `marketplace.json` records each plugin's `version` for at-a-glance reference**, mirrored in the README "Plugin versions" table. Cowork still resolves the latest from each plugin's GitHub repo on next pull — these mirrors are for visibility, not resolution, so **keep them in sync when bumping a plugin** (update `plugin.json` → `marketplace.json` entry → README table).
 - Bump pattern: minor for new commands/agents, patch for fixes or non-breaking refactors, major for breaking API or config-layout changes.
 
 ## Nucleus as JARVIS — shipped (2026-05-16)

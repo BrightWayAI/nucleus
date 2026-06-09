@@ -18,6 +18,10 @@ If you're picking up an open proposal, look in the parent `docs/proposals/` dire
 | `productization.md` | Internal strategy doc — informed README rewrite + monetization model | 2026-05-16 |
 | `memory-as-git.md` | cortex v4.12.0 + v4.13.0 (init/commit/diff/init-offer) + core-ops v0.3.2 (/diagnose health) | 2026-05-28 → 2026-06-08 |
 | `end-day-routine-improvement.md` | daily-brief v0.5.0 + cortex v4.13.0 (5-section brief, brief mining, cost gate, forgettings, reflections store, taxonomy consolidation) | 2026-06-08 |
+| `chief-of-staff-evolution.md` | nucleus-router v0.2.0 + cortex v4.9.0 (15-verb surface, workstream + DECISION primitives) | 2026-05-20 |
+| `relationships-plugin.md` | relationships v0.1.0 → v0.2.3 (daily cockpit; retired weekly-outreach + bizdev-outreach) | 2026-05-28 |
+| `wikilink-density.md` | cortex v4.10.0 (/relink-memory + wikilink-emitting writes) | 2026-05-16 |
+| `cleanup-pass-1.md` | cortex v4.8.1 (items A–D; E–G deferred → ROADMAP) | 2026-05-20 |
 
 ## Conventions
 

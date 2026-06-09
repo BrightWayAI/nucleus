@@ -1,3 +1,7 @@
+> **PARKED** — deferred indefinitely; NOT on the active roadmap. A standalone Tauri "Operator" desktop app is a separate product bet, revisited only if marketplace dogfooding produces strong demand. Kept here for reference, hidden from the active proposal list.
+
+---
+
 # JARVIS app — full build spec
 
 _Created: 2026-05-16_

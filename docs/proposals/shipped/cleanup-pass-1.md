@@ -1,3 +1,7 @@
+> **SHIPPED (items A–D)** — cortex v4.8.1 (unified `memory/staged/` tree, `/migrate-staged-substrates`, `contracts.md`, README 'start here'). Items E–G (mining-agent consolidation, `/end-day` decomposition, autonomy-slider coverage) were deferred — tracked in `../ROADMAP.md`. Archived for historical context.
+
+---
+
 # Cleanup pass 1 — architectural debt backlog
 
 _Created: 2026-05-20_
