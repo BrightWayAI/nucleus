@@ -139,9 +139,9 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 `<config-root>/briefs/<date>.md`
 - **Writer:** daily-brief `/brief` (creates), `/end-day` Step 4 (appends `## Reflection` section in v4.6+), `/process-brief` (appends `### Processed annotations`)
-- **Readers:** daily-brief next morning's `/brief` Section 6 (reads yesterday's `## Reflection`)
-- **Format:** see daily-brief `commands/brief.md` markdown snapshot template
-- **Critical contract:** the `## Reflection` section format MUST match between cortex `/end-day` Step 4 (writer) and daily-brief `/brief` Section 6 (reader). If cortex changes the section header or bullet shape, daily-brief breaks silently.
+- **Readers:** daily-brief next morning's `/brief` Section 5 (Yesterday's Reflection — reads yesterday's `## Reflection`)
+- **Format:** see daily-brief `commands/brief.md` markdown twin template
+- **Critical contract:** the `## Reflection` section format MUST match between cortex `/end-day` Step 4 (writer) and daily-brief `/brief` Section 5 (reader). If cortex changes the section header or bullet shape, daily-brief breaks silently. cortex `/end-day` Step 4.2 also appends the same reflection to `<config-root>/memory/reflections.md` (longitudinal store).
 
 `<config-root>/briefs/` directory (folder-level contract)
 - **Daily-notes integration:** cortex `/setup-obsidian` writes `.obsidian/daily-notes.json` pointing at this folder. Obsidian's daily-notes plugin reads it. Contract: `briefs/<YYYY-MM-DD>.md` filename format must hold.
@@ -303,22 +303,39 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 `mcp__cowork__update_artifact(id: "todays-brief", ...)` — the canonical interactive brief surface
 - **Writers:**
   - daily-brief `/brief` (Steps 3-3a — render full artifact)
-  - cortex `/end-day` Step 5 (pre-stage tomorrow's brief; uses same `todays-brief` id and same 6-section canonical format)
+  - cortex `/end-day` Step 5 (pre-stage tomorrow's brief; uses same `todays-brief` id and same 5-section canonical format)
 - **Readers:**
-  - daily-brief `/process-brief` Step 1 (reads annotations + tasks_checked dictionary via `read_widget_context`)
-  - cortex `/end-day` Step 4 (reads tasks_checked to know what got done before reflection prompts)
+  - daily-brief `/process-brief` Step 1 (reads `tasks` + `annotations` + `outreach_actions` via `read_widget_context`)
+  - cortex `/end-day` **Step 2c** (mines `tasks` + `annotations` + `outreach_actions` → memory write-backs + suppression learning) and Step 4.0 (reflection pre-fill)
   - humans via Cowork artifact UI
 - **Artifact id rule:** the id is ALWAYS `todays-brief` — both plugins reference the same persistent surface. **Never** create a new artifact with a different id. Never produce a markdown-only fallback when Cowork is available.
-- **Canonical 6-section format (locked in daily-brief v0.4 + cortex v4.12):**
-  1. Sticky header (date badge, generated-at, total counts, progress bar)
-  2. Day-at-a-glance timeline strip
-  3. Meetings card (read-only)
-  4. Priority tasks card (interactive — P0 only, checkboxes + progress bar)
-  5. Bizdev outreach queue (tiered: today / next week / early next month / backlog)
-  6. Yesterday's reflection (read-only)
-- **localStorage state contract (canonical v0.4.1):** SINGLE JSON-blob at key `brief-YYYY-MM-DD` containing `{schema_version, tasks_checked: {<task_id>: bool}, annotations: {<item_id>: str}, outreach_tier_collapsed: {...}, last_interaction_at: iso8601}`. NOT per-task sub-keys; NOT nested namespaces. Cortex `/end-day` Step 4.0 reads via `mcp__cowork__read_widget_context(artifact_id="todays-brief")` and parses the JSON blob.
-- **Data-flow trace for annotations (v0.4.1+):** annotation content may transit through this path: browser localStorage → `mcp__cowork__read_widget_context` → cortex `/end-day` Step 4.0 → reflection prompts → optionally written to `<config-root>/briefs/<today>.md` `## Reflection` section → if memory-as-git enabled, committed to memory git. **`/end-day` Step 4.0 sanitizes annotations** (paraphrase + summarize; do NOT copy verbatim) to keep sensitive client content out of the committed memory trail.
-- **Version:** daily-brief v0.4.0 + cortex v4.12.0 (shipped together 2026-05-28). Canonical localStorage shape locked in v0.4.1 + cortex v4.12.2.
+- **Canonical 5-section format (v0.5.0 + cortex v4.13 — End-Day Routine Improvement Spec, supersedes the v0.4 6-section format):**
+  1. **Center of Gravity** — accent banner, the single most important thing; not interactive
+  2. **Calendar Block** — visual timeline strip + written list with per-meeting notes
+  3. **Priority Tasks** — P0/P1, richer per-row actions (done/delegate/skip/not_important/annotate) + progress bar
+  4. **Outreach Queue** — per-contact actions (sent/nudge/skip/let_go) + always-visible bucket/signal/value-add selects + per-contact research link
+  5. **Yesterday's Reflection** — read-only
+- **Template layout source (v0.5.0):** `references/brief-artifact-template.html` follows the handoff spec-v2 reference (`todays-brief.reference-2026-06-09.html`). The visual calendar strip is built client-side by `buildTimeline()` from a JS `BLOCKS` array — the skill fills `{{TL_BLOCKS_JSON}}` (decimal-hour `{s,e,label,cls}`, cls meeting/focus/personal) + `{{TL_START_HOUR}}`/`{{TL_END_HOUR}}`, NOT pre-positioned divs. Token scheme: `{{DATE_LONG}}`/`{{DATE_ISO}}`/`{{CENTER_OF_GRAVITY}}`/`{{EVENT_*}}`/`{{TASK_*}}`/`{{CONTACT_*}}`/`{{REFLECT_*}}` + tokenized `cowork-artifact-meta` (`{{META_DESCRIPTION}}`/`{{META_MCP_TOOLS}}`/`{{META_MCP_SERVERS}}`). Outreach signal auto-fills by emitting the matching `<option>` first.
+- **localStorage state contract (canonical v0.5.0):** SINGLE JSON-blob at key `brief-YYYY-MM-DD`: `{schema_version:"0.5.0", tasks:{<task_id>:{action,detail,ts,name}}, annotations:{<item_id>:str}, outreach_actions:{<id>:{name,action,bucket,signal,value_add,detail,ts}}, tasks_checked:{<task_id>:bool}, last_interaction_at:iso8601}`. `tasks_checked` is a **back-compat mirror** — the template sets it `(action==="done")` on every task action so v0.4.x readers keep working; new readers use `tasks`. **Changed from v0.4.x** where `tasks_checked` was the primary store. `outreach_actions.detail` is **reader-optional** — the v2 brief UI has no outreach detail prompt, so it's typically absent; readers that defer on `skip` default to ~3 days when it's empty. Cortex `/end-day` Step 2c + Step 4.0 read via `mcp__cowork__read_widget_context(artifact_id="todays-brief")`.
+- **Brief filtering contract:** daily-brief `/brief` reads `<config-root>/memory/surfacing-prefs.md` and filters priority tasks + outreach before render. cortex `/end-day` Step 2c.3 writes that file (not_important actions + repeat-ignore rule). See the surfacing-prefs contract below.
+- **Tomorrow seed contract:** cortex `/end-day` Steps 4.5/4.6 write `<config-root>/briefs/<tomorrow>.seed.json` `{priorities:[...], outreach:[...]}`; daily-brief `/brief` reads it (when `target_date` matches) to seed sections 3 & 4.
+- **Data-flow trace for annotations (v0.5.0):** content may transit browser localStorage → `read_widget_context` → cortex `/end-day` Step 2c/4.0 → memory write-backs / reflection prompts → `<config-root>/briefs/<today>.md` + `memory/reflections.md` → if memory-as-git enabled, committed. **`/end-day` sanitizes annotations** (paraphrase, do NOT copy verbatim) to keep sensitive client content out of the committed trail.
+- **Version:** daily-brief v0.5.0 + cortex v4.13.0 (shipped together 2026-06-08).
+
+### surfacing-prefs.md (cortex /end-day writer ↔ daily-brief /brief reader)
+
+`<config-root>/memory/surfacing-prefs.md`
+- **Writer:** cortex `/end-day` Step 2c.3 (not_important actions + repeat-ignore rule); created from `cortex references/surfacing-prefs-template.md` if missing.
+- **Readers:** daily-brief `/brief` Step 0D (filters priority-task + outreach pulls before render); cortex miners (skip dismissed classes).
+- **Format:** markdown — `## Do-not-resurface`, `## Surfacing rules`, `## Action taxonomy (brief priority tasks)`, `## Outreach action taxonomy`, `## Changelog`.
+- **Related:** per-task skip counts in `<config-root>/memory/.brief-skip-counts.json` (`{task_id:{count,last_skipped,title}}`).
+
+### reflections.md (longitudinal reflection store)
+
+`<config-root>/memory/reflections.md`
+- **Writer:** cortex `/end-day` Step 4.2 (append newest-first); created from `cortex references/reflections-template.md`.
+- **Readers:** `/end-week`, `/review`, surfacing decisions.
+- **Format:** markdown, one `## YYYY-MM-DD (Day)` block per day with biggest-thing-done / blocker / one-thing-tomorrow bullets. Decays slowly; excluded from the v4.4 decay sweep.
 
 ---
 
