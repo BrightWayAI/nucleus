@@ -1,3 +1,7 @@
+> **SHIPPED.** Implemented across cortex v4.12.0 (`/setup-identity` Step 3.6 init · `/end-day` Step 5.8 commit · `/morning` Step 0.5 diff review · gitignore templates · write-lock) and completed in v4.13.0 (`/end-day` Step 5.8 init-offer when absent) + core-ops v0.3.2 (`/diagnose` Step 1D health line). The "NOT IMPLEMENTED" note below is the original draft state, retained for historical context. Privacy levels: local-only (default) + remote/`push_on_close` are wired; self-hosted works via any git remote.
+
+---
+
 # Memory-as-git — versioned vault with daily diff review
 
 _Created: 2026-05-20_

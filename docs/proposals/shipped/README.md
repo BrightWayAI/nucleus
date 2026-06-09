@@ -16,6 +16,8 @@ If you're picking up an open proposal, look in the parent `docs/proposals/` dire
 | `karpathy-pattern-survey.md` | All three identified gaps shipped as cortex v4.7.1 + nucleus llms.txt | 2026-05-16 |
 | `smb-connector-audit.md` | Internal strategy doc — informed README positioning (kept private — no public competitive comparison) | 2026-05-16 |
 | `productization.md` | Internal strategy doc — informed README rewrite + monetization model | 2026-05-16 |
+| `memory-as-git.md` | cortex v4.12.0 + v4.13.0 (init/commit/diff/init-offer) + core-ops v0.3.2 (/diagnose health) | 2026-05-28 → 2026-06-08 |
+| `end-day-routine-improvement.md` | daily-brief v0.5.0 + cortex v4.13.0 (5-section brief, brief mining, cost gate, forgettings, reflections store, taxonomy consolidation) | 2026-06-08 |
 
 ## Conventions
 
