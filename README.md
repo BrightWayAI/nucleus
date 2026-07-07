@@ -335,7 +335,7 @@ Most-up-to-date version of each plugin (also recorded per-entry in [`.claude-plu
 | Plugin | Version |
 |---|---|
 | nucleus-router | 0.2.1 |
-| claude-cortex (cortex) | 4.13.1 |
+| claude-cortex (cortex) | 4.13.2 |
 | core-ops | 0.3.2 |
 | lead-engine | 0.2.4 |
 | relationships | 0.2.3 |
@@ -346,7 +346,7 @@ Most-up-to-date version of each plugin (also recorded per-entry in [`.claude-plu
 | time-tracking | 0.2.3 |
 | weekly-alignment | 1.4.3 |
 | writing-style | 0.1.2 |
-| daily-brief | 0.6.0 |
+| daily-brief | 0.6.1 |
 
 ## Roadmap and open proposals
 
