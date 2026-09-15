@@ -1,157 +1,181 @@
-# Nucleus on ChatGPT and Codex
+# Nucleus on ChatGPT Work and Codex
 
-Nucleus is the master marketplace, not one more runtime plugin. Importing the
-Nucleus repository makes its 9 catalog entries available; users or workspace admins
-still choose which entries to install. `ops`'s `chief-of-staff` agent (`/cos`)
-is the conversational front door. `cortex` owns shared memory, identity, and voice.
-The other plugins are independent specialists that compose through the same config root.
+Nucleus runs the same workflows against the same memory folder whether you use it from Claude, ChatGPT, or Codex. This guide covers the two OpenAI hosts. If you only use Claude, you don't need it.
 
-## Supported surfaces
+The GitHub repositories contain workflow code and templates only. They never contain, upload, or sync anyone's memory. Each person uses their own private memory folder; don't point several people at one folder as a shared database.
 
-| Surface | Skills | Shared local files | Connector-dependent workflows |
-|---|---|---|---|
-| ChatGPT desktop Local Work | Supported | Supported after folder permission | Supported when the required app/MCP connector is installed |
-| Codex | Supported | Supported when the config root is a readable/writable sandbox root | Supported when the required tool/MCP connector is available |
-| ChatGPT web/cloud | Supported | Unavailable without an approved remote MCP bridge | Supported only through workspace apps/connectors |
+---
 
-The GitHub repositories contain workflow code and templates. They do not contain,
-upload, or synchronize anyone's memory. Each member should use a private config root;
-do not point multiple people at one shared folder as a collaboration database.
+## Quickstart in ChatGPT Work (about 20 minutes)
 
-## Import the marketplace in a ChatGPT workspace
+You need the **ChatGPT desktop app** with **Local Work** enabled. Nucleus keeps memory in a local folder, so it works in desktop Local Work chats, not in the web app (see [Web and cloud](#chatgpt-web-and-cloud) below).
 
-A workspace administrator:
+### 1. Admin: import the marketplace (once per workspace)
 
-1. Opens workspace plugin management and chooses **Import from GitHub**.
-2. Enters `https://github.com/BrightWayAI/nucleus` and leaves the path blank.
-3. Pins a reviewed release tag or commit when the UI offers a revision selector.
-4. Reviews all 9 referenced repositories.
-5. Marks the desired plugins Available or Installed for the intended roles.
+1. Open **Admin → Plugins → Add → Import marketplace**.
+2. Enter `https://github.com/BrightWayAI/nucleus` as the source. Leave **Path** blank; the catalog is at the repository root. Use the default branch, or pin a reviewed release tag if the import screen offers a revision selector.
+3. Review the nine referenced repositories, then mark **Cortex**, **Chief of Staff**, and **Comms Desk** as **Available** (or **Installed**) for the roles that need them. Add specialists the same way when people ask.
 
-The native catalog is `.agents/plugins/marketplace.json`. GitHub import does not make
-every entry active automatically and does not grant filesystem or connector access.
-Plugins with local MCP servers—Cortex in particular—are desktop-only unless an
-approved remote bridge is configured.
+Importing makes the plugins available; it does not install anything for anyone or grant folder or connector access. The native catalog ChatGPT reads is `.agents/plugins/marketplace.json`.
 
-Start a new ChatGPT desktop Local Work chat after installation. Enable at least:
+### 2. Member: enable the three starter plugins
 
-- `cortex` — shared memory, identity, and voice;
-- `ops` — natural-language chief-of-staff routing (`/cos`), diagnostics, and operational utilities.
+Open a **new Local Work chat** and enable **Cortex**, **Chief of Staff**, and **Comms Desk** for the chat, either from the plugin picker or by `@`-mentioning them the first time.
 
-Then add specialists for the user's actual work. Installing all 9 is supported but
-not required.
+| Plugin | What it does |
+|---|---|
+| **Cortex** | The shared brain: clients, people, projects, decisions, your identity and voice. Every other plugin reads from it. |
+| **Chief of Staff** | The front door. Say what you want in plain English and it routes to the right specialist. Also health checks. |
+| **Comms Desk** | Captures your voice once, then drafts anything that goes out in your name. |
 
-## Install from Codex
+### 3. Make a folder for your memory
 
-From a trusted checkout or the GitHub marketplace:
+Create an empty folder you control, for example `~/Documents/Nucleus`. Already using Nucleus in Claude on this computer? Skip this and reuse that folder; ChatGPT will find the same memory.
+
+### 4. Run setup
+
+```
+@Cortex start Nucleus setup
+```
+
+Setup walks you through, in order, and lets you skip anything that doesn't apply:
+
+1. **Where to store memory** — give it the folder from step 3. ChatGPT asks you to grant Local Work access to that folder; approve it. Cortex records the location in `~/.cortex/config-root` so every host finds it.
+2. **Identity** — name, role, company, time zone, tools. Asked once; every plugin reads it.
+3. **Voice** — paste two emails or messages you wrote. Comms Desk makes every draft sound like you.
+4. **Autonomy policy** — what Nucleus may do on its own vs. must ask about. Accept the defaults or adjust.
+5. **Note sources** — connect Granola, Fireflies, Otter, Gemini, or a Drive folder if you use one for meeting notes.
+6. **Per-plugin setup** for anything else you enabled.
+7. **Health check.**
+
+Say `@Cortex start Nucleus setup` again any time; it only runs what's still missing.
+
+### 5. Your first day
+
+```
+@Cortex run my morning
+```
+
+`run my morning` shows anything Nucleus learned since yesterday, lets you accept or reject each item, captures a short reflection, and sets today's priorities. Five minutes. It's the one thing you do every day.
+
+Then talk to the chief of staff:
+
+```
+@Chief of Staff catch me up on Acme
+@Chief of Staff who should I follow up with this week?
+@Chief of Staff draft a check-in to Jordan about the proposal
+```
+
+### What's different from Claude
+
+- **Overnight refresh.** In Claude Cowork a scheduled task runs the ingest at night. ChatGPT runs it only if your host exposes a scheduler and you confirm the registration. If it doesn't, say `@Cortex listen` before `run my morning` and it does the same ingest on demand.
+- **Connected apps.** Gmail, Calendar, HubSpot, Slack, Drive, and Apollo come from your workspace's apps and connectors, not from Nucleus. Plugins check at runtime and tell you which sources they skipped; they never invent data for a connector that isn't there.
+- **Artifacts.** Where Cowork renders an interactive HTML brief, ChatGPT gets Markdown or a supported document artifact with the same content.
+
+---
+
+## Quickstart in Codex
 
 ```bash
 codex plugin marketplace add https://github.com/BrightWayAI/nucleus
 codex plugin add cortex@nucleus
 codex plugin add ops@nucleus
+codex plugin add comms@nucleus
 ```
 
-Install other entries with `codex plugin add <plugin-name>@nucleus`, then start a new
-thread so the newly installed skills and role bindings are loaded. A local checkout
-can be registered by replacing the GitHub URL with the absolute path to the Nucleus
-repository.
+Add specialists with `codex plugin add <plugin-name>@nucleus`. A local checkout can be registered by replacing the URL with the repository's absolute path.
 
-## Choose the shared memory location once
+Start a new thread, then:
 
-Existing Claude users should not create another memory store. Cortex resolves the
-same path in this order:
-
-1. explicit workflow/project override;
-2. `CORTEX_CONFIG_ROOT`;
-3. `~/.cortex/config-root`;
-4. legacy `~/Documents/.claude-plugin-config-root`;
-5. `~/Documents/Claude`.
-
-For a new user, enable Cortex and ask:
-
-```text
-@Cortex configure my memory at ~/Documents/Cortex. Show the exact path and ask
-before creating anything.
+```
+$cortex:start-nucleus
 ```
 
-Or, from a trusted Cortex checkout:
+Codex needs your memory folder as a **readable root** for recall and a **writable root** for anything that saves (setup, `remember`, `morning`). Grant the resolved absolute path in the sandbox settings when Codex asks. Then `$cortex:morning` each day, and `$ops:cos <request>` for everything else.
+
+---
+
+## Everyday commands, side by side
+
+| Goal | ChatGPT | Codex | Claude |
+|---|---|---|---|
+| Set up | `@Cortex start Nucleus setup` | `$cortex:start-nucleus` | `/start-nucleus` |
+| Morning | `@Cortex run my morning` | `$cortex:morning` | `/morning` |
+| Recall | `@Cortex recall Acme` | `$cortex:recall Acme` | `/recall Acme` |
+| Save this conversation | `@Cortex show what you'd remember, then ask before saving` | `$cortex:remember` | `/remember` |
+| Today's brief | `@Today's Brief build today's brief` | `$briefing:brief` | `/brief` |
+| Draft in my voice | `@Comms Desk draft this in my voice` | `$comms:style` | `/style` |
+| Health check | `@Chief of Staff diagnose my Nucleus setup` | `$ops:diagnose` | `/diagnose` |
+| Anything else | `@Chief of Staff …` | `$ops:cos …` | `/cos …` |
+
+Ask naturally in ChatGPT; `@`-mention a plugin when you want to be explicit. Codex exposes namespaced skills. The workflows and data formats underneath are identical.
+
+---
+
+## Where your memory lives
+
+Every host resolves the memory folder in this order:
+
+1. an explicit workflow or project override;
+2. the `CORTEX_CONFIG_ROOT` environment variable;
+3. `~/.cortex/config-root` (written by setup);
+4. `~/Documents/.claude-plugin-config-root` (older Claude installs);
+5. `~/Documents/Claude` as a last resort.
+
+There is no separate ChatGPT or Codex config. If you'd rather set the location from a terminal, from a trusted Cortex checkout:
 
 ```bash
-python3 scripts/configure_cortex.py --config-root "$HOME/Documents/Cortex"
+python3 scripts/configure_cortex.py --config-root "$HOME/Documents/Nucleus"
 ```
 
-This writes the vendor-neutral pointer `~/.cortex/config-root` and initializes only
-missing starter files. It does not migrate or delete an old root. There is no separate
-GPT config file. In Codex, also grant the resolved absolute root as a sandbox writable
-root for mutating workflows. In ChatGPT desktop, grant Local Work access to that same
-folder.
+This writes the pointer and creates only missing starter files; it never migrates, replaces, or deletes an existing folder.
 
-Identity and voice are not separate plugins:
+Inside the folder, `memory/me/` (identity, voice, preferences, reflections) is private and excluded from any git remote by default. Everything else (clients, people, workstreams, company knowledge) is shareable and can be versioned to a private repo for backup.
 
-- `@Cortex set up my identity` writes `<config-root>/memory/me/identity.md` after review.
-- `@Cortex set up my voice` writes `<config-root>/memory/me/voice.md` after review.
+---
 
-Every specialist reads those same files. Per-plugin setup writes settings under
-`<config-root>/plugins/`.
+## ChatGPT web and cloud
 
-## Essential first-run prompts
+Plugins and connected apps work in the web app, but a local memory folder is unreachable from there. Nucleus will not quietly substitute another store. To use memory from the web, configure an approved remote MCP bridge to the folder; otherwise use the desktop app's Local Work.
 
-| Goal | ChatGPT prompt | Codex skill form |
-|---|---|---|
-| Check the resolved root | `@Cortex report status only; do not read memory` | `$cortex:recall` only after checking the root with the Cortex hook/helper |
-| Set identity | `@Cortex set up my identity` | `$cortex:setup-identity` |
-| Set voice | `@Cortex set up my voice` | `$cortex:setup-voice` |
-| Recall | `@Cortex recall what we know about Acme` | `$cortex:recall Acme` |
-| Save this conversation | `@Cortex show what you would remember, then ask before saving` | `$cortex:remember` |
-| See the stack | `@Chief of Staff diagnose my Nucleus setup` | `$ops:diagnose` |
-| Route naturally | `@Chief of Staff what should handle this request?` | `$ops:cos` |
+---
 
-Claude slash-command names remain useful aliases in documentation. ChatGPT users can
-ask naturally or mention a plugin with `@`; Codex exposes namespaced skills. The
-underlying workflow remains the same.
+## Safety
 
-## Agents and degradation
+One autonomy policy governs every command, skill, and agent, in every host:
 
-The non-Cortex role definitions have read-only Codex bindings. When the host can
-delegate, they return research/ranking output to the parent workflow. When it cannot,
-the parent follows the same role inline. Agents never receive independent authority to
-write files, mutate CRM, send mail, or register schedules.
+- **Always** — read memory before acting; stage proposals instead of writing memory unattended; cite sources.
+- **Ask first** — send any email, DM, or Slack message; create or change CRM deals or stages; delete or archive a memory node; register a schedule; spend API credits.
+- **Never** — send on your behalf without a per-message approval; write memory from an unattended run (staged drafts only); store secrets or personal IDs; overwrite a fact instead of superseding it with a date.
 
-Each plugin includes `references/openai-portability.md`, which maps Claude/Cowork
-examples capability by capability. Important fallbacks include:
+Outbound messages, invoices, and status updates are always drafts. Specialist agents (`note-taker`, `memory-librarian`, `relationships-director`, `pipeline-analyst`, `post-assembler`, `alignment-scanner`, and others) have read-only bindings: when the host can delegate, they return findings to the parent workflow; when it can't, the parent does the same work inline. They never get independent authority to write files, change a CRM, send mail, or register schedules.
 
-- Cowork HTML artifacts become Markdown or supported document artifacts.
-- Missing Slack, CRM, mail, calendar, Apollo, or Drive connectors are reported and
-  skipped; the model never invents their data.
-- Scheduling is performed only when the active host exposes a scheduler and the user
-  confirms the registrations.
-- Outbound messages, invoices, and status updates remain drafts unless a separate
-  confirmed send action is explicitly requested.
+---
 
-## Validate a checkout without real user data
+## Troubleshooting
 
-Place the 9 repositories as siblings under one parent directory, then run:
+| Symptom | Fix |
+|---|---|
+| `@Cortex` or `@Chief of Staff` isn't recognized | The admin hasn't marked the plugin available for your role, or you're in a web chat. Start a new desktop **Local Work** chat. |
+| Setup keeps asking where to store memory | Local Work access to the folder wasn't granted, or `~/.cortex/config-root` points to a moved folder. Re-run `@Cortex start Nucleus setup` and re-point it. |
+| Codex can't save | The memory folder isn't a writable sandbox root. Add the absolute path. |
+| A connector's data is "skipped" | That app isn't connected in your workspace. Connect it and start a new chat. |
+| Drafts don't sound like you | `@Comms Desk set up my voice` again with fresh samples. |
+
+---
+
+## For developers: validating a checkout
+
+Place the nine plugin repositories as siblings of this one under a single parent directory, then run:
 
 ```bash
 python3 scripts/generate_openai_adapters.py --check
 python3 scripts/check_openai_ecosystem.py
 python3 scripts/smoke_codex_marketplace.py
 python3 scripts/release_ecosystem.py check --all
+python3 ../claude-cortex/scripts/check_repo.py
 ```
 
-The ecosystem check validates manifests, marketplace ordering, versions, command-to-
-skill coverage, role bindings, and config-root precedence using a temporary home. It
-does not resolve or read the operator's real config root. Cortex has an additional
-fixture-only suite:
+These validate manifests, marketplace ordering, versions, command-to-skill coverage, read-only role bindings, and config-root precedence using a temporary home and fixtures. They never read or write a real memory folder.
 
-```bash
-python3 ../cortex/scripts/check_repo.py
-```
-
-Connector behavior still requires the corresponding test workspace/account. Static
-validation can prove honest degradation and binding coverage; it cannot prove access
-to Slack, CRM, mail, calendar, or Drive credentials that were not supplied.
-
-Before promoting a coordinated release, run Chief of Staff `test-connectors` in each required
-host and validate the sanitized reports as described in
-`docs/CONNECTOR_INTEGRATION_TESTING.md`. A real tool call is required for a pass.
+Each plugin ships `references/openai-portability.md`, which maps every Claude/Cowork capability to its ChatGPT/Codex equivalent or fallback. Static checks prove honest degradation and binding coverage; they can't prove access to connectors whose credentials weren't supplied. Before promoting a coordinated release, run Chief of Staff's `test-connectors` in each required host and validate the sanitized reports per `CONNECTOR_INTEGRATION_TESTING.md`. A real tool call is required for a pass.
