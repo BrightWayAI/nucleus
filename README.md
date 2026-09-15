@@ -1,87 +1,80 @@
 # Nucleus
 
-**The operating system for solo operators running on AI.**
+**A portable operating system for AI-powered work.**
 
-You're a consultant, a fractional operator, a founder, a one-person agency. Your work is too varied for any single SaaS tool. Your relationships are too important to forget. Your voice is too specific to delegate to a generic AI. Your day is too dense to navigate by clicking through tabs.
+Nucleus is a marketplace of 13 open-source plugins for memory, planning,
+relationships, business development, client delivery, writing, research, and
+operations. The same workflows run in ChatGPT, Codex, Claude Code, and Claude
+Cowork while reading and writing one user-owned set of Markdown files.
 
-Nucleus is what you install when you want an AI host to actually run your operation — remember your world, draft in your voice, surface what needs your attention, and stay out of your way the rest of the time.
+Nucleus does not upload your memory to GitHub and does not create a separate
+database for each AI host. Your data stays in a private `<config-root>` that you
+choose.
 
-Compatible with **Claude Cowork**, **Claude Code**, **ChatGPT desktop Local Work**, and **Codex**. ChatGPT web/cloud needs an approved bridge to reach private local memory. 100% free and open source. MIT-licensed across every plugin.
+| Host | How workflows appear | Local shared memory |
+|---|---|---|
+| ChatGPT desktop Local Work | Natural language or `@Plugin` | Supported with folder permission |
+| Codex | Natural language or namespaced Agent Skills | Supported with sandbox permission |
+| Claude Code / Cowork | Natural language or slash commands | Supported with folder permission |
+| ChatGPT web/cloud | Plugin skills and connected apps | Requires an approved remote MCP bridge for local memory |
 
----
+All plugins are MIT-licensed.
 
-## Talk, don't memorize
+## Architecture in one minute
 
-> *"What's on my plate today?"*
-> Chief of Staff: "On it — pulling your calendar, inbox, CRM tasks, and yesterday's reflection. ~10 seconds."
->
-> *"I just met Sarah at the AI Summit — VP Eng, sharp."*
-> Chief: "Capturing — creating Sarah's person page, linking to the conference."
->
-> *"Research Acme before our 2pm."*
-> Chief: "Looking into Acme. I have a client node and Sarah's person page; kicking off fresh contact research in parallel. ~30 seconds."
->
-> *"Wrap up the day."*
-> Chief: "Closing the day — quick mode. Capturing reflection, pre-staging tomorrow's brief, refreshing the index and hot cache."
+Nucleus has four layers:
 
-You talk in **verbs** — *catch me up, research, draft, capture, plan, track, review, status, bill, what's on my plate, what's missing, clean up, close day, close week, start day*. The Chief of Staff (the nucleus-router skill, v0.2+) routes each verb to the right specialist on your AI staff, invokes parallel work where independent, and narrates what it's doing.
+1. **The Nucleus repository is the master marketplace.** Importing it discovers
+   the full catalog; it is not a fourteenth plugin that recursively runs the rest.
+2. **Nucleus Router is the front door.** Ask for work in plain English and it
+   selects the appropriate installed workflow.
+3. **Cortex is the shared context layer.** It owns memory, identity, voice, recall,
+   learning, and the common config-root pointer.
+4. **Specialist plugins do the domain work.** They share context where useful but
+   remain independently installable.
 
-You can also **address agents by role**: *"ask my Chief Financial Agent to bill this month"*, *"have my Relationship Manager prep the week"*. Each plugin's AI staff role title is a real handle.
+```text
+You
+ └─ Nucleus Router
+     ├─ Cortex                 memory, identity, voice
+     ├─ Daily Brief            daily planning and annotations
+     ├─ Relationships          relationship priorities and drafts
+     ├─ Lead Engine            signal-driven outreach
+     ├─ Project / Client Ops   setup, status, time, invoicing
+     ├─ Writing / Research     voice and news curation
+     └─ Core Ops               diagnostics, QA, pipeline, schedules
 
-The 60+ underlying slash commands are still there — power users can type `/lead-draft` directly when they want to — but they're plumbing, not the surface.
-
----
-
-## What you get
-
-A second brain that learns and forgets. A daily rhythm that compounds. A relationship engine that doesn't let connectors go cold. A voice that gets sharper every week. A graph view in Obsidian on desktop and phone. A Chief of Staff who runs the orchestration.
-
-**13 plugins. 7+ subagents. Chief of Staff orchestrator with 15-verb surface + role-addressable fallback. Bidirectional memory (learning + decay). Workstream + DECISION node types. Daily/weekly closing rituals. Overnight ingest + morning review. Obsidian-as-UI. Adaptive voice. Pipeline analytics. Calendar-to-invoice loop.**
-
-### The 15 verbs (your daily surface)
-
-| Verb | What happens under the hood |
-|---|---|
-| **start day** / *what's on my plate* | Today's brief — calendar, inbox, CRM tasks, outreach, yesterday's reflection (parallel pulls) |
-| **catch me up on X** | Memory recall against the person / client / topic / workstream node |
-| **research X** | Memory lookup + (parallel) external research where appropriate |
-| **capture / remember X** | Typed memory write; auto-graduates person pages; detects DECISION-shaped content |
-| **draft X to Y** | Recipient context + voice + specialist (lead-engine, relationships, client-status, news-curator) |
-| **plan X** | Disambiguated: tomorrow's calendar / week's outreach / new project / new workstream |
-| **track X** | Disambiguated: time / pipeline / outreach touchpoint |
-| **review X** | Doc QA / voice audit / memory hygiene / pipeline cleanup |
-| **status update for X** | Client status draft from memory + project state + calendar + CRM |
-| **bill / invoice** | Monthly invoicing from the time log |
-| **what's missing in my memory** | Autonomous gap-finder + web research with ≥2 sources |
-| **clean up X** | Memory / voice / pipeline |
-| **close day** | Reflection + commit + pre-stage tomorrow + refresh index + refresh hot cache |
-| **close week** | Transcript review + cleanup + rehearse + research-gaps + Monday outreach pre-stage |
-| **start a workstream X** | Create a new ongoing-initiative node — current state, pinned context, linked entities |
-
-Plus role-addressable fallback: *"ask my [Chief Knowledge Officer / Chief Financial Agent / Chief Marketing Agent / Communications Director / Executive Assistant / Head of Outbound / ...] to X"* routes directly to that plugin.
-
----
-
-## Install in five minutes
-
-Nucleus is the **master marketplace**, not a plugin that recursively runs the others.
-Importing this repository exposes all 13 entries. `nucleus-router` is the front door;
-`cortex` owns memory, identity, and voice; the other entries are independently
-installable specialists.
-
-### Claude
-
-```
-/plugin marketplace add BrightWayAI/nucleus
+All plugins ────────────────> one private <config-root>
 ```
 
-### ChatGPT workspace / Local Work
+## Install
 
-A workspace admin imports `https://github.com/BrightWayAI/nucleus` in workspace plugin
-management, reviews the referenced repositories, and marks the desired entries
-Available or Installed. Members then start a new **ChatGPT desktop Local Work** chat
-and grant access to their private config-root folder. The GitHub import does not upload
-memory or automatically grant local filesystem access.
+Start with three plugins:
+
+- `nucleus-router` — natural-language routing;
+- `cortex` — shared memory, identity, and voice;
+- `core-ops` — diagnostics and operational utilities.
+
+Add specialists only when they match your work.
+
+### ChatGPT workspace and desktop
+
+A ChatGPT workspace administrator:
+
+1. Opens **Admin → Plugins → Add → Import marketplace**.
+2. Enters `https://github.com/BrightWayAI/nucleus` as the Source.
+3. Leaves **Path** blank because the marketplace is at the repository root.
+4. Uses the default branch or selects `main`.
+5. Reviews the import, then marks the desired plugins **Available** or
+   **Installed** for the appropriate roles.
+
+Importing the marketplace discovers all 13 entries; it does not automatically
+install every plugin or grant access to local folders and connected services.
+See OpenAI's [plugin-management documentation](https://learn.chatgpt.com/docs/enterprise/plugin-management).
+
+Members should start a new **ChatGPT desktop Local Work** chat after installation.
+Cortex declares a local MCP server, so it is desktop-only unless you configure the
+documented remote bridge.
 
 ### Codex
 
@@ -92,286 +85,235 @@ codex plugin add cortex@nucleus
 codex plugin add core-ops@nucleus
 ```
 
-Add specialists with `codex plugin add <plugin-name>@nucleus`, then start a new thread.
-See [the complete ChatGPT and Codex setup guide](docs/OPENAI_SETUP.md).
+Install a specialist with:
 
-Then in any supported host, just say it:
+```bash
+codex plugin add <plugin-name>@nucleus
+```
 
-> **"Start nucleus"** — or "let's get started," "set me up," "onboard me." The router suggests `/start-nucleus`, which walks every foundational setup in order (identity → voice → note sources → Obsidian vault → per-plugin setups → diagnostics → optional schedule registration). Idempotent — re-running picks up where you left off. ~15-30 minutes depending on how many plugins you install.
+Start a new thread after installation so Codex loads the new skills and role
+bindings.
 
-Prefer to do it by hand? Run each setup explicitly (slash names in Claude, `@Plugin`
-prompts in ChatGPT, or namespaced `$plugin:skill` forms in Codex):
+### Claude Code or Cowork
 
-1. `/setup-identity` — answer ~8 questions about who you are.
-2. `/setup-voice` — paste two sample emails so cortex learns your voice.
-3. `/setup-sources` — connect Granola / Gemini / Fireflies / Drive (optional but unlocks `/listen` overnight ingest).
-4. `/setup-obsidian` — scaffolds an Obsidian vault over your config root.
-5. Per-plugin `/setup-*` for each installed plugin (captures CRM, ICP, offerings, billing rates — whatever that plugin needs).
-6. `/diagnose` (in core-ops) — verify everything is wired.
-7. `/register-schedules` (in core-ops) — wire the standing daily/weekly/monthly automation.
+```text
+/plugin marketplace add BrightWayAI/nucleus
+```
 
-After setup, ask Nucleus Router for the full cheat-sheet. You'll rarely need it — just talk.
+Choose the same three-plugin starter or install any specialist from the catalog.
 
-### One shared memory location
+## First setup: choose one shared memory location
 
-Existing Claude users keep their current Cortex folder. New users enable Cortex and
-ask `@Cortex configure my memory at ~/Documents/Cortex`, reviewing the exact path
-before approval. Cortex writes the vendor-neutral pointer `~/.cortex/config-root`;
-there is no second GPT config file. Claude, ChatGPT desktop, and Codex read and write
-the same Markdown files when they resolve that same root and have permission to it.
+If you already use Cortex with Claude, keep that location. ChatGPT and Codex will
+resolve the existing pointer and use the same files.
 
----
+For a new ChatGPT desktop user:
 
-## Your AI staff
+```text
+@Cortex configure my memory at ~/Documents/Cortex. Show me the exact path and
+ask before creating anything.
+```
 
-13 plugins, but think of them as the team you wish you had — your AI org chart for solo operators who do everything. Each plugin is a teammate with a role; they work side-by-side, share context (identity + voice), and compound the longer you run them.
+From a trusted Cortex checkout, the equivalent terminal setup is:
 
-> **Start here.** The minimum-viable Nucleus is three plugins: **nucleus-router** + **claude-cortex** + **core-ops**. Install those, run `/start-nucleus`, and add specialists (BD, content, delivery) as you need them. Don't try to install all 13 on day one. The recommended install combos further down show common bundles by operator archetype.
+```bash
+python3 scripts/configure_cortex.py --config-root "$HOME/Documents/Cortex"
+```
 
-### Foundation — your office of the operator
+This writes the vendor-neutral pointer `~/.cortex/config-root` and initializes
+only missing starter files. It does not migrate, replace, or delete an old memory
+root.
 
-These are always on. No commands needed; they run in the background.
+Every host resolves `<config-root>` in this order:
 
-| Role | Plugin | What they do |
+1. explicit workflow or project override;
+2. `CORTEX_CONFIG_ROOT`;
+3. `~/.cortex/config-root`;
+4. legacy `~/Documents/.claude-plugin-config-root`;
+5. `~/Documents/Claude` for backward compatibility.
+
+There is no separate GPT config file. ChatGPT desktop needs Local Work permission
+for the resolved folder. Codex needs that absolute path in its sandbox readable or
+writable roots, depending on the workflow.
+
+Then establish the two shared context files:
+
+- set up identity → `<config-root>/identity.md`;
+- set up voice → `<config-root>/voice.md`.
+
+All specialist plugins read those files. Their own settings live under
+`<config-root>/plugins/`.
+
+## Use the same workflows from any host
+
+You can normally ask in plain English. Explicit forms are useful for discovery and
+repeatability:
+
+| Goal | ChatGPT | Codex | Claude |
+|---|---|---|---|
+| Start setup | `@Cortex start Nucleus setup` | `$cortex:start-nucleus` | `/start-nucleus` |
+| Recall context | `@Cortex recall Acme` | `$cortex:recall Acme` | `/recall Acme` |
+| Save a conversation | `@Cortex preview what you would remember, then ask before saving` | `$cortex:remember` | `/remember` |
+| Build today's brief | `@Daily Brief build today's brief` | `$daily-brief:brief` | `/brief` |
+| Draft in your voice | `@Writing Style draft this in my voice` | `$writing-style:style` | `/style` |
+| Review stack health | `@Core Ops diagnose my Nucleus setup` | `$core-ops:diagnose` | `/diagnose` |
+| Find the right workflow | `@Nucleus Router route this request` | `$nucleus-router:route` | `/route` |
+
+Exact skill rendering can vary by client version, but the workflow names and data
+contracts are shared.
+
+## Talk in outcomes, not commands
+
+The router recognizes a compact set of everyday intents:
+
+| Intent | Typical result |
+|---|---|
+| Start my day / what's on my plate | Calendar, inbox, tasks, outreach, and recent context |
+| Catch me up on X | Cross-node memory recall with sources |
+| Research X | Existing context plus current external research when available |
+| Capture / remember X | Typed knowledge or conversation commit with confirmation |
+| Draft X to Y | Relevant context, shared voice, and the right specialist |
+| Plan tomorrow / this project | Calendar plan, engagement plan, or workstream |
+| Track time / pipeline / touchpoint | Domain-specific log or analysis |
+| Review this | Deliverable QA, voice audit, memory cleanup, or pipeline review |
+| Status update for X | Client-status draft from available evidence |
+| Bill last month | Invoice drafts from the approved time log |
+| What's missing | Memory-gap detection and optional cited research |
+| Close the day / week | Reflection, capture, cleanup, rehearsal, and preparation |
+
+If a requested plugin or connector is unavailable, the router identifies the missing
+capability instead of pretending the work ran.
+
+## Plugin catalog
+
+| Role | Plugin | What it provides |
 |---|---|---|
-| **Chief Knowledge Officer** | [claude-cortex](https://github.com/BrightWayAI/claude-cortex) | Your second brain. Typed memory nodes (people, clients, topics, domain knowledge, **workstreams**), bidirectional learning (mining + decay), auto-maintained `memory/index.md` catalog, autonomous gap-finder (`/research-gaps`), `/listen` overnight ingest, `/morning` proposal walker, Obsidian vault scaffolding. **DECISION** knowledge entries with Revisit-when triggers (v4.9+). |
-| **Chief of Staff** | [nucleus-router](https://github.com/BrightWayAI/nucleus-router) | The orchestrator (v0.2+). 15 verbs at the user-facing surface + role-addressable fallback. Routes verbs to specialists by context, invokes parallel work where independent, narrates execution instead of asking permission. The 60+ underlying slash commands are plumbing; verbs are the interface. `/route` prints the cheat sheet. |
-| **Communications Director** | [writing-style](https://github.com/BrightWayAI/writing-style) | Keeps everything sounding like you. `/style` drafts in your voice. `/style-learn` updates the voice file from real edits (two-stage triage). `/style-review` audits style rules for contradictions. |
+| Chief of Staff | [nucleus-router](https://github.com/BrightWayAI/nucleus-router) | Natural-language routing across installed workflows |
+| Knowledge and context | [cortex](https://github.com/BrightWayAI/claude-cortex) | Shared memory, identity, voice, recall, learning, cleanup, and Obsidian support |
+| Executive assistant | [daily-brief](https://github.com/BrightWayAI/daily-brief) | Daily brief, annotation processing, and next-day planning |
+| Relationship manager | [relationships](https://github.com/BrightWayAI/relationships) | Prioritized relationship actions and context-aware drafts |
+| Head of outbound | [lead-engine](https://github.com/BrightWayAI/lead-engine) | Buying signals, warm outreach, cadence, and call preparation |
+| Head of partnerships | [referral-engine](https://github.com/BrightWayAI/referral-engine) | Referral opportunities, cooling periods, and draft asks |
+| Project manager | [project-setup](https://github.com/BrightWayAI/project-setup) | Engagement interview, folder blueprint, portable workspace prompt, and project plan |
+| Account manager | [client-status](https://github.com/BrightWayAI/client-status) | Weekly client-status drafts from available project evidence |
+| Finance | [time-tracking](https://github.com/BrightWayAI/time-tracking) | Calendar-based time classification and invoice drafts |
+| Communications | [writing-style](https://github.com/BrightWayAI/writing-style) | Voice-matched drafting and learning from approved edits |
+| Marketing research | [news-curator](https://github.com/BrightWayAI/news-curator) | Cited news research and voice-matched roundup drafts |
+| Operations | [core-ops](https://github.com/BrightWayAI/core-ops) | Diagnostics, deliverable QA, pipeline analysis, metrics, and schedules |
+| Cross-team liaison | [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment) | Slack-based overlap, conflict, decision, and risk scanning |
 
-**CKO's subagents:** `memory-librarian`, `transcript-reviewer`, `conversation-miner`, `activity-miner`, `gap-researcher`.
+## Agents and connectors
 
-### Daily operations — your executive assistant
+Nucleus includes focused research and ranking roles such as memory librarian,
+contact researcher, pipeline analyst, relationship ranker, news curator, and post
+assembler.
 
-The teammate who runs your day.
+- When the host supports delegation, read-only agents return findings to the parent
+  workflow.
+- When delegation is unavailable, the parent follows the same role inline.
+- Agents do not receive independent permission to write memory, mutate a CRM, send
+  messages, or register schedules.
 
-| Role | Plugin | What they do |
-|---|---|---|
-| **Executive Assistant** | [daily-brief](https://github.com/BrightWayAI/daily-brief) | Today's working surface. `/brief` builds a Cowork artifact with calendar + inbox + CRM + outreach + yesterday's reflection. `/process-brief` routes your annotations to Gmail drafts, CRM reschedules, outreach drafts. `/plan-tomorrow` blocks the next workday. As of v0.3+: meetings are read-only context cards; only inbox / tasks / outreach take annotations. |
+Slack, CRM, email, calendar, Apollo, Drive, and similar services remain separate
+apps or MCP connectors. Plugins check availability at runtime, list skipped sources,
+and use pasted or local context where the workflow supports it. Installing Nucleus
+does not grant access to those services.
 
-### Revenue & relationships — your AI BD team
+Host-specific fallbacks are explicit:
 
-Three roles split the relationship-and-pipeline workload.
+- Cowork HTML artifacts become Markdown or supported document artifacts elsewhere.
+- Connector writes require a preview and confirmation at the point of action.
+- Outbound messages, invoices, and client updates remain drafts by default.
+- Schedule definitions are returned for manual setup when the host has no scheduler.
+- ChatGPT web/cloud cannot silently substitute another store for local Cortex memory.
 
-| Role | Plugin | What they do |
-|---|---|---|
-| **Head of Outbound** | [lead-engine](https://github.com/BrightWayAI/lead-engine) | LinkedIn intent-based outbound. Catches buying signals, drafts warm DMs in your voice, runs 3-touch cadences, generates pre-call briefs. |
-| **VP of Relationships** | [relationships](https://github.com/BrightWayAI/relationships) | Daily relationship cockpit. `/relationships` produces a prioritized 3-bucket brief (new business / relationship building / network expansion) with 3 actions per bucket — each ships with a recommended channel, time estimate, and a copy-ready draft from a 17-template library. `/draft-touchpoint` drafts on demand per contact. `/network-rebalance` re-tags tiers quarterly. Drafts only — never sends. |
-| **Head of Partnerships** | [referral-engine](https://github.com/BrightWayAI/referral-engine) | Latent revenue from connectors who've gone quiet. Weekly digest of who to re-engage, drafted asks honoring cooling periods. |
+## Suggested bundles
 
-**Their shared subagent:** `contact-researcher` (deep single-contact dives across CRM / email / web).
+**Minimum starter**
 
-### Client delivery — your AI delivery team
+```text
+nucleus-router + cortex + core-ops
+```
 
-Three roles run the engagement lifecycle.
+**Business development**
 
-| Role | Plugin | What they do |
-|---|---|---|
-| **Project Manager** | [project-setup](https://github.com/BrightWayAI/project-setup) | New-engagement initialization. One interview produces Drive folder structure, Claude Project system prompt, phased plan, and a memory node. Templates user-customizable. |
-| **Account Manager** | [client-status](https://github.com/BrightWayAI/client-status) | Weekly client status drafts auto-built from memory, project state, calendar, and CRM activity. Closes the retention loop most consultants leave on the table. |
-| **Chief Financial Agent** | [time-tracking](https://github.com/BrightWayAI/time-tracking) | The calendar-to-money loop. `/track-time` classifies billable time per client. `/generate-invoices` emits monthly invoice rows ready for QuickBooks / Wave / Stripe / manual delivery. |
+```text
+nucleus-router + cortex + core-ops + lead-engine + relationships + referral-engine
+```
 
-### Marketing — your content team
+**Client delivery**
 
-| Role | Plugin | What they do |
-|---|---|---|
-| **Chief Marketing Agent** | [news-curator](https://github.com/BrightWayAI/news-curator) | Weekly LinkedIn news roundup. Scans newsletters and the open web, ranks the week's stories for your audience, drafts the post in your voice. |
+```text
+nucleus-router + cortex + core-ops + project-setup + client-status + time-tracking + daily-brief
+```
 
-(Voice itself is handled by your Communications Director in the foundation tier.)
+**Content and relationships**
 
-### Operations & insight — your ops team
+```text
+nucleus-router + cortex + writing-style + news-curator + relationships + referral-engine
+```
 
-The teammates who keep the machine running and surface what needs attention.
+**Cross-team operator**
 
-| Role | Plugin | What they do |
-|---|---|---|
-| **Chief Operating Officer** | [core-ops](https://github.com/BrightWayAI/core-ops) | Pipeline analytics (`pipeline-analyst` + `pipeline-forecast` subagents), deliverable QA (`/review-deliverable`), ecosystem health (`/diagnose`), telemetry (`/log-agent-run`, `/agent-metrics`), schedule library (`/register-schedules`), dashboards (`/nucleus-status`, `/nucleus-dashboard`). |
-| **Cross-Team Liaison** | [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment) | Weekly Slack cross-team alignment scanner. Surfaces overlapping initiatives, conflicting priorities, decisions that affect other teams. Monday morning brief. |
-
----
-
-## How the plugins compose
-
-Three layers of connective tissue:
-
-### Shared identity and voice
-
-Two canonical files live at your `<config-root>/` (typically `~/Documents/Claude/`). Populated once, read by every plugin.
-
-| File | Created by | Read by |
-|---|---|---|
-| `identity.md` | `cortex /setup-identity` | All 12 other plugins (no duplicate questions in their setups) |
-| `voice.md` | `cortex /setup-voice` | All drafting plugins (relationships, lead-engine, news-curator's post-assembler, client-status, referral-engine, writing-style) |
-
-Without these, every plugin asks the same questions over and over. With these, identity and voice live in one place — you update them in one place.
-
-### Subagents that flow across plugins
-
-| Subagent | Lives in | Used by |
-|---|---|---|
-| `memory-librarian` | claude-cortex | `/search`, `/research-gaps` |
-| `transcript-reviewer` | claude-cortex | `/end-week`, weekly scheduled run |
-| `conversation-miner` / `activity-miner` | claude-cortex | `/end-day` Step 2a (v4.3+) |
-| `gap-researcher` | claude-cortex | `/research-gaps` (v4.5+) |
-| `contact-researcher` | lead-engine | relationships (`/relationships`, `/draft-touchpoint`), lead-brief, lead-pull, referral-ask |
-| `pipeline-analyst` | core-ops | relationships (new-business bucket), plan-tomorrow, ad-hoc pipeline review |
-| `relationship-ranker` | relationships | `/relationships` (one call per bucket) |
-| `pipeline-forecast` | core-ops | monthly forecasting, board prep |
-| `news-curator` | news-curator | `/ai-roundup` (scan + rank) |
-| `post-assembler` | news-curator | `/ai-roundup` (drafts in your voice) |
-
-Confidence-aware delegation: when an agent returns Low confidence, parent skills pause and ask for context rather than running thin.
-
-### Closing rituals + infrastructure
-
-| Capability | Lives in | What it does |
-|---|---|---|
-| `/end-day` | cortex | 10-15 min daily close — inbox triage, transcript review, two-stage memory triage, reflective prompts, pre-stage tomorrow's brief, refresh memory index |
-| `/end-week` | cortex | 15-min Friday close — transcript review, cleanup, rehearsal, weekly digest, reflection, optional research-gaps, pre-stage Monday outreach |
-| `/research-gaps` | cortex | Autonomous memory gap-finder. Scans for thin entities, stale facts, contradictions, orphans, under-cited claims; web-researches; user-gated merge (v4.5+) |
-| `/setup-obsidian` | cortex | Scaffolds Obsidian vault over `<config-root>/` — graph view, daily notes, mobile sync (v4.5+) |
-| `/diagnose` | core-ops | Ecosystem health check — surfaces missing setups, connector gaps |
-| `/log-agent-run` + `/agent-metrics` | core-ops | Lightweight telemetry — meta-only logs of agent quality over time |
-| `/register-schedules` | core-ops | Bulk-register standing schedules from a versioned library |
-
-These don't add new user-facing capabilities so much as they make the rest of the stack durable, observable, and reproducible.
-
----
-
-## Obsidian as the human UI
-
-After `/setup-obsidian`, your `<config-root>/` becomes a graph-viewable, mobile-readable Obsidian vault:
-
-- **Graph view** of every person, client, topic, and domain node — connected by real wikilinks.
-- **Daily notes** = daily-brief's snapshots. Today's date in Obsidian is today's brief.
-- **Memory index** (`memory/index.md`) is your home page — every node, grouped by type, with decay-state flags.
-- **Dataview queries** in `VAULT.md` render active engagements, active people, active topics.
-- **Mobile** via free Obsidian iOS/Android apps + iCloud or Obsidian Sync.
-
-Same files, multiple AI hosts, plus Obsidian. Speak to Claude or ChatGPT on desktop, use Codex for agentic work, and browse the vault on your phone.
-
----
+```text
+nucleus-router + cortex + weekly-alignment + daily-brief + core-ops
+```
 
 ## Daily and weekly rhythm
 
-When the full stack is wired up:
+A complete setup can support this cadence:
 
-```
-Every workday
-  Morning     → /plan-tomorrow ran last night; just open calendar
-  Throughout  → cortex auto-recall + passive observation (no commands)
-  ~5pm        → /end-day (recap, reflect, commit, pre-stage tomorrow)
-  Evening     → /track-time (classify yesterday's calendar)
-
-Every Friday
-  Morning     → news-curator pre-stages candidates (scheduled)
-  Afternoon   → /end-week (transcript review, cleanup, rehearsal, weekly retro, /research-gaps, optional Monday pre-stage)
-  Afternoon   → /referrals (latent network surfacing)
-  Afternoon   → /client-status (drafts for active engagements)
-
-Every workday morning
-  → /relationships brief — 3 buckets × 3 actions × copy-ready drafts
-  → pipeline-analyst snapshot (Monday 6am, scheduled)
-
-Monthly
-  1st         → /generate-invoices (bill last month from time-log)
-  1st         → pipeline-forecast (next month/quarter)
+```text
+Morning       build today's brief and relationship priorities
+During work   recall context, capture decisions, draft, and track
+End of day    reflect, commit approved memory, and prepare tomorrow
+End of week   review, clean up, rehearse knowledge, and stage next week
+Monthly       prepare invoices and pipeline forecasts
 ```
 
-Schedules are versioned in `core-ops/references/schedules.md` and registered with `/register-schedules`. The system runs itself; you mostly review and confirm.
+Scheduling is optional and host-dependent. Nucleus never treats registration as
+successful unless the active host actually exposes a scheduler.
 
----
+## Customize without forking
 
-## Who this is for
+Each specialist has a setup workflow that captures its CRM mappings, ICP, offerings,
+billing rules, templates, or other domain context. The workflow writes user-owned
+settings beneath `<config-root>/plugins/`; repository updates do not overwrite those
+files.
 
-You run client work as a solo or near-solo operator. You're a fractional CTO, COO, or CMO; an independent consultant; a founder of a 1-3-person firm; an agency owner who still does delivery. You bill by the hour or by the project. You care about your relationships and your voice. You hate that "AI tools" usually means "another tab to check."
+Fork only when you want to change methodology or add a new capability. If you fork:
 
-Nucleus is built for the operator's workflow: relationships, daily rhythm, client engagements, deliverable quality. Not for marketing funnels at scale or general SMB workflows. If you want a hand-built operating system rather than a generic one, this is the right tool.
+1. change the canonical skills or workflow files in the specialist repository;
+2. keep `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json` aligned;
+3. update both Nucleus marketplace manifests to reference the fork;
+4. run the ecosystem validation before publishing;
+5. sync or refresh the marketplace in each host.
 
----
+See [multi-agent patterns](docs/multi-agent-patterns.md) and the
+[proposal roadmap](docs/proposals/ROADMAP.md) for extension guidance.
 
-## Recommended install combos
+## Validation
 
-**Solo consultant running BD on Claude:**
+With the 13 repositories checked out as siblings:
+
+```bash
+python3 scripts/generate_openai_adapters.py --check
+python3 scripts/check_openai_ecosystem.py
+python3 scripts/smoke_codex_marketplace.py
+python3 ../claude-cortex/scripts/check_repo.py
 ```
-nucleus-router + claude-cortex + core-ops + lead-engine + relationships + referral-engine + time-tracking
-```
-Memory + pipeline + signal-driven outbound + daily relationship cockpit (orchestration + per-contact drafting + quarterly tier review) + referral engine + billing.
 
-**Agency operator with multiple client engagements:**
-```
-nucleus-router + claude-cortex + core-ops + project-setup + relationships + daily-brief + time-tracking + client-status
-```
-Memory + pipeline + new-engagement onboarding + daily relationship cockpit + daily flow + billing + client retention.
+These checks validate marketplace structure, native manifests, command-to-skill
+coverage, version agreement, read-only role bindings, isolated Codex installation,
+and config-root precedence using temporary homes and fixtures. They do not read or
+write real Cortex memory.
 
-**Content-focused operator:**
-```
-nucleus-router + claude-cortex + writing-style + news-curator + relationships + referral-engine
-```
-Memory + voice + weekly LinkedIn roundup + daily relationship cockpit + referral engine.
-
-**Cross-team operator (manager / chief-of-staff):**
-```
-nucleus-router + claude-cortex + weekly-alignment + daily-brief + core-ops
-```
-Memory + Slack alignment scan + daily calendar + deliverable QA + diagnostics.
-
-**Minimum viable starter:** `nucleus-router + claude-cortex + core-ops`. Run `/setup-identity` and `/setup-voice` first. Everything else builds on top.
-
----
-
-## Setup flow
-
-The simplest path: say **"start nucleus"** to Claude. The router suggests `/start-nucleus` — the foundational walker that chains every setup in order, gates each step so you can skip what doesn't apply, and is safe to re-run any time (it picks up where you left off).
-
-Manual order if you'd rather drive it yourself:
-
-1. **`/setup-identity`** (cortex) — captures name/company/role/tools once.
-2. **`/setup-voice`** (cortex) — captures voice descriptors and banned phrases.
-3. **`/setup-sources`** (cortex, optional) — connect Granola / Gemini / Fireflies / Drive so `/listen` can run overnight ingests.
-4. **`/setup-obsidian`** (cortex, optional) — scaffolds Obsidian vault for graph view + mobile.
-5. Per-plugin **`/setup-*`** for each installed plugin (captures plugin-specific stuff: CRM, ICP, offerings catalog, billing rates).
-6. **`/diagnose`** (core-ops) — verify everything is wired up.
-7. **`/register-schedules`** (core-ops) — register daily / weekly / monthly automation (nightly `/listen`, daily `/end-day`, weekly `/end-week`, monthly `/generate-invoices`, etc.).
-
-**Don't skip setup.** All plugins return "run `/setup-*` first" if their context file is missing or empty.
-
----
-
-## Customize for your firm
-
-**Customization happens automatically through setup.** Each plugin's `/setup-*` command interviews you about your specifics — CRM properties, ICP definitions, voice descriptors, offerings catalog, billing rates, template content — and writes the answers to `<config-root>/plugins/<plugin>.user-context.md`. Plugins read that file at runtime, so the same plugin behaves differently for every operator. No forking. No code edits. Re-run `/setup-*` any time to update.
-
-Plugins that ship with content templates (engagement plan structure in `project-setup`, invoice format in `time-tracking`, status update format in `client-status`, ask templates in `referral-engine`) put those templates in `references/templates/` inside the plugin repo. The starter content reflects BrightWay AI's defaults; on first run, the plugin copies a working template to your `<config-root>/plugins/<plugin>/templates/` directory. **Edit your local copy** to make it yours — the plugin reads from your local copy, not from the source repo. Updates to the plugin repo never overwrite your edited templates.
-
-### When forking is the right move
-
-Only fork if you want to change a plugin's **methodology** — not its content. Examples:
-
-- You want `lead-engine` to score signals with a different algorithm than BrightWay's.
-- You want `relationships` to produce a different shape of daily brief.
-- You want to add a plugin that doesn't exist yet for your firm's specific workflow.
-
-For those cases:
-
-1. Fork the plugin repo (e.g., `BrightWayAI/lead-engine` → `yourfirm/lead-engine`).
-2. Fork `BrightWayAI/nucleus` and update `.claude-plugin/marketplace.json` to point at your fork.
-3. Edit the plugin's skill / command markdown, commit, push.
-4. Cowork picks up your fork on next startup.
-
-But for the **99% case — customizing what the plugin knows about you and your firm — `/start-nucleus` and `/setup-*` are the whole story.**
-
-See [`docs/multi-agent-patterns.md`](docs/multi-agent-patterns.md) if you want to chain subagents inside a custom plugin.
-
----
-
-## Plugin versions
-
-Most-up-to-date version of each plugin (also recorded per-entry in [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json); authoritative source is each plugin's own `plugin.json`). Cowork still resolves the latest from each repo on pull — this table is for at-a-glance reference.
+## Current versions
 
 | Plugin | Version |
-|---|---|
+|---|---:|
 | nucleus-router | 0.2.2 |
-| claude-cortex (cortex) | 4.15.0 |
+| cortex | 4.15.0 |
 | core-ops | 0.3.3 |
 | lead-engine | 0.2.5 |
 | relationships | 0.2.4 |
@@ -384,48 +326,15 @@ Most-up-to-date version of each plugin (also recorded per-entry in [`.claude-plu
 | writing-style | 0.1.3 |
 | daily-brief | 0.6.2 |
 
-## Roadmap and open proposals
+The native OpenAI catalog is
+[`/.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json). The
+Claude-compatible catalog is
+[`/.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json).
 
-The active roadmap lives at [`docs/proposals/ROADMAP.md`](docs/proposals/ROADMAP.md). Convention: **top-level `docs/proposals/*.md` = open / not-yet-built**; [`docs/proposals/shipped/`](docs/proposals/shipped/) = archived (with a SHIPPED banner); [`docs/proposals/parked/`](docs/proposals/parked/) = deferred indefinitely, not on the roadmap.
+## Help and license
 
-### 🟢 Active / next up
-- **sweep-heartbeat.md** — every-3h work-hours heartbeat that mines today's surfaces + in-progress Cowork conversations, dedups, stages proposals reviewed at `/end-day`. ~1–2 week build. Gated on dogfooding `/listen` + `/morning` first.
-- **cleanup-pass-1 items E–G** (deferred from cortex v4.8.1) — mining-agent consolidation, `/end-day` decomposition, autonomy-slider coverage. See `shipped/cleanup-pass-1.md`.
+Open plugin-specific issues in the corresponding repository. Use
+[BrightWayAI/nucleus issues](https://github.com/BrightWayAI/nucleus/issues) for
+marketplace import, catalog, or cross-plugin problems.
 
-### ✅ Recently shipped (in `docs/proposals/shipped/`)
-- **End-Day Routine Improvement** — daily-brief v0.5.0 + cortex v4.13.0 + core-ops v0.3.2 (5-section brief, brief mining, cost gate, forgettings, reflections store, taxonomy consolidation).
-- **memory-as-git** — cortex v4.12.0 + v4.13.0 + core-ops v0.3.2 (versioned vault, daily commit, `/morning` diff review, `/diagnose` health).
-- **chief-of-staff-evolution** (router v0.2.0 + cortex v4.9.0), **relationships-plugin** (v0.1.0 → v0.2.3), **wikilink-density** (cortex v4.10.0), **cleanup-pass-1 A–D** (cortex v4.8.1), plus earlier cortex v4.5–4.7, nucleus-router v0.1, Obsidian, and productization specs.
-
-### ⏸️ Parked (in `docs/proposals/parked/` — not on the roadmap)
-- **jarvis-app.md** — standalone Tauri "Operator" desktop app. Separate product bet; revisit only on a strong marketplace-demand signal.
-
----
-
-## Help, feedback, and customization
-
-Each plugin manages its own issues:
-
-- [nucleus-router](https://github.com/BrightWayAI/nucleus-router/issues)
-- [claude-cortex](https://github.com/BrightWayAI/claude-cortex/issues)
-- [core-ops](https://github.com/BrightWayAI/core-ops/issues)
-- [lead-engine](https://github.com/BrightWayAI/lead-engine/issues)
-- [relationships](https://github.com/BrightWayAI/relationships/issues)
-- [news-curator](https://github.com/BrightWayAI/news-curator/issues)
-- [daily-brief](https://github.com/BrightWayAI/daily-brief/issues)
-- [project-setup](https://github.com/BrightWayAI/project-setup/issues)
-- [time-tracking](https://github.com/BrightWayAI/time-tracking/issues)
-- [client-status](https://github.com/BrightWayAI/client-status/issues)
-- [referral-engine](https://github.com/BrightWayAI/referral-engine/issues)
-- [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment/issues)
-- [writing-style](https://github.com/BrightWayAI/writing-style/issues)
-
-Marketplace-level issues (manifest problems, install errors): [BrightWayAI/nucleus](https://github.com/BrightWayAI/nucleus/issues).
-
-Want it set up for your firm, customized for your offerings, or trained on your voice and stack? [BrightWay AI](https://brightwayai.com) offers Nucleus implementation and customization for solo operators and small consulting firms. Reach out — `zach@brightwayai.com`.
-
----
-
-## License
-
-Each plugin is MIT-licensed. Use it, fork it, customize it, ship it.
+Each plugin is MIT-licensed. Use it, fork it, customize it, and share it.
