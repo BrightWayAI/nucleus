@@ -345,13 +345,13 @@ connection, pasted payload, or mocked response is not enough for a pass.
 
 | Plugin | Version |
 |---|---:|
-| cortex | 4.18.6 |
+| cortex | 4.19.0 |
 | core-ops | 0.6.0 |
-| relationships | 0.3.1 |
+| relationships | 0.3.2 |
 | news-curator | 0.2.5 |
 | delivery | 0.3.0 |
 | time-tracking | 0.2.5 |
-| weekly-alignment | 1.4.5 |
+| weekly-alignment | 1.5.0 |
 | voice | 0.2.0 |
 | daily-brief | 0.6.4 |
 
