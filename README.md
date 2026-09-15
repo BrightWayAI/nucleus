@@ -49,6 +49,13 @@ All plugins ────────────────> one private <confi
 
 ## Install
 
+**Never used Nucleus before, on any host?** Install the three starter plugins below,
+then run `/start-nucleus` (Claude Code/Cowork) or its host equivalent (`$cortex:start-nucleus`
+in Codex, `@Cortex start Nucleus setup` in ChatGPT). It's an idempotent walker —
+identity, voice, note sources, per-plugin setup, and a health check, gated so you
+can skip anything that doesn't apply. Nothing below requires prior setup in Cowork,
+Codex, or anywhere else; you're starting from zero.
+
 Start with three plugins:
 
 - `nucleus-router` — natural-language routing;
@@ -143,6 +150,15 @@ Then establish the two shared context files:
 
 All specialist plugins read those files. Their own settings live under
 `<config-root>/plugins/`.
+
+**Memory has two scopes.** `<config-root>/memory/me/` holds personal facts —
+identity, voice, working preferences, reflections — and is excluded from any
+shared remote via `.gitignore`; keep it local-only or push it to your own private
+remote, never a shared one. Everything else under `<config-root>/memory/` (clients,
+people, workstreams, company knowledge) is shareable and can be versioned to a
+private git remote if you want durable backup or eventual team access — see
+`references/migrations.md` in the cortex plugin for the migration that sets this up
+on an existing install.
 
 ## Use the same workflows from any host
 
@@ -261,15 +277,25 @@ nucleus-router + cortex + weekly-alignment + daily-brief + core-ops
 
 ## Daily and weekly rhythm
 
-A complete setup can support this cadence:
+**The required daily touch is `/morning`**, not an end-of-day ritual. Cortex mines
+yesterday overnight (if you've set up a nightly source-ingest schedule), and
+`/morning` walks what it found, captures a short reflection, seeds today's
+priorities, commits your memory, and — on Fridays — runs a small knowledge-review
+batch:
 
 ```text
-Morning       build today's brief and relationship priorities
+Overnight     (optional) unattended ingest of yesterday's meetings/inbox/calendar
+Morning       walk overnight findings, reflect, seed today's brief, commit memory
 During work   recall context, capture decisions, draft, and track
-End of day    reflect, commit approved memory, and prepare tomorrow
-End of week   review, clean up, rehearse knowledge, and stage next week
+End of day    optional deeper close — full transcript/inbox review, longer reflection
+End of week   optional: review, clean up, stage next week
 Monthly       prepare invoices and pipeline forecasts
 ```
+
+The end-of-day and end-of-week rituals still exist and are worth running when you
+want the deeper pass, but nothing depends on you remembering to run them —
+`/morning` alone keeps memory current, committed, and (if you've configured a
+remote) pushed.
 
 Scheduling is optional and host-dependent. Nucleus never treats registration as
 successful unless the active host actually exposes a scheduler.
@@ -326,19 +352,19 @@ connection, pasted payload, or mocked response is not enough for a pass.
 
 | Plugin | Version |
 |---|---:|
-| nucleus-router | 0.2.3 |
-| cortex | 4.15.0 |
-| core-ops | 0.4.0 |
-| lead-engine | 0.2.5 |
-| relationships | 0.2.4 |
-| referral-engine | 0.2.5 |
-| news-curator | 0.2.4 |
-| client-status | 0.2.5 |
-| project-setup | 0.2.5 |
-| time-tracking | 0.2.4 |
-| weekly-alignment | 1.4.4 |
-| writing-style | 0.1.3 |
-| daily-brief | 0.6.2 |
+| nucleus-router | 0.2.4 |
+| cortex | 4.18.4 |
+| core-ops | 0.4.3 |
+| lead-engine | 0.2.6 |
+| relationships | 0.2.7 |
+| referral-engine | 0.2.6 |
+| news-curator | 0.2.5 |
+| client-status | 0.2.6 |
+| project-setup | 0.2.6 |
+| time-tracking | 0.2.5 |
+| weekly-alignment | 1.4.5 |
+| writing-style | 0.1.5 |
+| daily-brief | 0.6.4 |
 
 The native OpenAI catalog is
 [`/.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json). The
