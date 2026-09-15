@@ -15,21 +15,21 @@ This file follows the [llms.txt](https://llmstxt.org/) convention so an AI agent
 
 ## Core architecture
 
-- [Cortex](https://github.com/BrightWayAI/claude-cortex): Shared memory, identity, voice capture, recall, learning, and maintenance.
-- [Core Ops](https://github.com/BrightWayAI/core-ops): Natural-language `chief-of-staff` front door (`/cos`), pipeline analysis, diagnostics, metrics, connectors, and schedules.
+- [Cortex](https://github.com/BrightWayAI/cortex): Shared memory, identity, voice capture, recall, learning, and maintenance.
+- [Chief of Staff](https://github.com/BrightWayAI/ops): Natural-language `chief-of-staff` front door (`/cos`), pipeline analysis, diagnostics, metrics, connectors, and schedules.
 - Specialist plugins read the same `<config-root>` and remain independently installable. Missing plugins or connectors must be reported rather than simulated.
 
 ## Plugin catalog
 
-- [Cortex](https://github.com/BrightWayAI/claude-cortex) — shared context and memory.
-- [Weekly Alignment](https://github.com/BrightWayAI/weekly-alignment) — cross-team Slack alignment scanning.
-- [Core Ops](https://github.com/BrightWayAI/core-ops) — chief-of-staff routing and operations.
-- [News Curator](https://github.com/BrightWayAI/news-curator) — cited news research and roundup drafting.
-- [Delivery](https://github.com/BrightWayAI/delivery) — engagement setup, client status, and deliverable QA.
-- [Time Tracking](https://github.com/BrightWayAI/time-tracking) — calendar classification and invoice drafts.
-- [Relationships](https://github.com/BrightWayAI/relationships) — relationship cockpit, buying signals, contact research, referral asks, and outreach drafts.
-- [Voice](https://github.com/BrightWayAI/voice) — voice-matched drafting and learning from approved edits.
-- [Daily Brief](https://github.com/BrightWayAI/daily-brief) — daily operating brief and tomorrow planning.
+- [Cortex](https://github.com/BrightWayAI/cortex) — shared context and memory.
+- [Team Alignment](https://github.com/BrightWayAI/alignment) — cross-team Slack alignment scanning.
+- [Chief of Staff](https://github.com/BrightWayAI/ops) — chief-of-staff routing and operations.
+- [Research](https://github.com/BrightWayAI/research) — cited news research and roundup drafting.
+- [Client Success](https://github.com/BrightWayAI/clients) — engagement setup, client status, and deliverable QA.
+- [Admin](https://github.com/BrightWayAI/admin) — calendar classification and invoice drafts.
+- [Growth Engine](https://github.com/BrightWayAI/growth) — relationship cockpit, buying signals, contact research, referral asks, and outreach drafts.
+- [Comms Desk](https://github.com/BrightWayAI/comms) — voice-matched drafting and learning from approved edits.
+- [Today's Brief](https://github.com/BrightWayAI/briefing) — daily operating brief and tomorrow planning.
 
 ## How an agent onboards
 

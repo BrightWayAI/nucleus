@@ -16,8 +16,8 @@ host-run live probe workflow plus a deterministic, privacy-preserving report val
 
 ## Run the probes
 
-Install Core Ops in the host being certified and invoke `test-connectors` naturally,
-with `/test-connectors` in Claude, or `$core-ops:test-connectors` in Codex. Select a
+Install Chief of Staff in the host being certified and invoke `test-connectors` naturally,
+with `/test-connectors` in Claude, or `$ops:test-connectors` in Codex. Select a
 profile from `connector-tests/plan.json`:
 
 - `operator`: calendar, mail, and CRM;

@@ -2,7 +2,7 @@
 
 Nucleus is the master marketplace, not one more runtime plugin. Importing the
 Nucleus repository makes its 9 catalog entries available; users or workspace admins
-still choose which entries to install. `core-ops`'s `chief-of-staff` agent (`/cos`)
+still choose which entries to install. `ops`'s `chief-of-staff` agent (`/cos`)
 is the conversational front door. `cortex` owns shared memory, identity, and voice.
 The other plugins are independent specialists that compose through the same config root.
 
@@ -36,7 +36,7 @@ approved remote bridge is configured.
 Start a new ChatGPT desktop Local Work chat after installation. Enable at least:
 
 - `cortex` — shared memory, identity, and voice;
-- `core-ops` — natural-language chief-of-staff routing (`/cos`), diagnostics, and operational utilities.
+- `ops` — natural-language chief-of-staff routing (`/cos`), diagnostics, and operational utilities.
 
 Then add specialists for the user's actual work. Installing all 9 is supported but
 not required.
@@ -48,7 +48,7 @@ From a trusted checkout or the GitHub marketplace:
 ```bash
 codex plugin marketplace add https://github.com/BrightWayAI/nucleus
 codex plugin add cortex@nucleus
-codex plugin add core-ops@nucleus
+codex plugin add ops@nucleus
 ```
 
 Install other entries with `codex plugin add <plugin-name>@nucleus`, then start a new
@@ -103,8 +103,8 @@ Every specialist reads those same files. Per-plugin setup writes settings under
 | Set voice | `@Cortex set up my voice` | `$cortex:setup-voice` |
 | Recall | `@Cortex recall what we know about Acme` | `$cortex:recall Acme` |
 | Save this conversation | `@Cortex show what you would remember, then ask before saving` | `$cortex:remember` |
-| See the stack | `@Core Ops diagnose my Nucleus setup` | `$core-ops:diagnose` |
-| Route naturally | `@Core Ops what should handle this request?` | `$core-ops:cos` |
+| See the stack | `@Chief of Staff diagnose my Nucleus setup` | `$ops:diagnose` |
+| Route naturally | `@Chief of Staff what should handle this request?` | `$ops:cos` |
 
 Claude slash-command names remain useful aliases in documentation. ChatGPT users can
 ask naturally or mention a plugin with `@`; Codex exposes namespaced skills. The
@@ -145,13 +145,13 @@ does not resolve or read the operator's real config root. Cortex has an addition
 fixture-only suite:
 
 ```bash
-python3 ../claude-cortex/scripts/check_repo.py
+python3 ../cortex/scripts/check_repo.py
 ```
 
 Connector behavior still requires the corresponding test workspace/account. Static
 validation can prove honest degradation and binding coverage; it cannot prove access
 to Slack, CRM, mail, calendar, or Drive credentials that were not supplied.
 
-Before promoting a coordinated release, run Core Ops `test-connectors` in each required
+Before promoting a coordinated release, run Chief of Staff `test-connectors` in each required
 host and validate the sanitized reports as described in
 `docs/CONNECTOR_INTEGRATION_TESTING.md`. A real tool call is required for a pass.

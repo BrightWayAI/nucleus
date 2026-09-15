@@ -6,109 +6,109 @@
   },
   "plugins": [
     {
-      "name": "claude-cortex",
-      "version": "4.21.4",
+      "name": "cortex",
+      "version": "4.22.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/claude-cortex"
+        "repo": "BrightWayAI/cortex"
       },
-      "description": "Recall, search, and explicitly commit to one user-owned Cortex memory store from Claude, ChatGPT, or Codex.",
+      "description": "Cortex. Recall, search, and explicitly commit to one user-owned Cortex memory store from Claude, ChatGPT, or Codex.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
-      "name": "weekly-alignment",
-      "version": "1.5.3",
+      "name": "alignment",
+      "version": "1.6.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/weekly-alignment"
+        "repo": "BrightWayAI/alignment"
       },
-      "description": "Scan configured Slack sources for cross-team alignment signals and produce daily pulses, weekly reports, and risk updates.",
+      "description": "Team Alignment. Scan configured Slack sources for cross-team alignment signals and produce daily pulses, weekly reports, and risk updates.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
-      "name": "core-ops",
-      "version": "0.6.4",
+      "name": "ops",
+      "version": "0.7.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/core-ops"
+        "repo": "BrightWayAI/ops"
       },
-      "description": "Use a natural-language chief-of-staff front door, analyze CRM pipeline, inspect Nucleus health, record agent metrics, and register schedules when the host supports them.",
+      "description": "Chief of Staff. Use a natural-language chief-of-staff front door, analyze CRM pipeline, inspect Nucleus health, record agent metrics, and register schedules when the host supports them.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
-      "name": "news-curator",
-      "version": "0.2.8",
+      "name": "research",
+      "version": "0.3.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/news-curator"
+        "repo": "BrightWayAI/research"
       },
-      "description": "Find recent stories, rank them for a configured audience, and assemble a voice-matched roundup with traceable sources.",
+      "description": "Research. Find recent stories, rank them for a configured audience, and assemble a voice-matched roundup with traceable sources.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
-      "name": "delivery",
-      "version": "0.3.4",
+      "name": "clients",
+      "version": "0.4.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/delivery"
+        "repo": "BrightWayAI/clients"
       },
-      "description": "Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; and run structured deliverable QA.",
+      "description": "Client Success. Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; and run structured deliverable QA.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
-      "name": "time-tracking",
-      "version": "0.2.8",
+      "name": "admin",
+      "version": "0.3.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/time-tracking"
+        "repo": "BrightWayAI/admin"
       },
-      "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+      "description": "Admin. Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
-      "name": "relationships",
-      "version": "0.3.6",
+      "name": "growth",
+      "version": "0.4.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/relationships"
+        "repo": "BrightWayAI/growth"
       },
-      "description": "Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, and create context-aware touchpoint drafts.",
+      "description": "Growth Engine. Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, and create context-aware touchpoint drafts.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
-      "name": "voice",
-      "version": "0.2.3",
+      "name": "comms",
+      "version": "0.3.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/voice"
+        "repo": "BrightWayAI/comms"
       },
-      "description": "Create voice-matched drafts, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
+      "description": "Comms Desk. Create voice-matched drafts, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
-      "name": "daily-brief",
-      "version": "0.6.10",
+      "name": "briefing",
+      "version": "0.7.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/daily-brief"
+        "repo": "BrightWayAI/briefing"
       },
-      "description": "Combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow.",
+      "description": "Today's Brief. Combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow.",
       "author": {
         "name": "BrightWay AI"
       }

@@ -18,11 +18,11 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Breaking change protocol:** if `identity.md` schema changes, every reader plugin needs a coordinated update. Treat as a Nucleus-wide major version bump.
 
 `<config-root>/memory/me/voice.md`
-- **Writer:** cortex `/setup-voice` and voice `/style-learn`
-- **Readers:** relationships, news-curator (post-assembler), delivery `/client-status`, voice `/style`
+- **Writer:** cortex `/setup-voice` and comms `/style-learn`
+- **Readers:** growth, research (post-assembler), clients `/client-status`, comms `/style`
 - **Format:** markdown with `## Tone`, `## Vocabulary`, `## Banned phrases`, `## Style rules` sections
 - **Version:** stable since cortex v4.0
-- **Note:** voice v0.x (formerly writing-style) adds entries via `/style-learn` two-stage triage; format remains compatible with cortex readers.
+- **Note:** comms v0.x (formerly voice, formerly writing-style) adds entries via `/style-learn` two-stage triage; format remains compatible with cortex readers.
 
 ---
 
@@ -125,20 +125,20 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Sections (as of cortex v4.8.0):** `autonomy:`, `hot_cache:`, `note_sources:`, `listen:`, `decay:`. Future: `sweep:`, `memory_as_git:`
 - **Version:** stable schema; sections add over time
 
-`<config-root>/plugins/daily-brief.user-context.md`
-- **Writer:** daily-brief `/setup-brief`
-- **Readers:** daily-brief `/brief`, `/process-brief`, `/plan-tomorrow`
+`<config-root>/plugins/briefing.user-context.md`
+- **Writer:** briefing `/setup-brief`
+- **Readers:** briefing `/brief`, `/process-brief`, `/plan-tomorrow`
 - **Format:** section toggles, sort defaults, placeholder hints
 
-`<config-root>/plugins/delivery.user-context.md`
-- **Writer:** delivery `/setup-projects`; user-editable
-- **Readers:** delivery project workflows, delivery `/client-status`, time-tracking invoice/project resolution
+`<config-root>/plugins/clients.user-context.md`
+- **Writer:** clients `/setup-projects`; user-editable
+- **Readers:** clients project workflows, clients `/client-status`, admin invoice/project resolution
 - **Format:** engagement catalog, client/project aliases, commercial defaults, and connector mapping
 - **Migration:** may import once from `project-setup.user-context.md`; runtime must not depend on the retired plugin path
 
-`<config-root>/plugins/delivery-status.user-context.md`
-- **Writer:** delivery `/setup-status`; user-editable
-- **Readers:** delivery `/client-status`
+`<config-root>/plugins/clients-status.user-context.md`
+- **Writer:** clients `/setup-status`; user-editable
+- **Readers:** clients `/client-status`
 - **Format:** reporting cadence, audiences, sections, delivery channels, and approval defaults
 - **Migration:** may import once from `client-status.user-context.md`; runtime must not depend on the retired plugin path
 
@@ -150,10 +150,10 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 ## Daily flow contracts
 
 `<config-root>/briefs/<date>.md`
-- **Writer:** daily-brief `/brief` (creates), `/end-day` Step 4 (appends `## Reflection` section in v4.6+), `/process-brief` (appends `### Processed annotations`)
-- **Readers:** daily-brief next morning's `/brief` Section 5 (Yesterday's Reflection — reads yesterday's `## Reflection`)
-- **Format:** see daily-brief `commands/brief.md` markdown twin template
-- **Critical contract:** the `## Reflection` section format MUST match between cortex `/end-day` Step 4 (writer) and daily-brief `/brief` Section 5 (reader). If cortex changes the section header or bullet shape, daily-brief breaks silently. cortex `/end-day` Step 4.2 also appends the same reflection to `<config-root>/memory/me/reflections.md` (longitudinal store).
+- **Writer:** briefing `/brief` (creates), `/end-day` Step 4 (appends `## Reflection` section in v4.6+), `/process-brief` (appends `### Processed annotations`)
+- **Readers:** briefing next morning's `/brief` Section 5 (Yesterday's Reflection — reads yesterday's `## Reflection`)
+- **Format:** see briefing `commands/brief.md` markdown twin template
+- **Critical contract:** the `## Reflection` section format MUST match between cortex `/end-day` Step 4 (writer) and briefing `/brief` Section 5 (reader). If cortex changes the section header or bullet shape, briefing breaks silently. cortex `/end-day` Step 4.2 also appends the same reflection to `<config-root>/memory/me/reflections.md` (longitudinal store).
 
 `<config-root>/briefs/` directory (folder-level contract)
 - **Daily-notes integration:** cortex `/setup-obsidian` writes `.obsidian/daily-notes.json` pointing at this folder. Obsidian's daily-notes plugin reads it. Contract: `briefs/<YYYY-MM-DD>.md` filename format must hold.
@@ -173,19 +173,19 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 ## Schedule library
 
-`<config-root>/plugins/core-ops/schedules.md`
-- **Writer:** user or core-ops `/register-schedules` when copying the immutable starter
-- **Reader:** core-ops `/register-schedules`; host schedulers receive translated definitions
-- **Format:** see `core-ops/references/schedules.template.md`
+`<config-root>/plugins/ops/schedules.md`
+- **Writer:** user or ops `/register-schedules` when copying the immutable starter
+- **Reader:** ops `/register-schedules`; host schedulers receive translated definitions
+- **Format:** see `ops/references/schedules.template.md`
 - **Schedule entries reference commands from multiple plugins** — implicit contract that those commands exist.
 
-`<config-root>/plugins/core-ops/schedule-registrations/<host-id>.json`
-- **Writer:** core-ops `/register-schedules`, atomically after a confirmed scheduler mutation
-- **Reader:** core-ops `/register-schedules` reconciliation on that host
+`<config-root>/plugins/ops/schedule-registrations/<host-id>.json`
+- **Writer:** ops `/register-schedules`, atomically after a confirmed scheduler mutation
+- **Reader:** ops `/register-schedules` reconciliation on that host
 - **Format:** schema `1.0.0`; scheduler ID + definition fingerprint + registration/verification timestamps
 - **Host boundary:** never sync an ID as if it were portable; live scheduler state wins over the cache
 
-`<config-root>/plugins/core-ops/schedule-runs/<schedule>/<run-id>.json`
+`<config-root>/plugins/ops/schedule-runs/<schedule>/<run-id>.json`
 - **Writer:** scheduled workflow when the host permits local receipt writes
 - **Readers:** `/diagnose`, `/nucleus-status`, humans auditing automation
 - **Format:** metadata only — outcome, source coverage statuses, output paths/hashes, sanitized error codes; never connector payloads or memory content
@@ -225,81 +225,81 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Returns:** web-researched proposals with ≥2-source rule + privacy rules
 - **Contract:** writes only to `staged/research-drafts/` (post-reorg)
 
-`relationships-director` (relationships; mode: rank / research)
-- **Called by:** relationships ranking and touchpoint workflows, including the absorbed signal and referral flows
+`relationships-director` (growth; mode: rank / research)
+- **Called by:** growth ranking and touchpoint workflows, including the absorbed signal and referral flows
 - **Returns:** ranked relationship actions or a deep single-contact research summary, according to the caller-selected mode
 - **Contract:** read-only against external systems (CRM, email, web); never writes
 
-`pipeline-analyst`, `pipeline-forecast` (core-ops)
-- **Called by:** relationships (new-business bucket), daily-brief planning, delivery, time-tracking, and forecast schedules
+`pipeline-analyst`, `pipeline-forecast` (ops)
+- **Called by:** growth (new-business bucket), briefing planning, clients, admin, and forecast schedules
 - **Returns:** ranked pipeline analysis / forward projection
 
-`news-curator`, `post-assembler` (news-curator)
+`research`, `post-assembler` (research)
 - **Called by:** `/ai-roundup`
 - **Returns:** scanned-and-ranked stories / drafted post in user's voice
 
 ---
 
-## Relationships plugin
+## Growth plugin
 
 `<config-root>/plugins/relationships.user-context.md`
-- **Writer:** relationships `/setup-relationships`
-- **Readers:** relationships `/relationships`, `/network-rebalance`, `/draft-touchpoint`, `/relationships-action`
+- **Writer:** growth `/setup-relationships`
+- **Readers:** growth `/relationships`, `/network-rebalance`, `/draft-touchpoint`, `/relationships-action`
 - **Sections (v0.3.0+):** `## Identity`, `## Companion plugins`, `## ICP & signal sourcing`, `## Referral network`, `## Tiers`, `## Close personal track`, `## Buckets`, `## Network-expansion voices`, `## Time budget`, `## Scoring overrides`, `## Standalone-install fallbacks`, `## Provenance`.
-- **Peer-import behavior:** identity, voice, and CRM are read from their canonical Cortex, voice, and core-ops files when present. ICP, Apollo/signal preferences, referral taxonomy, and cooling rules are native to relationships as of v0.3.0; setup may migrate them once from legacy lead-engine/referral-engine config files, but runtime does not depend on those retired plugins.
-- **Version:** added in relationships v0.1.0; native signal/referral sections added in v0.3.0.
+- **Peer-import behavior:** identity, voice, and CRM are read from their canonical Cortex, comms, and ops files when present. ICP, Apollo/signal preferences, referral taxonomy, and cooling rules are native to growth as of v0.3.0; setup may migrate them once from legacy lead-engine/referral-engine config files, but runtime does not depend on those retired plugins.
+- **Version:** added in growth v0.1.0; native signal/referral sections added in v0.3.0.
 
 `<config-root>/relationships/today.md`
-- **Writer:** relationships `/relationships` (Phase 2)
-- **Readers:** humans, Obsidian, daily-brief (loose-coupling integration TBD), future web-app / Operator desktop reader
+- **Writer:** growth `/relationships` (Phase 2)
+- **Readers:** humans, Obsidian, briefing (loose-coupling integration TBD), future web-app / Operator desktop reader
 - **Format:** markdown brief — header + 3 buckets × 3 options × (person + why-now + channel + time + draft body) + carrying footnote
-- **Version:** added in relationships v0.1.0
+- **Version:** added in growth v0.1.0
 
 `<config-root>/relationships/<YYYY-MM-DD>.md`
-- **Writer:** relationships `/relationships` (date-stamped copy of today.md; today.md is symlinked or duplicated)
+- **Writer:** growth `/relationships` (date-stamped copy of today.md; today.md is symlinked or duplicated)
 - **Readers:** historical audit, Obsidian daily-notes (if folder is included in daily-notes config), future web-app
-- **Version:** added in relationships v0.1.0
+- **Version:** added in growth v0.1.0
 
 `<config-root>/relationships/today.json`
-- **Writer:** relationships `/relationships`
-- **Readers:** future web-app, Operator desktop, daily-brief render layer (if tight coupling adopted later), sync daemon
-- **Format:** see relationships `references/today-json-schema.md`. Schema version `0.1.0`. Includes `brief_id` (UUID v4) and stable option IDs in form `<bucket>_<slug>_<date>`.
-- **Version:** added in relationships v0.1.0; stable-ID + brief_id added in v0.1.1
+- **Writer:** growth `/relationships`
+- **Readers:** future web-app, Operator desktop, briefing render layer (if tight coupling adopted later), sync daemon
+- **Format:** see growth `references/today-json-schema.md`. Schema version `0.1.0`. Includes `brief_id` (UUID v4) and stable option IDs in form `<bucket>_<slug>_<date>`.
+- **Version:** added in growth v0.1.0; stable-ID + brief_id added in v0.1.1
 
 `<config-root>/relationships/events.jsonl`
-- **Writer:** relationships `/relationships-action` (and inline path in `/relationships` Step 7 — both write the same event shape)
+- **Writer:** growth `/relationships-action` (and inline path in `/relationships` Step 7 — both write the same event shape)
 - **Readers:** future web-app (analytics: completion rate, channel mix, response time, late-action patterns), `/relationships-stats` (future)
-- **Format:** append-only newline-delimited JSON. One event per line. See relationships `commands/relationships-action.md` Step 3 for the event shape.
+- **Format:** append-only newline-delimited JSON. One event per line. See growth `commands/relationships-action.md` Step 3 for the event shape.
 - **Append rule:** never modify prior entries. Atomic appends only.
-- **Version:** added in relationships v0.1.1
+- **Version:** added in growth v0.1.1
 
 `<config-root>/relationships/snoozes.json`
-- **Writer:** relationships `/relationships-action` when `action: snoozed`
-- **Readers:** relationships `/relationships` Step 3 (filter candidate pool against active snoozes), future web-app
+- **Writer:** growth `/relationships-action` when `action: snoozed`
+- **Readers:** growth `/relationships` Step 3 (filter candidate pool against active snoozes), future web-app
 - **Format:** JSON array of `{ slug, until_date, reason?, snoozed_at, brief_id }` objects. Entries with `until_date < today` are auto-expired (kept for audit).
-- **Version:** added in relationships v0.1.1
+- **Version:** added in growth v0.1.1
 
 `<config-root>/relationships/inbox/` (directory)
 - **Writer:** future UI / sync daemon — drops `<uuid>.json` event payloads here
-- **Reader:** relationships `/relationships-action --file=<path>` — processes one event per invocation, moves file to `inbox/processed/` on success or `inbox/quarantine/` if malformed
-- **Format:** JSON event payload per file. See relationships `commands/relationships-action.md` Step 1 for the schema.
-- **Version:** added in relationships v0.1.1
+- **Reader:** growth `/relationships-action --file=<path>` — processes one event per invocation, moves file to `inbox/processed/` on success or `inbox/quarantine/` if malformed
+- **Format:** JSON event payload per file. See growth `commands/relationships-action.md` Step 1 for the schema.
+- **Version:** added in growth v0.1.1
 
 `<config-root>/relationships/templates/<channel>/<scenario>.md` (optional user overrides)
 - **Writer:** user (manually)
-- **Readers:** relationships template loader — overrides bundled defaults by filename
-- **Format:** frontmatter schema documented at relationships `references/templates/README.md`
-- **Version:** added in relationships v0.1.0
+- **Readers:** growth template loader — overrides bundled defaults by filename
+- **Format:** frontmatter schema documented at growth `references/templates/README.md`
+- **Version:** added in growth v0.1.0
 
 `<config-root>/memory/team/<slug>.md` (cortex-owned; internal team members)
-- **Convention emerging from relationships v0.1.x:** internal team members (BrightWay contractors, employees) live under `memory/team/` instead of `memory/person/`. The relationships plugin **explicitly does not scope `team/` into its daily-brief candidate pool** — internal team are collaborators, not subjects of relationship maintenance.
+- **Convention emerging from growth v0.1.x:** internal team members (BrightWay contractors, employees) live under `memory/team/` instead of `memory/person/`. The growth plugin **explicitly does not scope `team/` into its briefing candidate pool** — internal team are collaborators, not subjects of relationship maintenance.
 - **Migration trigger:** `/network-rebalance` proposes migrating a `person/` page to `team/` when the page indicates an internal-team role (same-domain email, "Role at BrightWay" section, contractor agreement, etc.). User-gated.
 - **Cortex coordination (still pending formal cortex schema bump):** formalize `team/` as a recognized node type in `cortex/references/node-taxonomy.md`. Cortex v4.12.0 shipped memory-as-git + sync-linked-entities + DASHBOARD provenance but did NOT include the `team/` taxonomy formalization — that remains a separate cortex PR. Until then, `team/` works because cortex is permissive about new prefixes (the indexer walks all `memory/*/` subdirs).
 
-`<config-root>/memory/person/<slug>.md` (cortex-owned; relationships reads + appends additively)
+`<config-root>/memory/person/<slug>.md` (cortex-owned; growth reads + appends additively)
 - **Existing writer:** cortex (graduation, /recall, /remember)
-- **New behavior:** relationships `/relationships` Step 7 appends to **## Recent interactions** log when the user marks a card "done." Never modifies Identity, Notes, or other sections.
-- **Schema additions (additive YAML frontmatter under the `relationships:` namespace):** `tier`, `intent` (v0.2.0+), `buckets`, `relationship_class`, `icp_fit`, `next_touch_target`, `cadence_days_override` (v0.2.0+), `preferred_channels` (array, v0.1.2+; single `preferred_channel` accepted for backward compat), `generosity_ledger`. The `intent` field encodes the dynamic of engagement (client_delivery / drive_active / door_opening / reciprocal / advising / content_share / keep_warm / passive_visibility / awaiting_reply) as an axis orthogonal to but constrained by `tier`. See relationships `references/person-page-extensions.md` for the full schema and validation rules.
+- **New behavior:** growth `/relationships` Step 7 appends to **## Recent interactions** log when the user marks a card "done." Never modifies Identity, Notes, or other sections.
+- **Schema additions (additive YAML frontmatter under the `relationships:` namespace):** `tier`, `intent` (v0.2.0+), `buckets`, `relationship_class`, `icp_fit`, `next_touch_target`, `cadence_days_override` (v0.2.0+), `preferred_channels` (array, v0.1.2+; single `preferred_channel` accepted for backward compat), `generosity_ledger`. The `intent` field encodes the dynamic of engagement (client_delivery / drive_active / door_opening / reciprocal / advising / content_share / keep_warm / passive_visibility / awaiting_reply) as an axis orthogonal to but constrained by `tier`. See growth `references/person-page-extensions.md` for the full schema and validation rules.
 - **Cortex coordination:** small additive schema bump (candidate cortex v4.12.0). Existing pages remain valid; plugin treats missing frontmatter as sensible defaults. Future plugins writing to person pages should use their own frontmatter namespace (e.g., `referral_engine:`, `weekly_outreach:`) to avoid collisions.
 
 ---
@@ -336,14 +336,14 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 ---
 
-## Cross-plugin: daily-brief artifact id ↔ cortex /end-day Step 5
+## Cross-plugin: briefing artifact id ↔ cortex /end-day Step 5
 
 `mcp__cowork__update_artifact(id: "todays-brief", ...)` — the canonical interactive brief surface
 - **Writers:**
-  - daily-brief `/brief` (Steps 3-3a — render full artifact)
+  - briefing `/brief` (Steps 3-3a — render full artifact)
   - cortex `/end-day` Step 5 (pre-stage tomorrow's brief; uses same `todays-brief` id and same 5-section canonical format)
 - **Readers:**
-  - daily-brief `/process-brief` Step 1 (reads `tasks` + `annotations` + `outreach_actions` via `read_widget_context`)
+  - briefing `/process-brief` Step 1 (reads `tasks` + `annotations` + `outreach_actions` via `read_widget_context`)
   - cortex `/end-day` **Step 2c** (mines `tasks` + `annotations` + `outreach_actions` → memory write-backs + suppression learning) and Step 4.0 (reflection pre-fill)
   - humans via Cowork artifact UI
 - **Artifact id rule:** the id is ALWAYS `todays-brief` — both plugins reference the same persistent surface. **Never** create a new artifact with a different id. Never produce a markdown-only fallback when Cowork is available.
@@ -356,17 +356,17 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Template layout source (v0.5.0):** `references/brief-artifact-template.html` follows the handoff spec-v2 reference (`todays-brief.reference-2026-06-09.html`). The visual calendar strip is built client-side by `buildTimeline()` from a JS `BLOCKS` array — the skill fills `{{TL_BLOCKS_JSON}}` (decimal-hour `{s,e,label,cls}`, cls meeting/focus/personal) + `{{TL_START_HOUR}}`/`{{TL_END_HOUR}}`, NOT pre-positioned divs. Token scheme: `{{DATE_LONG}}`/`{{DATE_ISO}}`/`{{CENTER_OF_GRAVITY}}`/`{{EVENT_*}}`/`{{TASK_*}}`/`{{CONTACT_*}}`/`{{REFLECT_*}}` + tokenized `cowork-artifact-meta` (`{{META_DESCRIPTION}}`/`{{META_MCP_TOOLS}}`/`{{META_MCP_SERVERS}}`) + auto-sync tokens (v0.6.1: `{{FS_WRITE_TOOL}}` = verified fully-qualified MCP write tool or empty, `{{STATE_MIRROR_PATH}}` = absolute state-file path). Outreach signal auto-fills by emitting the matching `<option>` first.
 - **localStorage state contract (canonical v0.6.0 shape):** SINGLE JSON-blob at key `brief-YYYY-MM-DD`: `{schema_version:"0.6.0", tasks:{<task_id>:{action,detail,priority,reprioritized,ts,name}}, annotations:{<item_id>:str}, outreach_actions:{<id>:{name,action,bucket,signal,value_add,detail,ts}}, tasks_checked:{<task_id>:bool}, last_interaction_at:iso8601}`. `tasks_checked` is a **back-compat mirror** — the template sets it `(action==="done")` on every task action so v0.4.x readers keep working; new readers use `tasks`. `outreach_actions.detail` is **reader-optional** — the v2 brief UI has no outreach detail prompt, so it's typically absent; readers that defer on `skip` default to ~3 days when it's empty.
 - **Brief-state read chain (v0.6.1 + cortex v4.13.2):** localStorage is sandboxed inside the artifact and Cowork exposes **no widget-context handle for persisted artifacts**, so readers (`/end-day` Step 2c + 4.0, `/process-brief` Step 1) use: **(1)** state-mirror file `<config-root>/briefs/<date>.state.json` → **(2)** `read_widget_context` (legacy) → **(3)** paste path (user clicks 🔄 Sync for end-day, pastes blob; reader validates and writes the state file itself) → **(4)** `/end-day`'s multi-select fallback gate.
-- **State-mirror file contract:** `<config-root>/briefs/<date>.state.json` — verbatim copy of the localStorage blob. **Writers:** the artifact's `mirrorState()` on every action, but ONLY when `/brief` Step 3.0 resolved a filesystem MCP write tool, verified it in-session, and declared it in the artifact's `mcp_tools` allowlist (the Cowork sandbox rejects undeclared / non-`mcp__<server>__<tool>` names, and has no built-in file access — this is why the v0.6.0 mirror silently never fired); `/brief` Step 3.0's verify-write (empty blob if missing — a zero-action day still yields a file); `/end-day` 2c.0p + `/process-brief` paste paths. **Readers:** cortex `/end-day` Step 2c/4.0, daily-brief `/process-brief`. Freshness: readers treat a file whose `last_interaction_at` predates the target date as absent.
-- **Brief filtering contract:** daily-brief `/brief` reads `<config-root>/memory/me/surfacing-prefs.md` and filters priority tasks + outreach before render. cortex `/end-day` Step 2c.3 writes that file (not_important actions + repeat-ignore rule). See the surfacing-prefs contract below.
-- **Tomorrow seed contract:** cortex `/end-day` Steps 4.5/4.6 write `<config-root>/briefs/<tomorrow>.seed.json` `{priorities:[...], outreach:[...]}`; daily-brief `/brief` reads it (when `target_date` matches) to seed sections 3 & 4.
+- **State-mirror file contract:** `<config-root>/briefs/<date>.state.json` — verbatim copy of the localStorage blob. **Writers:** the artifact's `mirrorState()` on every action, but ONLY when `/brief` Step 3.0 resolved a filesystem MCP write tool, verified it in-session, and declared it in the artifact's `mcp_tools` allowlist (the Cowork sandbox rejects undeclared / non-`mcp__<server>__<tool>` names, and has no built-in file access — this is why the v0.6.0 mirror silently never fired); `/brief` Step 3.0's verify-write (empty blob if missing — a zero-action day still yields a file); `/end-day` 2c.0p + `/process-brief` paste paths. **Readers:** cortex `/end-day` Step 2c/4.0, briefing `/process-brief`. Freshness: readers treat a file whose `last_interaction_at` predates the target date as absent.
+- **Brief filtering contract:** briefing `/brief` reads `<config-root>/memory/me/surfacing-prefs.md` and filters priority tasks + outreach before render. cortex `/end-day` Step 2c.3 writes that file (not_important actions + repeat-ignore rule). See the surfacing-prefs contract below.
+- **Tomorrow seed contract:** cortex `/end-day` Steps 4.5/4.6 write `<config-root>/briefs/<tomorrow>.seed.json` `{priorities:[...], outreach:[...]}`; briefing `/brief` reads it (when `target_date` matches) to seed sections 3 & 4.
 - **Data-flow trace for annotations:** content may transit artifact localStorage → `.state.json` mirror (or paste path) → cortex `/end-day` Step 2c/4.0 → memory write-backs / reflection prompts → `<config-root>/briefs/<today>.md` + `memory/me/reflections.md` → if memory-as-git enabled, committed. **`/end-day` sanitizes annotations** (paraphrase, do NOT copy verbatim) to keep sensitive client content out of the committed trail.
-- **Version:** daily-brief v0.6.1 + cortex v4.13.2 (state-mirror fix + paste path, 2026-07-07; base 5-section format from daily-brief v0.5.0 + cortex v4.13.0, 2026-06-08).
+- **Version:** briefing v0.6.1 + cortex v4.13.2 (state-mirror fix + paste path, 2026-07-07; base 5-section format from briefing v0.5.0 + cortex v4.13.0, 2026-06-08).
 
-### surfacing-prefs.md (cortex /end-day writer ↔ daily-brief /brief reader)
+### surfacing-prefs.md (cortex /end-day writer ↔ briefing /brief reader)
 
 `<config-root>/memory/me/surfacing-prefs.md`
 - **Writer:** cortex `/end-day` Step 2c.3 (not_important actions + repeat-ignore rule); created from `cortex references/surfacing-prefs-template.md` if missing.
-- **Readers:** daily-brief `/brief` Step 0D (filters priority-task + outreach pulls before render); cortex miners (skip dismissed classes).
+- **Readers:** briefing `/brief` Step 0D (filters priority-task + outreach pulls before render); cortex miners (skip dismissed classes).
 - **Format:** markdown — `## Do-not-resurface`, `## Surfacing rules`, `## Action taxonomy (brief priority tasks)`, `## Outreach action taxonomy`, `## Changelog`.
 - **Related:** per-task skip counts in `<config-root>/memory/.brief-skip-counts.json` (`{task_id:{count,last_skipped,title}}`).
 
@@ -389,10 +389,10 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 ---
 
-## events.jsonl unified shape (relationships v0.2.2+)
+## events.jsonl unified shape (growth v0.2.2+)
 
 `<config-root>/relationships/events.jsonl`
-- **Writers:** relationships `/relationships-action`, `/relationships` Step 7, `/touchpoint`. All three append using the unified v0.2.2 shape.
+- **Writers:** growth `/relationships-action`, `/relationships` Step 7, `/touchpoint`. All three append using the unified v0.2.2 shape.
 - **Reader contract — v0.2.2 unified shape:**
   ```json
   {

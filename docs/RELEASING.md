@@ -37,7 +37,7 @@ decision in Claude instructions.
    explicitly. That override is appropriate only when snapshotting a different,
    already-published revision; it never includes uncommitted work.
 
-5. Run `$core-ops:test-connectors` or `/test-connectors` in each required host against
+5. Run `$ops:test-connectors` or `/test-connectors` in each required host against
    designated sandbox accounts. Save only the sanitized JSON reports under the
    candidate directory and list their relative paths in `connectorEvidence`.
 6. Validate the candidate:

@@ -41,7 +41,7 @@ BrightWayAI/<plugin-name>/          ← each plugin lives in its own repo
 
 For changes to a specific plugin:
 
-1. **Fork the plugin repo** (e.g., `BrightWayAI/relationships` → `yourname/relationships`).
+1. **Fork the plugin repo** (e.g., `BrightWayAI/growth` → `yourname/growth`).
 2. **Create a feature branch** from `main`.
 3. **Make your changes** following the conventions below.
 4. **Open a PR** against `BrightWayAI/<plugin-name>:main`.

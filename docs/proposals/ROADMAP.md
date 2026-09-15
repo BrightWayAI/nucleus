@@ -17,8 +17,8 @@ This is the active roadmap. **Top-level `docs/proposals/*.md` = open / not-yet-b
 
 | Shipped as | Spec |
 |---|---|
-| daily-brief v0.5.0 + cortex v4.13.0 + core-ops v0.3.2 | `shipped/end-day-routine-improvement.md` |
-| cortex v4.12.0 + v4.13.0 + core-ops v0.3.2 (memory-as-git) | `shipped/memory-as-git.md` |
+| briefing v0.5.0 + cortex v4.13.0 + ops v0.3.2 | `shipped/end-day-routine-improvement.md` |
+| cortex v4.12.0 + v4.13.0 + ops v0.3.2 (memory-as-git) | `shipped/memory-as-git.md` |
 | nucleus-router v0.2.0 + cortex v4.9.0 | `shipped/chief-of-staff-evolution.md` |
 | relationships v0.1.0 → v0.2.3 | `shipped/relationships-plugin.md` |
 | cortex v4.10.0 (wikilinks) | `shipped/wikilink-density.md` |

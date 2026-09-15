@@ -8,7 +8,7 @@
       "name": "cortex",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/claude-cortex.git"
+        "url": "https://github.com/BrightWayAI/cortex.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -17,10 +17,10 @@
       "category": "Productivity"
     },
     {
-      "name": "weekly-alignment",
+      "name": "alignment",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/weekly-alignment.git"
+        "url": "https://github.com/BrightWayAI/alignment.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -29,10 +29,10 @@
       "category": "Teamwork"
     },
     {
-      "name": "core-ops",
+      "name": "ops",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/core-ops.git"
+        "url": "https://github.com/BrightWayAI/ops.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -41,10 +41,10 @@
       "category": "Business"
     },
     {
-      "name": "news-curator",
+      "name": "research",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/news-curator.git"
+        "url": "https://github.com/BrightWayAI/research.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -53,10 +53,10 @@
       "category": "Research"
     },
     {
-      "name": "delivery",
+      "name": "clients",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/delivery.git"
+        "url": "https://github.com/BrightWayAI/clients.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -65,10 +65,10 @@
       "category": "Productivity"
     },
     {
-      "name": "time-tracking",
+      "name": "admin",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/time-tracking.git"
+        "url": "https://github.com/BrightWayAI/admin.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -77,10 +77,10 @@
       "category": "Business"
     },
     {
-      "name": "relationships",
+      "name": "growth",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/relationships.git"
+        "url": "https://github.com/BrightWayAI/growth.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -89,10 +89,10 @@
       "category": "Sales"
     },
     {
-      "name": "voice",
+      "name": "comms",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/voice.git"
+        "url": "https://github.com/BrightWayAI/comms.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -101,10 +101,10 @@
       "category": "Writing"
     },
     {
-      "name": "daily-brief",
+      "name": "briefing",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/daily-brief.git"
+        "url": "https://github.com/BrightWayAI/briefing.git"
       },
       "policy": {
         "installation": "AVAILABLE",

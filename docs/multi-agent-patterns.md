@@ -2,7 +2,7 @@
 
 Patterns for chaining subagents inside a single skill or slash command. Use this when a workflow needs research → analyze → synthesize → draft → review across multiple specialist agents.
 
-This is a pattern doc for plugin authors, not a runtime artifact. The patterns here are already used in `news-curator/ai-roundup` (news-curator → user-pick → post-assembler) and `relationships` (relationships-director in rank or research mode). Documenting them keeps future plugins consistent.
+This is a pattern doc for plugin authors, not a runtime artifact. The patterns here are already used in `research/roundup` (research → user-pick → post-assembler) and `growth` (relationships-director in rank or research mode). Documenting them keeps future plugins consistent.
 
 ---
 
@@ -51,7 +51,7 @@ Skill (parent context)
    - Skip Agent 2 and report the gap directly
    - Proceed with the chain but flag the limitation in the final output
 
-   See the confidence-aware delegation pattern in consumers such as `relationships`, `delivery/client-status`, and `news-curator`.
+   See the confidence-aware delegation pattern in consumers such as `growth`, `clients/client-status`, and `research`.
 
 5. **Don't re-invoke an agent for the same brief twice.** Cache outputs in the conversation context; reference them by structure rather than re-querying. Agents are expensive — re-running them in a chain step that already has the data is waste.
 
@@ -59,12 +59,12 @@ Skill (parent context)
 
 ## Examples in the marketplace
 
-### `news-curator/ai-roundup` — three-step chain
+### `research/roundup` — three-step chain
 
 ```
 /ai-roundup
   ↓
-  Step 2: news-curator agent → top 10 candidates with scores + themes
+  Step 2: research agent → top 10 candidates with scores + themes
   ↓
   Step 3: USER GATE — show candidates, user picks 5-7
   ↓
@@ -77,7 +77,7 @@ Skill (parent context)
 
 **Why this shape:** scanning is expensive (web fetches), drafting is voice-sensitive. The user gate after scanning lets editorial judgment shape the input to drafting. Without the gate, the post would draft from whatever the agent ranked highest — which is fine, but loses voice control.
 
-### `relationships` — per-bucket fan-out with optional deepening
+### `growth` — per-bucket fan-out with optional deepening
 
 ```
 /relationships
@@ -101,7 +101,7 @@ Skill (parent context)
 
 **Why this shape:** ranking + scoring is heavy context work (per-candidate signal aggregation across Cortex + CRM + mail + hot.md) — the parent skill would bloat if it ran the math inline. Delegating per bucket lets each ranking call load only what it needs. Drafting stays in the parent because voice rules, templates, and user context live there. Thin cards reuse the same director in research mode rather than introducing a second role.
 
-### `weekly-alignment` — one mode-dispatched read-only agent
+### `alignment` — one mode-dispatched read-only agent
 
 ```
 Skill (/scan, /daily-pulse, or /report)

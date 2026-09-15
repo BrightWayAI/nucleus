@@ -138,7 +138,7 @@ The 0.75 similarity threshold is a v1 guess. Real usage will tell us if it's too
 | **Autonomy slider** | New mapping: `autonomy: heartbeat.sweep: <mode>`. Values: `suggest` (default — heartbeat runs, stages drafts silently), `manual` (heartbeat disabled — explicit `/sweep` only), `confirm` (heartbeat asks before each tick — useful for testing, annoying for daily use). `auto` is meaningless here since sweep doesn't act. |
 | **`/diagnose`** | Reports sweep health: last run timestamp, ticks/day average, proposals/tick average, dedup rate, drift between expected vs actual cadence (Cowork cron reliability check). |
 | **`/cleanup`** | Adds a section that walks old `staged/heartbeat-drafts/archive/` files; offers to delete reviewed drafts > 60 days old. |
-| **`core-ops` schedule library** | Adds row: `sweep-hourly` cron `0 */3 8-18 * *` (every 3h between 8am-6pm). Actual hours come from identity.md working hours — schedule entry is a hint, /sweep enforces. |
+| **`ops` schedule library** | Adds row: `sweep-hourly` cron `0 */3 8-18 * *` (every 3h between 8am-6pm). Actual hours come from identity.md working hours — schedule entry is a hint, /sweep enforces. |
 | **`/start-nucleus` walker** | Adds an offer in the post-foundational stage: "Want to enable the `/sweep` heartbeat? Fires every 3h during work hours; stages proposed memory entries for `/end-day` review. (y / skip)" |
 
 ---
@@ -205,7 +205,7 @@ For v1, prefer scenario 1. If we discover scenario 2, defer `/sweep` until the O
 ### Days 1-2 — Cron + schema
 
 - Verify Cowork sub-daily cron support (or document fallback to launchd/systemd).
-- Add `sweep-hourly` row to `core-ops/references/schedules.template.md` (cron `0 */3 * * *`, narrowed to work hours by `/sweep` itself).
+- Add `sweep-hourly` row to `ops/references/schedules.template.md` (cron `0 */3 * * *`, narrowed to work hours by `/sweep` itself).
 - Add `<config-root>/memory/staged/heartbeat-drafts/` directory creation to `/setup-identity` Step 3.5 (alongside `.gitignore` write).
 - Write the heartbeat state schema (`.state.json` shape).
 
