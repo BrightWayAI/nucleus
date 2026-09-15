@@ -12,6 +12,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+from catalog import PLUGIN_REPOSITORIES
 from validate_connector_report import load_json, validate_report
 
 
@@ -21,21 +22,7 @@ RELEASES_ROOT = ROOT / "releases"
 PLAN_PATH = ROOT / "connector-tests" / "plan.json"
 RELEASE_ID = re.compile(r"^[0-9]{4}\.[0-9]{2}\.[0-9]+(?:[-.][0-9A-Za-z]+)*$")
 SHA = re.compile(r"^[0-9a-f]{40}$")
-PLUGINS = [
-    ("nucleus-router", "nucleus-router"),
-    ("cortex", "claude-cortex"),
-    ("lead-engine", "lead-engine"),
-    ("weekly-alignment", "weekly-alignment"),
-    ("core-ops", "core-ops"),
-    ("news-curator", "news-curator"),
-    ("project-setup", "project-setup"),
-    ("time-tracking", "time-tracking"),
-    ("client-status", "client-status"),
-    ("referral-engine", "referral-engine"),
-    ("relationships", "relationships"),
-    ("writing-style", "writing-style"),
-    ("daily-brief", "daily-brief"),
-]
+PLUGINS = [(name, repo) for name, repo, _ in PLUGIN_REPOSITORIES]
 
 
 def dump_json(value: object) -> str:
@@ -272,12 +259,11 @@ def check_release(release_id: str, verify_checkouts: bool, require_live: bool) -
     if snapshot.get("release") != release_id:
         errors.append("release ID does not match directory name")
     rows = snapshot.get("plugins")
-    expected_names = [name for name, _ in PLUGINS]
     if not isinstance(rows, list):
         return errors + ["release.plugins must be an array"]
     names = [row.get("name") for row in rows if isinstance(row, dict)]
-    if names != expected_names:
-        errors.append("release plugin order/names differ from the canonical catalog")
+    if len(names) != len(set(names)):
+        errors.append("release plugin names must be unique")
     for row in rows:
         if not isinstance(row, dict):
             errors.append("release plugin entry must be an object")

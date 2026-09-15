@@ -11,24 +11,11 @@ import sys
 import tempfile
 from pathlib import Path
 
+from catalog import PLUGIN_NAMES, PLUGIN_REPOSITORIES
+
 
 NUCLEUS_ROOT = Path(__file__).resolve().parents[1]
 LAB_ROOT = NUCLEUS_ROOT.parent
-PLUGIN_NAMES = [
-    "nucleus-router",
-    "claude-cortex",
-    "lead-engine",
-    "weekly-alignment",
-    "core-ops",
-    "news-curator",
-    "project-setup",
-    "time-tracking",
-    "client-status",
-    "referral-engine",
-    "relationships",
-    "writing-style",
-    "daily-brief",
-]
 SEMVER = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
 
 
@@ -61,9 +48,8 @@ def frontmatter(path: Path, errors: list[str]) -> dict[str, str]:
     return fields
 
 
-def check_manifest(repo: Path, errors: list[str]) -> tuple[str, str]:
+def check_manifest(repo: Path, expected_name: str, errors: list[str]) -> str:
     manifest = load_json(repo / ".codex-plugin" / "plugin.json", errors)
-    expected_name = "cortex" if repo.name == "claude-cortex" else repo.name
     require(manifest.get("name") == expected_name, f"manifest name mismatch: {repo.name}", errors)
     version = str(manifest.get("version", ""))
     require(bool(SEMVER.match(version)), f"invalid semver in {repo.name}: {version}", errors)
@@ -74,7 +60,7 @@ def check_manifest(repo: Path, errors: list[str]) -> tuple[str, str]:
     require(isinstance(prompts, list) and len(prompts) <= 3, f"too many default prompts: {repo.name}", errors)
     for prompt in prompts if isinstance(prompts, list) else []:
         require(len(prompt) <= 128, f"default prompt over 128 chars: {repo.name}", errors)
-    return expected_name, version
+    return version
 
 
 def check_skills(repo: Path, errors: list[str]) -> None:
@@ -108,8 +94,6 @@ def check_agents(repo: Path, errors: list[str]) -> None:
     if not source.is_dir():
         return
     for role in source.glob("*.md"):
-        if repo.name == "claude-cortex" and role.stem == "conversation-miner":
-            continue
         binding = repo / ".codex" / "agents" / f"{role.stem}.toml"
         require(binding.exists(), f"agent has no Codex binding: {repo.name}/{role.stem}", errors)
         if binding.exists():
@@ -161,9 +145,9 @@ def main() -> int:
 
     native = load_json(NUCLEUS_ROOT / ".agents" / "plugins" / "marketplace.json", errors)
     native_entries = native.get("plugins", [])
-    require(len(native_entries) == 13, "native marketplace must contain 13 plugins", errors)
+    require(len(native_entries) == len(PLUGIN_NAMES), "native marketplace must contain 9 plugins", errors)
     native_names = [entry.get("name") for entry in native_entries]
-    require(native_names == ["nucleus-router", "cortex", *PLUGIN_NAMES[2:]], "native marketplace ordering/names differ", errors)
+    require(native_names == list(PLUGIN_NAMES), "native marketplace ordering/names differ", errors)
     for entry in native_entries:
         source = entry.get("source", {})
         require(source.get("source") == "url", f"native source is not url: {entry.get('name')}", errors)
@@ -186,28 +170,26 @@ def main() -> int:
 
     claude = load_json(NUCLEUS_ROOT / ".claude-plugin" / "marketplace.json", errors)
     claude_versions = {entry.get("name"): str(entry.get("version")) for entry in claude.get("plugins", [])}
-    for repo_name in PLUGIN_NAMES:
+    for plugin_name, repo_name, claude_name in PLUGIN_REPOSITORIES:
         repo = LAB_ROOT / repo_name
         require(repo.is_dir(), f"missing repository: {repo_name}", errors)
         if not repo.is_dir():
             continue
-        manifest_name, version = check_manifest(repo, errors)
-        catalog_name = "claude-cortex" if manifest_name == "cortex" else manifest_name
-        require(claude_versions.get(catalog_name) == version, f"catalog version mismatch: {repo_name}", errors)
+        version = check_manifest(repo, plugin_name, errors)
+        require(claude_versions.get(claude_name) == version, f"catalog version mismatch: {repo_name}", errors)
         check_skills(repo, errors)
         check_agents(repo, errors)
         require((repo / "AGENTS.md").exists(), f"missing AGENTS.md: {repo_name}", errors)
         require((repo / "references" / "openai-portability.md").exists() or repo_name == "claude-cortex", f"missing portability contract: {repo_name}", errors)
 
-    lead_skill = (LAB_ROOT / "lead-engine" / "skills" / "lead-engine" / "SKILL.md").read_text()
-    require("`references/pipeline.md`" not in lead_skill, "lead-engine still writes plugin-relative pipeline", errors)
-    router = (LAB_ROOT / "nucleus-router" / "skills" / "route" / "SKILL.md").read_text()
-    require("| bizdev-outreach |" not in router and "| weekly-outreach |" not in router, "router still routes to retired plugins", errors)
-    require(
-        "`/test-connectors`" in router and "certify this release" in router,
-        "router does not expose connector release certification",
-        errors,
-    )
+    retired = {"nucleus-router", "lead-engine", "project-setup", "client-status", "referral-engine", "writing-style"}
+    require(not retired.intersection(native_names), "native marketplace contains retired plugins", errors)
+    require(not retired.intersection(claude_versions), "Claude marketplace contains retired plugins", errors)
+    require((LAB_ROOT / "core-ops" / "commands" / "cos.md").exists(), "core-ops is missing the chief-of-staff entrypoint", errors)
+    for command in ("pull-signals", "capture-signal", "pre-call-brief"):
+        require((LAB_ROOT / "relationships" / "commands" / f"{command}.md").exists(), f"relationships is missing absorbed command: {command}", errors)
+    for command in ("project-setup", "client-status", "review-deliverable"):
+        require((LAB_ROOT / "delivery" / "commands" / f"{command}.md").exists(), f"delivery is missing absorbed command: {command}", errors)
     check_config_root_fixture(errors)
 
     releases = subprocess.run(
@@ -224,7 +206,7 @@ def main() -> int:
         for error in errors:
             print(f"- {error}")
         return 1
-    print("Nucleus OpenAI ecosystem check passed (13 plugins; fixture-only config-root tests).")
+    print("Nucleus OpenAI ecosystem check passed (9 plugins; fixture-only config-root tests).")
     return 0
 
 

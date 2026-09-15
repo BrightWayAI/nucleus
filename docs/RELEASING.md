@@ -7,7 +7,7 @@ Nucleus has two catalog channels:
   OpenAI marketplace pins every plugin to a full Git commit SHA.
 
 The release contract is `release.json`. It records the version and commit for all
-13 plugins plus the live-connector evidence required before promotion. OpenAI's
+9 plugins plus the live-connector evidence required before promotion. OpenAI's
 GitHub marketplace format supports full commit SHA pins. Claude consumes the same
 plugin versions and shared release contract; do not maintain a separate release
 decision in Claude instructions.
@@ -15,7 +15,7 @@ decision in Claude instructions.
 ## Prepare a candidate
 
 1. Merge and push every participating plugin change.
-2. Confirm all 13 sibling checkouts are clean and on their intended release commits.
+2. Confirm all 9 sibling checkouts are clean and on their intended release commits.
 3. Run the ecosystem checks:
 
    ```bash

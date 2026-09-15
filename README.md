@@ -337,7 +337,7 @@ See [multi-agent patterns](docs/multi-agent-patterns.md) and the
 
 ## Validation
 
-With the 11 repositories checked out as siblings:
+With Nucleus and the 9 plugin repositories checked out as siblings:
 
 ```bash
 python3 scripts/generate_openai_adapters.py --check
@@ -369,15 +369,15 @@ connection, pasted payload, or mocked response is not enough for a pass.
 
 | Plugin | Version |
 |---|---:|
-| cortex | 4.21.2 |
-| core-ops | 0.6.2 |
-| relationships | 0.3.4 |
-| news-curator | 0.2.6 |
-| delivery | 0.3.2 |
-| time-tracking | 0.2.6 |
-| weekly-alignment | 1.5.1 |
-| voice | 0.2.1 |
-| daily-brief | 0.6.8 |
+| cortex | 4.21.3 |
+| core-ops | 0.6.3 |
+| relationships | 0.3.5 |
+| news-curator | 0.2.7 |
+| delivery | 0.3.3 |
+| time-tracking | 0.2.7 |
+| weekly-alignment | 1.5.2 |
+| voice | 0.2.2 |
+| daily-brief | 0.6.9 |
 
 The native OpenAI catalog is
 [`/.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json). The

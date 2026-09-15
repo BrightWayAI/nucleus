@@ -1,6 +1,6 @@
 # Cross-plugin contracts
 
-_Enumerated 2026-05-20. Update whenever a plugin starts reading from or writing to a file owned by a different plugin._
+_Enumerated 2026-05-20; refreshed for the 9-plugin consolidation on 2026-09-15. Update whenever a plugin starts reading from or writing to a file owned by a different plugin._
 
 These are the **implicit file-format dependencies** between Nucleus plugins. Each row is a contract: one plugin owns the writer, another plugin reads. Changing either side without updating the other breaks the contract silently.
 
@@ -19,7 +19,7 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 `<config-root>/memory/me/voice.md`
 - **Writer:** cortex `/setup-voice` and voice `/style-learn`
-- **Readers:** relationships, lead-engine, news-curator (post-assembler), client-status, referral-engine, voice `/style`
+- **Readers:** relationships, news-curator (post-assembler), delivery `/client-status`, voice `/style`
 - **Format:** markdown with `## Tone`, `## Vocabulary`, `## Banned phrases`, `## Style rules` sections
 - **Version:** stable since cortex v4.0
 - **Note:** voice v0.x (formerly writing-style) adds entries via `/style-learn` two-stage triage; format remains compatible with cortex readers.
@@ -176,24 +176,24 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Returns:** synthesized summary with citations + confidence rating
 - **Contract:** read-only; never writes memory
 
-`transcript-reviewer`, `conversation-miner`, `activity-miner` (cortex)
+`note-taker` (cortex; mode: transcript / conversation / activity)
 - **Called by:** `/end-day` Step 2/2a, `/listen` Step 3, future `/sweep`
 - **Returns:** structured proposal list (type / target node / content / confidence / source)
 - **Contract:** read-only against memory; write only to `.commit-drafts/` (post-reorg: `staged/commit-drafts/`)
-- **Open: consolidation** — these three agents are slated for consolidation into one `miner` agent with `scope` param (see `cleanup-pass-1.md` item E). If consolidated, callers update accordingly.
+- **Version:** the three former mining roles were consolidated into this explicit mode-dispatched role in cortex v4.19.0.
 
 `gap-researcher` (cortex)
 - **Called by:** `/research-gaps`
 - **Returns:** web-researched proposals with ≥2-source rule + privacy rules
 - **Contract:** writes only to `staged/research-drafts/` (post-reorg)
 
-`contact-researcher` (lead-engine)
-- **Called by:** relationships (`/relationships`, `/draft-touchpoint`), lead-brief, lead-pull, referral-ask
-- **Returns:** deep single-contact research summary
+`relationships-director` (relationships; mode: rank / research)
+- **Called by:** relationships ranking and touchpoint workflows, including the absorbed signal and referral flows
+- **Returns:** ranked relationship actions or a deep single-contact research summary, according to the caller-selected mode
 - **Contract:** read-only against external systems (CRM, email, web); never writes
 
 `pipeline-analyst`, `pipeline-forecast` (core-ops)
-- **Called by:** relationships (new-business bucket), plan-tomorrow, monthly forecast schedule
+- **Called by:** relationships (new-business bucket), daily-brief planning, delivery, time-tracking, and forecast schedules
 - **Returns:** ranked pipeline analysis / forward projection
 
 `news-curator`, `post-assembler` (news-curator)
@@ -207,9 +207,9 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 `<config-root>/plugins/relationships.user-context.md`
 - **Writer:** relationships `/setup-relationships`
 - **Readers:** relationships `/relationships`, `/network-rebalance`, `/draft-touchpoint`, `/relationships-action`
-- **Sections (v0.1.1 — slimmed):** `## Identity` (minimal — for template variable filling only), `## Companion plugins` (runtime-detected), `## Tiers`, `## Close personal track`, `## Buckets`, `## Network-expansion voices`, `## Time budget`, `## Scoring overrides` (optional), `## Standalone-install fallbacks` (only populated when a peer file is missing), `## Provenance` (tracks which fields came from which peer file).
-- **Peer-import behavior (v0.1.1+):** at `/setup-relationships` time, the plugin reads from `<config-root>/memory/me/identity.md`, `<config-root>/memory/me/voice.md`, `<config-root>/plugins/{lead-engine,core-ops,referral-engine,bizdev-outreach,weekly-outreach,voice}.user-context.md` and cortex workstream nodes. **One-time import only — not runtime reads.** Identity, voice, ICP, CRM, Apollo, cooling rules live at their canonical peer files; the relationships plugin reads them live at runtime via the peer paths above.
-- **Version:** added in relationships v0.1.0; slimmed in v0.1.1
+- **Sections (v0.3.0+):** `## Identity`, `## Companion plugins`, `## ICP & signal sourcing`, `## Referral network`, `## Tiers`, `## Close personal track`, `## Buckets`, `## Network-expansion voices`, `## Time budget`, `## Scoring overrides`, `## Standalone-install fallbacks`, `## Provenance`.
+- **Peer-import behavior:** identity, voice, and CRM are read from their canonical Cortex, voice, and core-ops files when present. ICP, Apollo/signal preferences, referral taxonomy, and cooling rules are native to relationships as of v0.3.0; setup may migrate them once from legacy lead-engine/referral-engine config files, but runtime does not depend on those retired plugins.
+- **Version:** added in relationships v0.1.0; native signal/referral sections added in v0.3.0.
 
 `<config-root>/relationships/today.md`
 - **Writer:** relationships `/relationships` (Phase 2)

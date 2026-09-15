@@ -7,19 +7,19 @@
   "plugins": [
     {
       "name": "claude-cortex",
-      "version": "4.21.2",
+      "version": "4.21.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/claude-cortex"
       },
-      "description": "A host-portable Markdown second brain shared by Claude, ChatGPT Work, and Codex.",
+      "description": "Recall, search, and explicitly commit to one user-owned Cortex memory store from Claude, ChatGPT, or Codex.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "weekly-alignment",
-      "version": "1.5.1",
+      "version": "1.5.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/weekly-alignment"
@@ -31,19 +31,19 @@
     },
     {
       "name": "core-ops",
-      "version": "0.6.2",
+      "version": "0.6.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/core-ops"
       },
-      "description": "Natural-language chief-of-staff front door (/cos, replaces nucleus-router), CRM pipeline analysis, Nucleus health diagnostics, agent metrics, and schedule registration when the host supports them.",
+      "description": "Use a natural-language chief-of-staff front door, analyze CRM pipeline, inspect Nucleus health, record agent metrics, and register schedules when the host supports them.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "news-curator",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/news-curator"
@@ -55,19 +55,19 @@
     },
     {
       "name": "delivery",
-      "version": "0.3.2",
+      "version": "0.3.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/delivery"
       },
-      "description": "Client engagement lifecycle: start, status, QA. Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; run structured brand/quality QA on deliverables before you ship. Renamed from project-setup, 2026-09-15 — absorbs client-status and core-ops's review-deliverable.",
+      "description": "Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; and run structured deliverable QA.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "time-tracking",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/time-tracking"
@@ -79,31 +79,31 @@
     },
     {
       "name": "relationships",
-      "version": "0.3.4",
+      "version": "0.3.5",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/relationships"
       },
-      "description": "Build a daily relationship cockpit, rebalance a network, and create context-aware touchpoint drafts from shared identity, voice, and memory. Absorbs lead-engine (Apollo signal pipeline) and referral-engine (referral asks + cooling rules) as of 2026-09-15.",
+      "description": "Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, and create context-aware touchpoint drafts.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "voice",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/voice"
       },
-      "description": "Create voice-matched drafts, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence. Renamed from writing-style, 2026-09-15.",
+      "description": "Create voice-matched drafts, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "daily-brief",
-      "version": "0.6.8",
+      "version": "0.6.9",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/daily-brief"

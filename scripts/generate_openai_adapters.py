@@ -11,36 +11,27 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
+
+from catalog import PLUGIN_REPOSITORIES
 
 
 NUCLEUS_ROOT = Path(__file__).resolve().parents[1]
 LAB_ROOT = NUCLEUS_ROOT.parent
 
 PLUGINS = {
-    "nucleus-router": {
-        "version": "0.2.3",
-        "display": "Nucleus Router",
-        "short": "Route natural-language work to the right Nucleus capability",
-        "long": "Use one natural-language front door to select and sequence installed Nucleus workflows across memory, operations, relationships, and planning.",
+    "cortex": {
+        "display": "Cortex",
+        "short": "One shared second brain across AI hosts",
+        "long": "Recall, search, and explicitly commit to one user-owned Cortex memory store from Claude, ChatGPT, or Codex.",
         "category": "Productivity",
-        "capabilities": ["Read", "Interactive"],
-        "prompts": ["What can Nucleus do?", "Route this request to the right workflow.", "Show the Nucleus command map."],
-        "degraded": "If a referenced plugin is not installed, name the missing capability and offer the closest installed workflow. Never claim a route ran when it did not.",
-    },
-    "lead-engine": {
-        "version": "0.2.5",
-        "display": "Lead Engine",
-        "short": "Turn live buying signals into reviewable outreach drafts",
-        "long": "Capture and score buying signals, research contacts, draft warm outreach, manage follow-up cadence, and prepare call briefs without auto-sending.",
-        "category": "Sales",
-        "capabilities": ["Read", "Write", "Interactive"],
-        "prompts": ["Show my lead pipeline.", "Draft a signal-based message for this person.", "Prepare a pre-call brief."],
-        "degraded": "Apollo, LinkedIn, CRM, mail, and calendar access are optional connectors. Ask for pasted data or operate on local pipeline state when absent. Never simulate a connector or auto-send outreach.",
+        "capabilities": ["Read", "Write"],
+        "prompts": ["Set up my Cortex memory.", "Recall what we know about this topic.", "Show what this conversation would add before saving."],
+        "degraded": "Direct local-memory access requires a filesystem-capable host and permission to the resolved config root. Cloud sessions require the approved bounded bridge; never redirect memory to another store silently.",
     },
     "weekly-alignment": {
-        "version": "1.4.4",
         "display": "Weekly Alignment",
         "short": "Find cross-team overlaps, conflicts, and decision risks",
         "long": "Scan configured Slack sources for cross-team alignment signals and produce daily pulses, weekly reports, and risk updates.",
@@ -51,17 +42,15 @@ PLUGINS = {
         "skill_names": {"daily-pulse": "daily-pulse", "report": "report", "scan": "scan", "setup": "setup", "update-risks": "update-risks"},
     },
     "core-ops": {
-        "version": "0.4.0",
         "display": "Core Ops",
-        "short": "Run pipeline, delivery QA, diagnostics, and stack operations",
-        "long": "Analyze CRM pipeline, review deliverables, inspect Nucleus health, record agent metrics, and register schedules when the host supports them.",
+        "short": "Route work and run pipeline and stack operations",
+        "long": "Use a natural-language chief-of-staff front door, analyze CRM pipeline, inspect Nucleus health, record agent metrics, and register schedules when the host supports them.",
         "category": "Business",
         "capabilities": ["Read", "Write", "Interactive"],
-        "prompts": ["Analyze my pipeline.", "Review this client deliverable.", "Diagnose my Nucleus setup."],
-        "degraded": "CRM, document rendering, artifact, and scheduling capabilities are independent. Use available inputs, produce Markdown when rich artifacts are unavailable, and provide schedule definitions without claiming registration when no scheduler exists.",
+        "prompts": ["What can Nucleus do?", "Analyze my pipeline.", "Diagnose my Nucleus setup."],
+        "degraded": "CRM, artifacts, and scheduling are independent capabilities. Use available inputs, name missing specialist plugins, and provide schedule definitions without claiming registration when no scheduler exists.",
     },
     "news-curator": {
-        "version": "0.2.4",
         "display": "News Curator",
         "short": "Research and draft a cited weekly news roundup",
         "long": "Find recent stories, rank them for a configured audience, and assemble a voice-matched roundup with traceable sources.",
@@ -70,18 +59,16 @@ PLUGINS = {
         "prompts": ["Research this week's top stories.", "Draft my weekly roundup.", "Configure my roundup audience."],
         "degraded": "Web search is required for fresh research. Mail/newsletter connectors are optional. If delegation is unavailable, run the curator and assembler stages inline and preserve source citations.",
     },
-    "project-setup": {
-        "version": "0.2.5",
-        "display": "Project Setup",
-        "short": "Initialize a client engagement from one guided interview",
-        "long": "Create an engagement plan, portable AI workspace prompt, folder blueprint, next action, and optional Cortex nodes from approved inputs.",
+    "delivery": {
+        "display": "Delivery",
+        "short": "Start, status-update, and QA a client engagement",
+        "long": "Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; and run structured deliverable QA.",
         "category": "Productivity",
         "capabilities": ["Read", "Write", "Interactive"],
-        "prompts": ["Set up a new client project.", "Configure my engagement templates.", "Create a kickoff plan for this engagement."],
-        "degraded": "When Drive or project-creation APIs are absent, return a folder blueprint and a host-neutral workspace prompt for manual creation. Cortex writes are optional and require confirmation.",
+        "prompts": ["Set up a new client project.", "Draft this week's client status updates.", "Review this deliverable before I send it."],
+        "degraded": "When Drive or project-creation APIs are absent, return a folder blueprint and host-neutral workspace prompt. Use available evidence for status and QA, list skipped sources, and keep outbound updates as drafts.",
     },
     "time-tracking": {
-        "version": "0.2.4",
         "display": "Time Tracking",
         "short": "Classify calendar time and prepare reviewable invoices",
         "long": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
@@ -90,40 +77,18 @@ PLUGINS = {
         "prompts": ["Track yesterday's billable time.", "Generate this month's invoice drafts.", "Configure my billing rules."],
         "degraded": "A calendar connector is optional: accept pasted events when absent. Generate Markdown or structured invoice data if document tooling is unavailable. Never send invoices automatically.",
     },
-    "client-status": {
-        "version": "0.2.5",
-        "display": "Client Status",
-        "short": "Draft client updates from approved work context",
-        "long": "Synthesize project, calendar, CRM, and Cortex context into concise weekly client-status drafts for user review.",
-        "category": "Business",
-        "capabilities": ["Read", "Write"],
-        "prompts": ["Draft this week's client updates.", "Create a status update for this client.", "Configure my status-update format."],
-        "degraded": "Use whichever approved sources are available and list skipped sources. Ask for missing project facts when evidence is insufficient. Draft only; never send without a separate explicit action and confirmation.",
-    },
-    "referral-engine": {
-        "version": "0.2.5",
-        "display": "Referral Engine",
-        "short": "Surface timely referral opportunities and draft the ask",
-        "long": "Review relationship context, cooling periods, and positive moments to prioritize referral actions and draft voice-matched asks.",
-        "category": "Sales",
-        "capabilities": ["Read", "Write"],
-        "prompts": ["Show this week's referral opportunities.", "Draft a referral ask for this person.", "Configure my referral rules."],
-        "degraded": "CRM, mail, calendar, and Cortex are optional evidence sources. Use available local context, name skipped sources, honor cooling periods, and never auto-send an ask.",
-    },
     "relationships": {
-        "version": "0.2.4",
         "display": "Relationships",
         "short": "Prioritize relationship actions and draft useful touchpoints",
-        "long": "Build a daily relationship cockpit, rebalance a network, and create context-aware touchpoint drafts from shared identity, voice, and memory.",
+        "long": "Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, and create context-aware touchpoint drafts.",
         "category": "Sales",
         "capabilities": ["Read", "Write", "Interactive"],
         "prompts": ["Build today's relationship brief.", "Draft a touchpoint for this person.", "Rebalance my relationship network."],
-        "degraded": "Cortex, CRM, mail, and research connectors enrich ranking but are optional. Run read-only role work inline when agents are unavailable. All outbound content remains a draft.",
+        "degraded": "Cortex, CRM, mail, calendar, Apollo, and research connectors enrich ranking but are optional. Run read-only role work inline when agents are unavailable, name skipped sources, and keep all outbound content as drafts.",
         "skill_names": {"setup": "setup"},
     },
-    "writing-style": {
-        "version": "0.1.3",
-        "display": "Writing Style",
+    "voice": {
+        "display": "Voice",
         "short": "Draft in your voice and learn from approved edits",
         "long": "Create voice-matched drafts, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
         "category": "Writing",
@@ -132,7 +97,6 @@ PLUGINS = {
         "degraded": "Mail and publishing connectors are optional. Accept pasted samples and return copy-ready text when absent. Never send or publish automatically; style-file changes require user approval.",
     },
     "daily-brief": {
-        "version": "0.6.2",
         "display": "Daily Brief",
         "short": "Build and process a daily operating brief",
         "long": "Combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow.",
@@ -144,23 +108,31 @@ PLUGINS = {
 }
 
 ALIASES = {
-    "lead-engine": ["lead-brief", "lead-capture", "lead-connect", "lead-draft", "lead-log", "lead-pipeline", "lead-pull", "lead-setup", "lead-warm"],
     "core-ops": ["setup-core"],
     "news-curator": ["setup-news"],
-    "project-setup": ["setup-projects"],
+    "delivery": ["setup-projects", "setup-status"],
     "time-tracking": ["setup-time"],
-    "client-status": ["setup-status"],
-    "referral-engine": ["setup-referrals"],
     "relationships": ["setup-relationships"],
-    "writing-style": ["setup-style", "style"],
+    "voice": ["setup-style", "style"],
     "daily-brief": ["setup-brief"],
 }
 
+DISABLED_ALIASES = {
+    ("core-ops", "setup-core"),
+    ("news-curator", "setup-news"),
+    ("delivery", "setup-projects"),
+    ("delivery", "setup-status"),
+    ("time-tracking", "setup-time"),
+    ("relationships", "setup-relationships"),
+    ("voice", "setup-style"),
+    ("daily-brief", "setup-brief"),
+}
+
 AGENTS = {
-    "lead-engine": ["contact-researcher"],
-    "core-ops": ["pipeline-analyst", "pipeline-forecast"],
+    "weekly-alignment": ["alignment-scanner"],
+    "core-ops": ["chief-of-staff", "pipeline-analyst", "pipeline-forecast"],
     "news-curator": ["news-curator", "post-assembler"],
-    "relationships": ["relationship-ranker"],
+    "relationships": ["relationships-director"],
 }
 
 PREAMBLE_START = "<!-- OPENAI-ADAPTER:START -->"
@@ -213,15 +185,15 @@ def command_description(path: Path, command: str) -> str:
     return value[:900] if value else f"Run the {command} workflow."
 
 
-def manifest(name: str, data: dict[str, object]) -> dict[str, object]:
+def manifest(name: str, repo_name: str, data: dict[str, object]) -> dict[str, object]:
     return {
         "name": name,
         "version": data["version"],
         "description": data["long"],
         "author": {"name": "BrightWay AI", "url": "https://brightwayai.com"},
         "license": "MIT",
-        "homepage": f"https://github.com/BrightWayAI/{name}",
-        "repository": f"https://github.com/BrightWayAI/{name}",
+        "homepage": f"https://github.com/BrightWayAI/{repo_name}",
+        "repository": f"https://github.com/BrightWayAI/{repo_name}",
         "keywords": ["nucleus", "chatgpt", "codex"],
         "skills": "./skills/",
         "interface": {
@@ -231,7 +203,7 @@ def manifest(name: str, data: dict[str, object]) -> dict[str, object]:
             "developerName": "BrightWay AI",
             "category": data["category"],
             "capabilities": data["capabilities"],
-            "websiteURL": f"https://github.com/BrightWayAI/{name}",
+            "websiteURL": f"https://github.com/BrightWayAI/{repo_name}",
             "defaultPrompt": data["prompts"],
         },
     }
@@ -284,8 +256,8 @@ If a new OpenAI-host user chooses a persistent root, configure it through Cortex
 write `~/.cortex/config-root` only after confirmation. Never overwrite a pointer that
 targets a different root without a second explicit confirmation, and do not create or
 update the legacy Claude pointer from an OpenAI host.
-Identity and voice remain shared files at `<config-root>/identity.md` and
-`<config-root>/voice.md`. Plugin state belongs under `<config-root>`—normally
+Identity and voice remain shared files at `<config-root>/memory/me/identity.md` and
+`<config-root>/memory/me/voice.md`. Plugin state belongs under `<config-root>`—normally
 `<config-root>/plugins/`—never inside the installed plugin directory.
 
 ## Invocation
@@ -326,10 +298,10 @@ external action happened.
 
 def wrapper_md(repo: Path, name: str, command: str) -> str:
     desc = command_description(repo / "commands" / f"{command}.md", command)
-    extra = "\nAlso read `../lead-engine/SKILL.md` for the shared signal, voice, and cadence methodology.\n" if name == "lead-engine" else ""
+    disabled = "disable-model-invocation: true\n" if (name, command) in DISABLED_ALIASES else ""
     yaml_description = json.dumps(desc, ensure_ascii=False)
     return f"""---
-name: {command}
+{disabled}name: {command}
 description: {yaml_description}
 ---
 
@@ -340,7 +312,7 @@ Read `../../references/openai-portability.md`, then read
 Treat `/{command}`, `${command}`, natural-language activation, and the ChatGPT plugin
 mention as equivalent entrypoints. Ignore Claude-only tool allowlists and model names;
 apply the capability translation and degradation rules from the portability contract.
-{extra}
+
 Do not duplicate or reinterpret the command here. Preserve its confirmation gates,
 draft-only boundaries, file locations, and output contract.
 """
@@ -348,19 +320,25 @@ draft-only boundaries, file locations, and output contract.
 
 def agent_toml(name: str, role: str) -> str:
     descriptions = {
-        "contact-researcher": "Research one contact or company and return a cited dossier without writing external systems.",
+        "alignment-scanner": "Read Slack and synthesize cross-team alignment evidence in scan, pulse, or report mode.",
+        "chief-of-staff": "Route natural-language work to installed Nucleus specialists while preserving the parent workflow's safety gates.",
         "pipeline-analyst": "Read and rank CRM pipeline evidence without changing CRM or local state.",
         "pipeline-forecast": "Build an evidence-based pipeline forecast without changing source systems.",
         "news-curator": "Research and rank recent news candidates with citations.",
         "post-assembler": "Assemble approved news candidates into a voice-matched draft.",
-        "relationship-ranker": "Rank relationship actions from available evidence without writing or sending.",
+        "relationships-director": "Rank relationship actions or research one contact/company in the caller-selected mode.",
     }
+    mode_rule = {
+        "alignment-scanner": 'The caller must pass mode "scan", "pulse", or "report"; follow only that mode.',
+        "relationships-director": 'The caller must pass mode "rank" or "research"; follow only that mode.',
+    }.get(role, "")
+    mode_line = f"{mode_rule}\n" if mode_rule else ""
     return f'''name = "{role}"
 description = "{descriptions[role]}"
 sandbox_mode = "read-only"
 developer_instructions = """
 Read AGENTS.md, references/openai-portability.md, and agents/{role}.md completely.
-Treat Claude model/tool metadata as source-host examples. Use only connector and web
+{mode_line}Treat Claude model/tool metadata as source-host examples. Use only connector and web
 capabilities actually available, explicitly list skipped sources, and never fabricate
 evidence. Return findings to the parent. Do not write local state, mutate connectors,
 send messages, or schedule work. If delegation is unavailable, the parent must follow
@@ -388,48 +366,76 @@ def update_skill(path: Path, replacement_name: str | None, write: bool, errors: 
             errors.append(f"stale OpenAI preamble/name: {path.relative_to(LAB_ROOT)}")
 
 
-def update_claude_manifest(repo: Path, version: str, write: bool, errors: list[str]) -> None:
-    path = repo / ".claude-plugin" / "plugin.json"
-    value = json.loads(path.read_text())
+def source_version(repo: Path) -> str:
+    value = json.loads((repo / ".claude-plugin" / "plugin.json").read_text())
+    version = value.get("version")
+    if not isinstance(version, str) or not version:
+        raise ValueError(f"missing source plugin version: {repo}")
+    return version
+
+
+def update_cortex_adapter(
+    repo: Path, version: str, write: bool, errors: list[str]
+) -> None:
+    portable_path = repo / "plugin.json"
+    portable = json.loads(portable_path.read_text())
+    portable["version"] = version
+    write_or_check(portable_path, dump_json(portable), write, errors)
+
+    source = repo / "adapters" / "chatgpt_work" / "codex-plugin.json"
+    value = json.loads(source.read_text())
     value["version"] = version
-    write_or_check(path, dump_json(value), write, errors)
+    content = dump_json(value)
+    write_or_check(source, content, write, errors)
+    write_or_check(repo / ".codex-plugin" / "plugin.json", content, write, errors)
+
+    mode = "--write" if write else "--check"
+    generated = subprocess.run(
+        [sys.executable, str(repo / "scripts" / "generate_codex_skills.py"), mode],
+        cwd=repo,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if generated.returncode:
+        detail = generated.stderr.strip() or generated.stdout.strip()
+        errors.append(f"Cortex Codex skill generation failed: {detail}")
 
 
-def marketplace(native: bool) -> dict[str, object]:
+def remove_stale_agent_bindings(
+    repo: Path, expected: set[str], write: bool, errors: list[str]
+) -> None:
+    binding_dir = repo / ".codex" / "agents"
+    for binding in binding_dir.glob("*.toml"):
+        if binding.stem in expected:
+            continue
+        if write:
+            binding.unlink()
+        else:
+            errors.append(f"stale Codex agent binding: {binding.relative_to(LAB_ROOT)}")
+
+
+def marketplace(native: bool, resolved: dict[str, dict[str, object]]) -> dict[str, object]:
     entries = []
-    for repo_name, data in PLUGINS.items():
+    for name, repo_name, claude_name in PLUGIN_REPOSITORIES:
+        data = resolved[name]
         if native:
-            entry_name = repo_name
             source = {"source": "url", "url": f"https://github.com/BrightWayAI/{repo_name}.git"}
             category = data["category"]
             entries.append({
-                "name": entry_name,
+                "name": name,
                 "source": source,
                 "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
                 "category": category,
             })
         else:
             entries.append({
-                "name": repo_name,
+                "name": claude_name,
                 "version": data["version"],
                 "source": {"source": "github", "repo": f"BrightWayAI/{repo_name}"},
                 "description": data["long"],
                 "author": {"name": "BrightWay AI"},
             })
-    cortex_native = {
-        "name": "cortex",
-        "source": {"source": "url", "url": "https://github.com/BrightWayAI/claude-cortex.git"},
-        "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
-        "category": "Productivity",
-    }
-    cortex_claude = {
-        "name": "claude-cortex",
-        "version": "4.15.0",
-        "source": {"source": "github", "repo": "BrightWayAI/claude-cortex"},
-        "description": "A host-portable Markdown second brain shared by Claude, ChatGPT Work, and Codex.",
-        "author": {"name": "BrightWay AI"},
-    }
-    entries.insert(1, cortex_native if native else cortex_claude)
     if native:
         return {"name": "nucleus", "interface": {"displayName": "Nucleus"}, "plugins": entries}
     return {
@@ -520,13 +526,37 @@ def main() -> int:
     mode.add_argument("--check", action="store_true")
     args = parser.parse_args()
     errors: list[str] = []
+    expected_names = {name for name, _, _ in PLUGIN_REPOSITORIES}
+    if set(PLUGINS) != expected_names:
+        missing = sorted(expected_names - set(PLUGINS))
+        extra = sorted(set(PLUGINS) - expected_names)
+        print(f"ERROR: adapter metadata differs from catalog (missing={missing}, extra={extra})", file=sys.stderr)
+        return 1
 
-    for name, data in PLUGINS.items():
-        repo = LAB_ROOT / name
+    resolved: dict[str, dict[str, object]] = {}
+    for name, repo_name, _ in PLUGIN_REPOSITORIES:
+        repo = LAB_ROOT / repo_name
         if not repo.is_dir():
             errors.append(f"missing sibling repository: {repo}")
             continue
-        write_or_check(repo / ".codex-plugin" / "plugin.json", dump_json(manifest(name, data)), args.write, errors)
+        data = dict(PLUGINS[name])
+        try:
+            data["version"] = source_version(repo)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            errors.append(str(exc))
+            continue
+        resolved[name] = data
+
+        if name == "cortex":
+            update_cortex_adapter(repo, str(data["version"]), args.write, errors)
+            continue
+
+        write_or_check(
+            repo / ".codex-plugin" / "plugin.json",
+            dump_json(manifest(name, repo_name, data)),
+            args.write,
+            errors,
+        )
         write_or_check(repo / "AGENTS.md", agents_md(name, data), args.write, errors)
         write_or_check(repo / "references" / "openai-portability.md", portability_md(name, data), args.write, errors)
         aliases = set(ALIASES.get(name, []))
@@ -540,12 +570,13 @@ def main() -> int:
             write_or_check(repo / "skills" / command / "SKILL.md", wrapper_md(repo, name, command), args.write, errors)
         for role in AGENTS.get(name, []):
             write_or_check(repo / ".codex" / "agents" / f"{role}.toml", agent_toml(name, role), args.write, errors)
-        update_claude_manifest(repo, str(data["version"]), args.write, errors)
+        remove_stale_agent_bindings(repo, set(AGENTS.get(name, [])), args.write, errors)
         update_changelog(repo, str(data["version"]), args.write, errors)
         update_readme(repo, data, args.write, errors)
 
-    write_or_check(NUCLEUS_ROOT / ".agents" / "plugins" / "marketplace.json", dump_json(marketplace(True)), args.write, errors)
-    write_or_check(NUCLEUS_ROOT / ".claude-plugin" / "marketplace.json", dump_json(marketplace(False)), args.write, errors)
+    if set(resolved) == expected_names:
+        write_or_check(NUCLEUS_ROOT / ".agents" / "plugins" / "marketplace.json", dump_json(marketplace(True, resolved)), args.write, errors)
+        write_or_check(NUCLEUS_ROOT / ".claude-plugin" / "marketplace.json", dump_json(marketplace(False, resolved)), args.write, errors)
 
     if errors:
         print("OpenAI adapter check failed:", file=sys.stderr)

@@ -2,7 +2,7 @@
 
 Patterns for chaining subagents inside a single skill or slash command. Use this when a workflow needs research → analyze → synthesize → draft → review across multiple specialist agents.
 
-This is a pattern doc for plugin authors, not a runtime artifact. The patterns here are already used implicitly in `news-curator/ai-roundup` (news-curator → user-pick → post-assembler) and `relationships` (relationship-ranker per bucket → optional contact-researcher per thin candidate). Documenting them so future plugins can use the same shape consistently.
+This is a pattern doc for plugin authors, not a runtime artifact. The patterns here are already used in `news-curator/ai-roundup` (news-curator → user-pick → post-assembler) and `relationships` (relationships-director in rank or research mode). Documenting them keeps future plugins consistent.
 
 ---
 
@@ -51,7 +51,7 @@ Skill (parent context)
    - Skip Agent 2 and report the gap directly
    - Proceed with the chain but flag the limitation in the final output
 
-   See "Confidence-aware delegation" pattern in any consumer skill (e.g., `relationships`, `lead-brief`, `client-status`).
+   See the confidence-aware delegation pattern in consumers such as `relationships`, `delivery/client-status`, and `news-curator`.
 
 5. **Don't re-invoke an agent for the same brief twice.** Cache outputs in the conversation context; reference them by structure rather than re-querying. Agents are expensive — re-running them in a chain step that already has the data is waste.
 
@@ -85,12 +85,12 @@ Skill (parent context)
   Step 0-1: Read user-context, gate on time-budget
   ↓
   Step 2: For each bucket (new_biz, relationship, network):
-            relationship-ranker agent → ranked candidates with score + why-now
+            relationships-director (mode: rank) → ranked candidates with score + why-now
             (For new_biz: optionally delegate to pipeline-analyst before ranking)
   ↓
   Step 3: Filter (cooling, DNE, "should we even send?") → top 3 per bucket
   ↓
-  Step 4 (optional, per thin-data card): contact-researcher agent → fill missing context
+  Step 4 (optional, per thin-data card): relationships-director (mode: research) → fill missing context
   ↓
   Step 5: Parent picks channel + template, fills variables, drafts in voice
   ↓
@@ -99,21 +99,21 @@ Skill (parent context)
   Step 6-8: Write today.md + today.json, optional person-page side-effects on "mark sent"
 ```
 
-**Why this shape:** ranking + scoring is heavy context work (per-candidate signal aggregation across cortex + CRM + Gmail + hot.md) — the parent skill would bloat if it ran the math inline. Delegating per-bucket lets each ranking call load only what it needs. Drafting stays in the parent context because voice rules + templates + user-context all live there. Per-thin-card delegation to `contact-researcher` is opt-in and only fires for candidates with Low confidence from the ranker.
+**Why this shape:** ranking + scoring is heavy context work (per-candidate signal aggregation across Cortex + CRM + mail + hot.md) — the parent skill would bloat if it ran the math inline. Delegating per bucket lets each ranking call load only what it needs. Drafting stays in the parent because voice rules, templates, and user context live there. Thin cards reuse the same director in research mode rather than introducing a second role.
 
-### `referral-engine` — single-agent parent-driven flow
+### `weekly-alignment` — one mode-dispatched read-only agent
 
 ```
-Skill (referral-engine /referrals or /referral-ask)
+Skill (/scan, /daily-pulse, or /report)
   ↓
-  Phase 1: contact-researcher agent → connector dossier (when needed)
+  Parent pre-flight checks Slack and configuration
   ↓
-  Phase 2: Skill applies cooling-period rules + positive-moment triggers in parent context
+  alignment-scanner → mode: scan, pulse, or report
   ↓
-  Phase 3: Skill drafts ask in user's voice
+  Parent formats delivery and saves approved history
 ```
 
-**Why this shape:** drafting is voice-faithful and context-heavy; doing it in the parent context (which knows the user's voice rules from `~/Documents/Claude/voice.md`) avoids the round-trip of passing voice rules to a drafter agent. Single-agent chain.
+**Why this shape:** all three workflows share the same Slack-reading and evidence-synthesis role, but need different depth and return contracts. An explicit mode avoids duplicating agents while the parent retains all writes and delivery side effects.
 
 ---
 

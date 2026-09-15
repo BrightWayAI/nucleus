@@ -9,17 +9,17 @@
   "connectors": [
     {
       "id": "calendar",
-      "usedBy": ["daily-brief", "time-tracking", "client-status", "relationships"],
+      "usedBy": ["daily-brief", "time-tracking", "delivery", "relationships"],
       "safeProbe": "List at most one event in a narrow test window and retain only count and response keys."
     },
     {
       "id": "mail",
-      "usedBy": ["daily-brief", "lead-engine", "client-status", "referral-engine", "relationships"],
+      "usedBy": ["daily-brief", "delivery", "relationships"],
       "safeProbe": "Search a designated test mailbox or marker and retain only count and response keys."
     },
     {
       "id": "crm",
-      "usedBy": ["core-ops", "lead-engine", "client-status", "referral-engine", "relationships"],
+      "usedBy": ["core-ops", "delivery", "relationships"],
       "safeProbe": "Read one designated sandbox record or an empty bounded query and retain only count and response keys."
     },
     {
@@ -29,12 +29,12 @@
     },
     {
       "id": "drive",
-      "usedBy": ["project-setup", "daily-brief", "client-status"],
+      "usedBy": ["delivery", "daily-brief"],
       "safeProbe": "List one item from a designated test folder and retain only count and response keys."
     },
     {
       "id": "contact-enrichment",
-      "usedBy": ["lead-engine", "relationships"],
+      "usedBy": ["relationships"],
       "safeProbe": "Look up a designated synthetic company or contact and retain only count and response keys."
     },
     {

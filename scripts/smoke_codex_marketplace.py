@@ -14,24 +14,12 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from catalog import PLUGIN_REPOSITORIES
+
 
 NUCLEUS_ROOT = Path(__file__).resolve().parents[1]
 LAB_ROOT = NUCLEUS_ROOT.parent
-REPOSITORIES = [
-    ("nucleus-router", "nucleus-router"),
-    ("cortex", "claude-cortex"),
-    ("lead-engine", "lead-engine"),
-    ("weekly-alignment", "weekly-alignment"),
-    ("core-ops", "core-ops"),
-    ("news-curator", "news-curator"),
-    ("project-setup", "project-setup"),
-    ("time-tracking", "time-tracking"),
-    ("client-status", "client-status"),
-    ("referral-engine", "referral-engine"),
-    ("relationships", "relationships"),
-    ("writing-style", "writing-style"),
-    ("daily-brief", "daily-brief"),
-]
+REPOSITORIES = [(name, repo) for name, repo, _ in PLUGIN_REPOSITORIES]
 
 
 def run(argv: list[str], env: dict[str, str]) -> dict:
@@ -99,7 +87,7 @@ def main() -> int:
         missing = [plugin_name for plugin_name, _ in REPOSITORIES if plugin_name not in serialized]
         if missing:
             raise RuntimeError("installed plugin listing missing: " + ", ".join(missing))
-        print("Codex marketplace smoke passed: isolated install of all 13 Nucleus plugins.")
+        print(f"Codex marketplace smoke passed: isolated install of all {len(REPOSITORIES)} Nucleus plugins.")
     return 0
 
 

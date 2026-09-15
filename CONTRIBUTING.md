@@ -41,7 +41,7 @@ BrightWayAI/<plugin-name>/          ← each plugin lives in its own repo
 
 For changes to a specific plugin:
 
-1. **Fork the plugin repo** (e.g., `BrightWayAI/lead-engine` → `yourname/lead-engine`).
+1. **Fork the plugin repo** (e.g., `BrightWayAI/relationships` → `yourname/relationships`).
 2. **Create a feature branch** from `main`.
 3. **Make your changes** following the conventions below.
 4. **Open a PR** against `BrightWayAI/<plugin-name>:main`.
@@ -67,7 +67,7 @@ If you're contributing copy, match this voice. If you're not sure, look at any e
 
 - **Slash command names use kebab-case.** `/setup-time` not `/setupTime`.
 - **Setup commands populate a `references/user-context.md`** (gitignored). Other commands read from it.
-- **Shared user-level config** lives at `~/Documents/Claude/identity.md` and `~/Documents/Claude/voice.md` (managed by cortex's `/setup-identity` and `/setup-voice`). Plugins **should** read these and skip duplicate questions in their own setup interviews.
+- **Shared identity and voice** live at `<config-root>/memory/me/identity.md` and `<config-root>/memory/me/voice.md` (managed by Cortex's `/setup-identity` and `/setup-voice`). Plugins **should** read these and skip duplicate questions in their own setup interviews.
 - **Slash commands have matching auto-firing skills.** If you add a slash command, add a skill with the same name and trigger phrases.
 - **No silent destructive actions.** Anything that writes externally (CRM, calendar, files) requires explicit user confirmation via a presented table or message.
 
@@ -86,7 +86,7 @@ See [`docs/multi-agent-patterns.md`](docs/multi-agent-patterns.md) for chaining 
 ### Setup interview conventions
 
 - **One section at a time.** Don't bombard with 25 questions; group by section, summarize after each.
-- **Read shared identity and voice first.** If `~/Documents/Claude/identity.md` and `voice.md` exist, pre-fill from them and skip duplicate questions.
+- **Read shared identity and voice first.** If `<config-root>/memory/me/identity.md` and `voice.md` exist, pre-fill from them and skip duplicate questions.
 - **Idempotent.** Re-running a setup should let the user update specific sections without redoing everything.
 - **Skip what doesn't apply.** "I don't have a CRM yet" is a valid answer; capture it as such.
 

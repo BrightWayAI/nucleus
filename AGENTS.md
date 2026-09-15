@@ -1,6 +1,6 @@
 # Nucleus — Codex handoff
 
-Nucleus is the master marketplace for 13 independently versioned plugins. It is not a
+Nucleus is the master marketplace for 9 independently versioned plugins. It is not a
 runtime plugin. Read `README.md` for the product map and `docs/contracts.md` before
 changing cross-plugin behavior.
 
