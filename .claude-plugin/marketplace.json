@@ -66,13 +66,13 @@
       }
     },
     {
-      "name": "project-setup",
-      "version": "0.2.5",
+      "name": "delivery",
+      "version": "0.3.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/project-setup"
+        "repo": "BrightWayAI/delivery"
       },
-      "description": "Create an engagement plan, portable AI workspace prompt, folder blueprint, next action, and optional Cortex nodes from approved inputs.",
+      "description": "Client engagement lifecycle: start, status, QA. Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; run structured brand/quality QA on deliverables before you ship. Renamed from project-setup, 2026-09-15 — absorbs client-status and core-ops's review-deliverable.",
       "author": {
         "name": "BrightWay AI"
       }
@@ -85,18 +85,6 @@
         "repo": "BrightWayAI/time-tracking"
       },
       "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
-      "author": {
-        "name": "BrightWay AI"
-      }
-    },
-    {
-      "name": "client-status",
-      "version": "0.2.5",
-      "source": {
-        "source": "github",
-        "repo": "BrightWayAI/client-status"
-      },
-      "description": "Synthesize project, calendar, CRM, and Cortex context into concise weekly client-status drafts for user review.",
       "author": {
         "name": "BrightWay AI"
       }

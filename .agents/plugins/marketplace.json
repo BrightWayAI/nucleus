@@ -65,10 +65,10 @@
       "category": "Research"
     },
     {
-      "name": "project-setup",
+      "name": "delivery",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/project-setup.git"
+        "url": "https://github.com/BrightWayAI/delivery.git"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -81,18 +81,6 @@
       "source": {
         "source": "url",
         "url": "https://github.com/BrightWayAI/time-tracking.git"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Business"
-    },
-    {
-      "name": "client-status",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/BrightWayAI/client-status.git"
       },
       "policy": {
         "installation": "AVAILABLE",

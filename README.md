@@ -208,12 +208,11 @@ capability instead of pretending the work ran.
 | Knowledge and context | [cortex](https://github.com/BrightWayAI/claude-cortex) | Shared memory, identity, voice, recall, learning, cleanup, and Obsidian support |
 | Executive assistant | [daily-brief](https://github.com/BrightWayAI/daily-brief) | Daily brief, annotation processing, and next-day planning |
 | Relationship manager | [relationships](https://github.com/BrightWayAI/relationships) | Prioritized relationship actions, signal-driven outreach, and referral asks (absorbs lead-engine + referral-engine, 2026-09-15) |
-| Project manager | [project-setup](https://github.com/BrightWayAI/project-setup) | Engagement interview, folder blueprint, portable workspace prompt, and project plan |
-| Account manager | [client-status](https://github.com/BrightWayAI/client-status) | Weekly client-status drafts from available project evidence |
+| Project manager | [delivery](https://github.com/BrightWayAI/delivery) | Engagement interview, folder blueprint, portable workspace prompt, and project plan; weekly client-status drafts; deliverable QA (renamed from project-setup, absorbs client-status + core-ops's review-deliverable, 2026-09-15) |
 | Finance | [time-tracking](https://github.com/BrightWayAI/time-tracking) | Calendar-based time classification and invoice drafts |
 | Communications | [voice](https://github.com/BrightWayAI/voice) | Voice-matched drafting and learning from approved edits |
 | Marketing research | [news-curator](https://github.com/BrightWayAI/news-curator) | Cited news research and voice-matched roundup drafts |
-| Operations | [core-ops](https://github.com/BrightWayAI/core-ops) | Diagnostics, deliverable QA, pipeline analysis, metrics, and schedules |
+| Operations | [core-ops](https://github.com/BrightWayAI/core-ops) | Diagnostics, pipeline analysis, metrics, and schedules |
 | Cross-team liaison | [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment) | Slack-based overlap, conflict, decision, and risk scanning |
 
 ## Agents and connectors
@@ -258,7 +257,7 @@ nucleus-router + cortex + core-ops + relationships
 **Client delivery**
 
 ```text
-nucleus-router + cortex + core-ops + project-setup + client-status + time-tracking + daily-brief
+nucleus-router + cortex + core-ops + delivery + time-tracking + daily-brief
 ```
 
 **Content and relationships**
@@ -337,7 +336,7 @@ write real Cortex memory.
 ## Coordinated releases and live connector certification
 
 The root marketplace is the rolling development catalog. Versioned snapshots under
-`releases/` pin all 11 plugin repositories to full Git commit SHAs. Before promotion,
+`releases/` pin all 10 plugin repositories to full Git commit SHAs. Before promotion,
 the release gate requires sanitized live connector reports from the host/profile pairs
 declared in the snapshot. See [the release runbook](docs/RELEASING.md) and
 [live connector testing](docs/CONNECTOR_INTEGRATION_TESTING.md).
@@ -355,8 +354,7 @@ connection, pasted payload, or mocked response is not enough for a pass.
 | core-ops | 0.4.3 |
 | relationships | 0.3.0 |
 | news-curator | 0.2.5 |
-| client-status | 0.2.6 |
-| project-setup | 0.2.6 |
+| delivery | 0.3.0 |
 | time-tracking | 0.2.5 |
 | weekly-alignment | 1.4.5 |
 | voice | 0.2.0 |
