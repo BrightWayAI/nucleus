@@ -13,7 +13,7 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 `<config-root>/memory/me/identity.md`
 - **Writer:** cortex `/setup-identity`
 - **Readers:** every plugin (skipped in their setup if exists)
-- **Format:** markdown with these sections — `## Identity`, `## Working hours`, `## Tools`, `## Communication preferences`
+- **Format:** markdown with stable `Actor ID` plus person, company, primary tools, and communication-default sections
 - **Version:** stable since cortex v4.0
 - **Breaking change protocol:** if `identity.md` schema changes, every reader plugin needs a coordinated update. Treat as a Nucleus-wide major version bump.
 
@@ -130,6 +130,18 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Readers:** daily-brief `/brief`, `/process-brief`, `/plan-tomorrow`
 - **Format:** section toggles, sort defaults, placeholder hints
 
+`<config-root>/plugins/delivery.user-context.md`
+- **Writer:** delivery `/setup-projects`; user-editable
+- **Readers:** delivery project workflows, delivery `/client-status`, time-tracking invoice/project resolution
+- **Format:** engagement catalog, client/project aliases, commercial defaults, and connector mapping
+- **Migration:** may import once from `project-setup.user-context.md`; runtime must not depend on the retired plugin path
+
+`<config-root>/plugins/delivery-status.user-context.md`
+- **Writer:** delivery `/setup-status`; user-editable
+- **Readers:** delivery `/client-status`
+- **Format:** reporting cadence, audiences, sections, delivery channels, and approval defaults
+- **Migration:** may import once from `client-status.user-context.md`; runtime must not depend on the retired plugin path
+
 `<config-root>/plugins/<plugin>.user-context.md`
 - Same pattern for every plugin's setup output.
 
@@ -161,11 +173,37 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 ## Schedule library
 
-`<config-root>/plugins/core-ops/schedules.md` (post-`/register-schedules`)
-- **Writer:** core-ops `/register-schedules` (copies from template, annotates with `last_registered_id`)
-- **Reader:** Cowork's scheduled-tasks system (via core-ops invocation)
+`<config-root>/plugins/core-ops/schedules.md`
+- **Writer:** user or core-ops `/register-schedules` when copying the immutable starter
+- **Reader:** core-ops `/register-schedules`; host schedulers receive translated definitions
 - **Format:** see `core-ops/references/schedules.template.md`
 - **Schedule entries reference commands from multiple plugins** — implicit contract that those commands exist.
+
+`<config-root>/plugins/core-ops/schedule-registrations/<host-id>.json`
+- **Writer:** core-ops `/register-schedules`, atomically after a confirmed scheduler mutation
+- **Reader:** core-ops `/register-schedules` reconciliation on that host
+- **Format:** schema `1.0.0`; scheduler ID + definition fingerprint + registration/verification timestamps
+- **Host boundary:** never sync an ID as if it were portable; live scheduler state wins over the cache
+
+`<config-root>/plugins/core-ops/schedule-runs/<schedule>/<run-id>.json`
+- **Writer:** scheduled workflow when the host permits local receipt writes
+- **Readers:** `/diagnose`, `/nucleus-status`, humans auditing automation
+- **Format:** metadata only — outcome, source coverage statuses, output paths/hashes, sanitized error codes; never connector payloads or memory content
+
+---
+
+## Collaborative memory writes
+
+`<config-root>/memory/proposals/<actor-id>/<date>/<proposal-id>.md`
+- **Writer:** the actor's proposal-producing workflow; append-only/immutable after creation
+- **Reader:** the designated Cortex merge workflow
+- **Format:** Cortex `references/shared-memory-writes.md` schema `1.0.0`
+- **Boundary:** required before multiple actors write the same shared memory; raw connector content and `memory/me/` data are forbidden
+
+`<proposal-id>.decision.jsonl`
+- **Writer:** designated merge workflow under the shared Cortex lock
+- **Reader:** humans and replay/idempotency checks
+- **Format:** append-only decision events (`accepted`, `rejected`, `conflict`, `superseded`) with reviewer actor and resulting revision
 
 ---
 

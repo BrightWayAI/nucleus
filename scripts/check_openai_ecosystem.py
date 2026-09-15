@@ -17,6 +17,33 @@ from catalog import PLUGIN_NAMES, PLUGIN_REPOSITORIES
 NUCLEUS_ROOT = Path(__file__).resolve().parents[1]
 LAB_ROOT = NUCLEUS_ROOT.parent
 SEMVER = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
+ACTIVE_SOURCE_DIRS = ("commands", "skills", "agents", "references", "claude-code")
+ACTIVE_ROOT_DOCS = ("README.md", "SECURITY.md", "CLAUDE.md", "AGENTS.md")
+LEGACY_COMPAT_MARKER = "LEGACY_COMPAT"
+ARCHITECTURE_GUARDS = (
+    (
+        "hard-coded pre-scope identity/voice path",
+        re.compile(r"~/Documents/Claude/(?:identity|voice)\.md"),
+    ),
+    (
+        "hard-coded pre-resolver memory path",
+        re.compile(r"~/Documents/Claude/memory/"),
+    ),
+    (
+        "retired plugin state path outside an annotated compatibility branch",
+        re.compile(
+            r"<config-root>/plugins/(?:lead-engine|referral-engine|weekly-outreach|"
+            r"client-status|project-setup)(?:[./`])"
+        ),
+    ),
+    (
+        "retired plugin treated as a current installed dependency",
+        re.compile(
+            r"(?i)(?:if|when) (?:the )?(?:lead-engine|referral-engine|weekly-outreach|"
+            r"client-status|project-setup)(?: plugin)? is (?:still )?installed"
+        ),
+    ),
+)
 
 
 def require(condition: bool, message: str, errors: list[str]) -> None:
@@ -101,6 +128,31 @@ def check_agents(repo: Path, errors: list[str]) -> None:
             require('sandbox_mode = "read-only"' in text, f"agent is not read-only: {repo.name}/{role.stem}", errors)
 
 
+def check_active_architecture(repo: Path, errors: list[str]) -> None:
+    """Keep retired names and vendor paths behind explicit compatibility branches."""
+    paths = [repo / name for name in ACTIVE_ROOT_DOCS if (repo / name).is_file()]
+    for directory in ACTIVE_SOURCE_DIRS:
+        root = repo / directory
+        if not root.is_dir():
+            continue
+        paths.extend(sorted(root.rglob("*.md")))
+    for path in paths:
+        lines = path.read_text(encoding="utf-8").splitlines()
+        for index, line in enumerate(lines):
+            context = "\n".join(lines[max(0, index - 1) : index + 2])
+            for label, pattern in ARCHITECTURE_GUARDS:
+                if pattern.search(line) and LEGACY_COMPAT_MARKER not in context:
+                    display_path = (
+                        path.relative_to(LAB_ROOT)
+                        if path.is_relative_to(LAB_ROOT)
+                        else path
+                    )
+                    errors.append(
+                        f"{label}: {display_path}:{index + 1}; "
+                        f"migrate it or annotate the compatibility branch with {LEGACY_COMPAT_MARKER}"
+                    )
+
+
 def check_config_root_fixture(errors: list[str]) -> None:
     module_path = LAB_ROOT / "claude-cortex" / "scripts" / "lib" / "config_root.py"
     spec = importlib.util.spec_from_file_location("cortex_config_root_fixture", module_path)
@@ -179,6 +231,7 @@ def main() -> int:
         require(claude_versions.get(claude_name) == version, f"catalog version mismatch: {repo_name}", errors)
         check_skills(repo, errors)
         check_agents(repo, errors)
+        check_active_architecture(repo, errors)
         require((repo / "AGENTS.md").exists(), f"missing AGENTS.md: {repo_name}", errors)
         require((repo / "references" / "openai-portability.md").exists() or repo_name == "claude-cortex", f"missing portability contract: {repo_name}", errors)
 

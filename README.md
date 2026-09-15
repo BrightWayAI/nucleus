@@ -50,10 +50,11 @@ All plugins ────────────────> one private <confi
 
 **Never used Nucleus before, on any host?** Install the two starter plugins below,
 then run `/start-nucleus` (Claude Code/Cowork) or its host equivalent (`$cortex:start-nucleus`
-in Codex, `@Cortex start Nucleus setup` in ChatGPT). It's an idempotent walker —
-identity, voice, note sources, per-plugin setup, and a health check, gated so you
-can skip anything that doesn't apply. Nothing below requires prior setup in Cowork,
-Codex, or anywhere else; you're starting from zero.
+in Codex, `@Cortex start Nucleus setup` in ChatGPT). The ≤15-minute foundation
+resolves one shared root, captures identity and voice, records the versioned autonomy
+acknowledgment, configures optional note sources, and verifies Cortex plus Core Ops.
+Specialist setup is offered afterward as a separate resumable step. Nothing below
+requires prior setup in Cowork, Codex, or anywhere else; you're starting from zero.
 
 Start with two plugins:
 

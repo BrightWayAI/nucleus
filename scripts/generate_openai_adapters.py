@@ -321,7 +321,7 @@ draft-only boundaries, file locations, and output contract.
 def agent_toml(name: str, role: str) -> str:
     descriptions = {
         "alignment-scanner": "Read Slack and synthesize cross-team alignment evidence in scan, pulse, or report mode.",
-        "chief-of-staff": "Route natural-language work to installed Nucleus specialists while preserving the parent workflow's safety gates.",
+        "chief-of-staff": "Return a structured route plan for Nucleus work; the parent validates and executes it.",
         "pipeline-analyst": "Read and rank CRM pipeline evidence without changing CRM or local state.",
         "pipeline-forecast": "Build an evidence-based pipeline forecast without changing source systems.",
         "news-curator": "Research and rank recent news candidates with citations.",
@@ -333,6 +333,16 @@ def agent_toml(name: str, role: str) -> str:
         "relationships-director": 'The caller must pass mode "rank" or "research"; follow only that mode.',
     }.get(role, "")
     mode_line = f"{mode_rule}\n" if mode_rule else ""
+    instruction_tail = (
+        "evidence. Return exactly one route_plan to the parent. Do not invoke target skills or\n"
+        "other agents, write local state, mutate connectors, send messages, or schedule work.\n"
+        "If delegation is unavailable, the parent must follow the same planner role inline\n"
+        "with this read-only boundary."
+        if role == "chief-of-staff"
+        else "evidence. Return findings to the parent. Do not write local state, mutate connectors,\n"
+        "send messages, or schedule work. If delegation is unavailable, the parent must follow\n"
+        "the same role inline with this read-only boundary."
+    )
     return f'''name = "{role}"
 description = "{descriptions[role]}"
 sandbox_mode = "read-only"
@@ -340,9 +350,7 @@ developer_instructions = """
 Read AGENTS.md, references/openai-portability.md, and agents/{role}.md completely.
 {mode_line}Treat Claude model/tool metadata as source-host examples. Use only connector and web
 capabilities actually available, explicitly list skipped sources, and never fabricate
-evidence. Return findings to the parent. Do not write local state, mutate connectors,
-send messages, or schedule work. If delegation is unavailable, the parent must follow
-the same role inline with this read-only boundary.
+{instruction_tail}
 """
 '''
 
