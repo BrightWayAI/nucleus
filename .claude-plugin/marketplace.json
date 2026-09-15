@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "cortex",
-      "version": "4.22.0",
+      "version": "4.24.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/cortex"
@@ -31,31 +31,31 @@
     },
     {
       "name": "ops",
-      "version": "0.7.0",
+      "version": "0.10.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/ops"
       },
-      "description": "Chief of Staff. Use a natural-language chief-of-staff front door, analyze CRM pipeline, inspect Nucleus health, record agent metrics, and register schedules when the host supports them.",
+      "description": "Chief of Staff. Use a natural-language chief-of-staff front door, inspect Nucleus health, record agent metrics, and register schedules when the host supports them. CRM pipeline analysis and forecasting now live in Growth Engine; /cos delegates there when it's installed.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "research",
-      "version": "0.3.0",
+      "version": "0.5.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/research"
       },
-      "description": "Research. Find recent stories, rank them for a configured audience, and assemble a voice-matched roundup with traceable sources.",
+      "description": "Research. Find recent stories, rank them for a configured audience, and stage a traceable candidate roundup. Drafting now lives in Comms Desk (/post); /roundup --draft chains into it when comms is installed.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "clients",
-      "version": "0.4.0",
+      "version": "0.6.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/clients"
@@ -67,7 +67,7 @@
     },
     {
       "name": "admin",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/admin"
@@ -79,36 +79,36 @@
     },
     {
       "name": "growth",
-      "version": "0.4.0",
+      "version": "0.6.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/growth"
       },
-      "description": "Growth Engine. Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, and create context-aware touchpoint drafts.",
+      "description": "Growth Engine. Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, create context-aware touchpoint drafts, and analyze/forecast CRM pipeline (moved from ops).",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "comms",
-      "version": "0.3.0",
+      "version": "0.5.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/comms"
       },
-      "description": "Comms Desk. Create voice-matched drafts, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
+      "description": "Comms Desk. A Nucleus starter plugin alongside Cortex and Chief of Staff. Owns /setup-voice (moved from Cortex), creates voice-matched drafts including /post (drafts Research's staged roundup candidates), compares drafts with final edits, and proposes durable style-rule updates only after repeated evidence.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "briefing",
-      "version": "0.7.0",
+      "version": "0.10.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/briefing"
       },
-      "description": "Today's Brief. Combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow.",
+      "description": "Today's Brief. Every periodic 'what's going on' surface in Nucleus: combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow. Also owns /review and /timeline (moved from Cortex) and /dashboard (moved from Chief of Staff).",
       "author": {
         "name": "BrightWay AI"
       }
