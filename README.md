@@ -4,9 +4,9 @@
 
 You're a consultant, a fractional operator, a founder, a one-person agency. Your work is too varied for any single SaaS tool. Your relationships are too important to forget. Your voice is too specific to delegate to a generic AI. Your day is too dense to navigate by clicking through tabs.
 
-Nucleus is what you install when you want Claude to actually run your operation — remember your world, draft in your voice, surface what needs your attention, and stay out of your way the rest of the time.
+Nucleus is what you install when you want an AI host to actually run your operation — remember your world, draft in your voice, surface what needs your attention, and stay out of your way the rest of the time.
 
-Compatible with **Claude Cowork (Desktop)** and **Claude Code**. 100% free and open source. MIT-licensed across every plugin.
+Compatible with **Claude Cowork**, **Claude Code**, **ChatGPT desktop Local Work**, and **Codex**. ChatGPT web/cloud needs an approved bridge to reach private local memory. 100% free and open source. MIT-licensed across every plugin.
 
 ---
 
@@ -26,7 +26,7 @@ Compatible with **Claude Cowork (Desktop)** and **Claude Code**. 100% free and o
 
 You talk in **verbs** — *catch me up, research, draft, capture, plan, track, review, status, bill, what's on my plate, what's missing, clean up, close day, close week, start day*. The Chief of Staff (the nucleus-router skill, v0.2+) routes each verb to the right specialist on your AI staff, invokes parallel work where independent, and narrates what it's doing.
 
-You can also **address agents by role**: *"ask my Chief Financial Agent to bill this month"*, *"have my VP of Relationships prep the week"*. Each plugin's AI staff role title is a real handle.
+You can also **address agents by role**: *"ask my Chief Financial Agent to bill this month"*, *"have my Relationship Manager prep the week"*. Each plugin's AI staff role title is a real handle.
 
 The 60+ underlying slash commands are still there — power users can type `/lead-draft` directly when they want to — but they're plumbing, not the surface.
 
@@ -64,15 +64,43 @@ Plus role-addressable fallback: *"ask my [Chief Knowledge Officer / Chief Financ
 
 ## Install in five minutes
 
+Nucleus is the **master marketplace**, not a plugin that recursively runs the others.
+Importing this repository exposes all 13 entries. `nucleus-router` is the front door;
+`cortex` owns memory, identity, and voice; the other entries are independently
+installable specialists.
+
+### Claude
+
 ```
 /plugin marketplace add BrightWayAI/nucleus
 ```
 
-Then in Claude, just say it:
+### ChatGPT workspace / Local Work
+
+A workspace admin imports `https://github.com/BrightWayAI/nucleus` in workspace plugin
+management, reviews the referenced repositories, and marks the desired entries
+Available or Installed. Members then start a new **ChatGPT desktop Local Work** chat
+and grant access to their private config-root folder. The GitHub import does not upload
+memory or automatically grant local filesystem access.
+
+### Codex
+
+```bash
+codex plugin marketplace add https://github.com/BrightWayAI/nucleus
+codex plugin add nucleus-router@nucleus
+codex plugin add cortex@nucleus
+codex plugin add core-ops@nucleus
+```
+
+Add specialists with `codex plugin add <plugin-name>@nucleus`, then start a new thread.
+See [the complete ChatGPT and Codex setup guide](docs/OPENAI_SETUP.md).
+
+Then in any supported host, just say it:
 
 > **"Start nucleus"** — or "let's get started," "set me up," "onboard me." The router suggests `/start-nucleus`, which walks every foundational setup in order (identity → voice → note sources → Obsidian vault → per-plugin setups → diagnostics → optional schedule registration). Idempotent — re-running picks up where you left off. ~15-30 minutes depending on how many plugins you install.
 
-Prefer to do it by hand? Run each setup explicitly:
+Prefer to do it by hand? Run each setup explicitly (slash names in Claude, `@Plugin`
+prompts in ChatGPT, or namespaced `$plugin:skill` forms in Codex):
 
 1. `/setup-identity` — answer ~8 questions about who you are.
 2. `/setup-voice` — paste two sample emails so cortex learns your voice.
@@ -82,7 +110,15 @@ Prefer to do it by hand? Run each setup explicitly:
 6. `/diagnose` (in core-ops) — verify everything is wired.
 7. `/register-schedules` (in core-ops) — wire the standing daily/weekly/monthly automation.
 
-After setup: `/route` prints the full cheat-sheet. You'll rarely need it — just talk.
+After setup, ask Nucleus Router for the full cheat-sheet. You'll rarely need it — just talk.
+
+### One shared memory location
+
+Existing Claude users keep their current Cortex folder. New users enable Cortex and
+ask `@Cortex configure my memory at ~/Documents/Cortex`, reviewing the exact path
+before approval. Cortex writes the vendor-neutral pointer `~/.cortex/config-root`;
+there is no second GPT config file. Claude, ChatGPT desktop, and Codex read and write
+the same Markdown files when they resolve that same root and have permission to it.
 
 ---
 
@@ -211,7 +247,7 @@ After `/setup-obsidian`, your `<config-root>/` becomes a graph-viewable, mobile-
 - **Dataview queries** in `VAULT.md` render active engagements, active people, active topics.
 - **Mobile** via free Obsidian iOS/Android apps + iCloud or Obsidian Sync.
 
-Same files. Two interaction surfaces. Speak to Claude on desktop; browse the vault on your phone.
+Same files, multiple AI hosts, plus Obsidian. Speak to Claude or ChatGPT on desktop, use Codex for agentic work, and browse the vault on your phone.
 
 ---
 
@@ -334,19 +370,19 @@ Most-up-to-date version of each plugin (also recorded per-entry in [`.claude-plu
 
 | Plugin | Version |
 |---|---|
-| nucleus-router | 0.2.1 |
-| claude-cortex (cortex) | 4.13.2 |
-| core-ops | 0.3.2 |
-| lead-engine | 0.2.4 |
-| relationships | 0.2.3 |
-| referral-engine | 0.2.4 |
-| news-curator | 0.2.3 |
-| client-status | 0.2.4 |
-| project-setup | 0.2.4 |
-| time-tracking | 0.2.3 |
-| weekly-alignment | 1.4.3 |
-| writing-style | 0.1.2 |
-| daily-brief | 0.6.1 |
+| nucleus-router | 0.2.2 |
+| claude-cortex (cortex) | 4.15.0 |
+| core-ops | 0.3.3 |
+| lead-engine | 0.2.5 |
+| relationships | 0.2.4 |
+| referral-engine | 0.2.5 |
+| news-curator | 0.2.4 |
+| client-status | 0.2.5 |
+| project-setup | 0.2.5 |
+| time-tracking | 0.2.4 |
+| weekly-alignment | 1.4.4 |
+| writing-style | 0.1.3 |
+| daily-brief | 0.6.2 |
 
 ## Roadmap and open proposals
 
