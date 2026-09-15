@@ -2,10 +2,10 @@
 
 **A portable operating system for AI-powered work.**
 
-Nucleus is a marketplace of 11 open-source plugins for memory, planning,
-relationships, business development, client delivery, writing, research, and
-operations. The same workflows run in ChatGPT, Codex, Claude Code, and Claude
-Cowork while reading and writing one user-owned set of Markdown files.
+Nucleus is a marketplace of 9 open-source plugins for memory, planning,
+relationships, client delivery, writing, research, and operations. The same
+workflows run in ChatGPT, Codex, Claude Code, and Claude Cowork while reading
+and writing one user-owned set of Markdown files.
 
 Nucleus does not upload your memory to GitHub and does not create a separate
 database for each AI host. Your data stays in a private `<config-root>` that you
@@ -22,45 +22,43 @@ All plugins are MIT-licensed.
 
 ## Architecture in one minute
 
-Nucleus has four layers:
+Nucleus has three layers:
 
 1. **The Nucleus repository is the master marketplace.** Importing it discovers
-   the full catalog; it is not a fourteenth plugin that recursively runs the rest.
-2. **Nucleus Router is the front door.** Ask for work in plain English and it
-   selects the appropriate installed workflow.
-3. **Cortex is the shared context layer.** It owns memory, identity, voice, recall,
+   the full catalog; it is not one more plugin that recursively runs the rest.
+2. **Cortex is the shared context layer.** It owns memory, identity, voice, recall,
    learning, and the common config-root pointer.
-4. **Specialist plugins do the domain work.** They share context where useful but
-   remain independently installable.
+3. **Specialist plugins do the domain work,** including `core-ops`'s
+   `chief-of-staff` agent (`/cos`) — the natural-language front door that
+   routes plain-English requests to whichever specialist actually covers them.
+   Plugins share context where useful but remain independently installable.
 
 ```text
 You
- └─ Nucleus Router
+ └─ Core Ops (chief-of-staff, /cos)
      ├─ Cortex                 memory, identity, voice
      ├─ Daily Brief            daily planning and annotations
-     ├─ Relationships          relationship priorities and drafts
-     ├─ Lead Engine            signal-driven outreach
-     ├─ Project / Client Ops   setup, status, time, invoicing
+     ├─ Relationships          relationship priorities, signal-driven outreach, referral asks
+     ├─ Delivery               engagement setup, status, deliverable QA
      ├─ Writing / Research     voice and news curation
-     └─ Core Ops               diagnostics, QA, pipeline, schedules
+     └─ Core Ops               diagnostics, pipeline, schedules
 
 All plugins ────────────────> one private <config-root>
 ```
 
 ## Install
 
-**Never used Nucleus before, on any host?** Install the three starter plugins below,
+**Never used Nucleus before, on any host?** Install the two starter plugins below,
 then run `/start-nucleus` (Claude Code/Cowork) or its host equivalent (`$cortex:start-nucleus`
 in Codex, `@Cortex start Nucleus setup` in ChatGPT). It's an idempotent walker —
 identity, voice, note sources, per-plugin setup, and a health check, gated so you
 can skip anything that doesn't apply. Nothing below requires prior setup in Cowork,
 Codex, or anywhere else; you're starting from zero.
 
-Start with three plugins:
+Start with two plugins:
 
-- `nucleus-router` — natural-language routing;
 - `cortex` — shared memory, identity, and voice;
-- `core-ops` — diagnostics and operational utilities.
+- `core-ops` — natural-language chief-of-staff routing (`/cos`), diagnostics, and operational utilities.
 
 Add specialists only when they match your work.
 
@@ -75,7 +73,7 @@ A ChatGPT workspace administrator:
 5. Reviews the import, then marks the desired plugins **Available** or
    **Installed** for the appropriate roles.
 
-Importing the marketplace discovers all 11 entries; it does not automatically
+Importing the marketplace discovers all 9 entries; it does not automatically
 install every plugin or grant access to local folders and connected services.
 See OpenAI's [plugin-management documentation](https://learn.chatgpt.com/docs/enterprise/plugin-management).
 
@@ -87,7 +85,6 @@ documented remote bridge.
 
 ```bash
 codex plugin marketplace add https://github.com/BrightWayAI/nucleus
-codex plugin add nucleus-router@nucleus
 codex plugin add cortex@nucleus
 codex plugin add core-ops@nucleus
 ```
@@ -107,7 +104,7 @@ bindings.
 /plugin marketplace add BrightWayAI/nucleus
 ```
 
-Choose the same three-plugin starter or install any specialist from the catalog.
+Choose the same two-plugin starter or install any specialist from the catalog.
 
 ## First setup: choose one shared memory location
 
@@ -173,14 +170,14 @@ repeatability:
 | Build today's brief | `@Daily Brief build today's brief` | `$daily-brief:brief` | `/brief` |
 | Draft in your voice | `@Voice draft this in my voice` | `$voice:style` | `/style` |
 | Review stack health | `@Core Ops diagnose my Nucleus setup` | `$core-ops:diagnose` | `/diagnose` |
-| Find the right workflow | `@Nucleus Router route this request` | `$nucleus-router:route` | `/route` |
+| Find the right workflow | `@Core Ops route this request` | `$core-ops:cos` | `/cos` |
 
 Exact skill rendering can vary by client version, but the workflow names and data
 contracts are shared.
 
 ## Talk in outcomes, not commands
 
-The router recognizes a compact set of everyday intents:
+The chief of staff (`/cos` in core-ops) recognizes a compact set of everyday intents:
 
 | Intent | Typical result |
 |---|---|
@@ -197,14 +194,13 @@ The router recognizes a compact set of everyday intents:
 | What's missing | Memory-gap detection and optional cited research |
 | Close the day / week | Reflection, capture, cleanup, rehearsal, and preparation |
 
-If a requested plugin or connector is unavailable, the router identifies the missing
+If a requested plugin or connector is unavailable, the chief of staff identifies the missing
 capability instead of pretending the work ran.
 
 ## Plugin catalog
 
 | Role | Plugin | What it provides |
 |---|---|---|
-| Chief of Staff | [nucleus-router](https://github.com/BrightWayAI/nucleus-router) | Natural-language routing across installed workflows |
 | Knowledge and context | [cortex](https://github.com/BrightWayAI/claude-cortex) | Shared memory, identity, voice, recall, learning, cleanup, and Obsidian support |
 | Executive assistant | [daily-brief](https://github.com/BrightWayAI/daily-brief) | Daily brief, annotation processing, and next-day planning |
 | Relationship manager | [relationships](https://github.com/BrightWayAI/relationships) | Prioritized relationship actions, signal-driven outreach, and referral asks (absorbs lead-engine + referral-engine, 2026-09-15) |
@@ -212,7 +208,7 @@ capability instead of pretending the work ran.
 | Finance | [time-tracking](https://github.com/BrightWayAI/time-tracking) | Calendar-based time classification and invoice drafts |
 | Communications | [voice](https://github.com/BrightWayAI/voice) | Voice-matched drafting and learning from approved edits |
 | Marketing research | [news-curator](https://github.com/BrightWayAI/news-curator) | Cited news research and voice-matched roundup drafts |
-| Operations | [core-ops](https://github.com/BrightWayAI/core-ops) | Diagnostics, pipeline analysis, metrics, and schedules |
+| Chief of Staff / Operations | [core-ops](https://github.com/BrightWayAI/core-ops) | Natural-language routing (`/cos`, replaces nucleus-router), diagnostics, pipeline analysis, metrics, and schedules |
 | Cross-team liaison | [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment) | Slack-based overlap, conflict, decision, and risk scanning |
 
 ## Agents and connectors
@@ -245,31 +241,31 @@ Host-specific fallbacks are explicit:
 **Minimum starter**
 
 ```text
-nucleus-router + cortex + core-ops
+cortex + core-ops
 ```
 
 **Business development**
 
 ```text
-nucleus-router + cortex + core-ops + relationships
+cortex + core-ops + relationships
 ```
 
 **Client delivery**
 
 ```text
-nucleus-router + cortex + core-ops + delivery + time-tracking + daily-brief
+cortex + core-ops + delivery + time-tracking + daily-brief
 ```
 
 **Content and relationships**
 
 ```text
-nucleus-router + cortex + voice + news-curator + relationships
+cortex + voice + news-curator + relationships
 ```
 
 **Cross-team operator**
 
 ```text
-nucleus-router + cortex + weekly-alignment + daily-brief + core-ops
+cortex + weekly-alignment + daily-brief + core-ops
 ```
 
 ## Daily and weekly rhythm
@@ -336,7 +332,7 @@ write real Cortex memory.
 ## Coordinated releases and live connector certification
 
 The root marketplace is the rolling development catalog. Versioned snapshots under
-`releases/` pin all 10 plugin repositories to full Git commit SHAs. Before promotion,
+`releases/` pin all 9 plugin repositories to full Git commit SHAs. Before promotion,
 the release gate requires sanitized live connector reports from the host/profile pairs
 declared in the snapshot. See [the release runbook](docs/RELEASING.md) and
 [live connector testing](docs/CONNECTOR_INTEGRATION_TESTING.md).
@@ -349,10 +345,9 @@ connection, pasted payload, or mocked response is not enough for a pass.
 
 | Plugin | Version |
 |---|---:|
-| nucleus-router | 0.2.4 |
-| cortex | 4.18.4 |
-| core-ops | 0.4.3 |
-| relationships | 0.3.0 |
+| cortex | 4.18.6 |
+| core-ops | 0.6.0 |
+| relationships | 0.3.1 |
 | news-curator | 0.2.5 |
 | delivery | 0.3.0 |
 | time-tracking | 0.2.5 |

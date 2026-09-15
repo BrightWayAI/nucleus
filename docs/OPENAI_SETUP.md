@@ -1,10 +1,10 @@
 # Nucleus on ChatGPT and Codex
 
-Nucleus is the master marketplace, not a fourteenth runtime plugin. Importing the
-Nucleus repository makes its 13 catalog entries available; users or workspace admins
-still choose which entries to install. `nucleus-router` is the conversational front
-door. `cortex` owns shared memory, identity, and voice. The other plugins are
-independent specialists that compose through the same config root.
+Nucleus is the master marketplace, not one more runtime plugin. Importing the
+Nucleus repository makes its 9 catalog entries available; users or workspace admins
+still choose which entries to install. `core-ops`'s `chief-of-staff` agent (`/cos`)
+is the conversational front door. `cortex` owns shared memory, identity, and voice.
+The other plugins are independent specialists that compose through the same config root.
 
 ## Supported surfaces
 
@@ -25,7 +25,7 @@ A workspace administrator:
 1. Opens workspace plugin management and chooses **Import from GitHub**.
 2. Enters `https://github.com/BrightWayAI/nucleus` and leaves the path blank.
 3. Pins a reviewed release tag or commit when the UI offers a revision selector.
-4. Reviews all 13 referenced repositories.
+4. Reviews all 9 referenced repositories.
 5. Marks the desired plugins Available or Installed for the intended roles.
 
 The native catalog is `.agents/plugins/marketplace.json`. GitHub import does not make
@@ -35,11 +35,10 @@ approved remote bridge is configured.
 
 Start a new ChatGPT desktop Local Work chat after installation. Enable at least:
 
-- `nucleus-router` — natural-language routing;
 - `cortex` — shared memory, identity, and voice;
-- `core-ops` — diagnostics and operational utilities.
+- `core-ops` — natural-language chief-of-staff routing (`/cos`), diagnostics, and operational utilities.
 
-Then add specialists for the user's actual work. Installing all 13 is supported but
+Then add specialists for the user's actual work. Installing all 9 is supported but
 not required.
 
 ## Install from Codex
@@ -48,7 +47,6 @@ From a trusted checkout or the GitHub marketplace:
 
 ```bash
 codex plugin marketplace add https://github.com/BrightWayAI/nucleus
-codex plugin add nucleus-router@nucleus
 codex plugin add cortex@nucleus
 codex plugin add core-ops@nucleus
 ```
@@ -106,7 +104,7 @@ Every specialist reads those same files. Per-plugin setup writes settings under
 | Recall | `@Cortex recall what we know about Acme` | `$cortex:recall Acme` |
 | Save this conversation | `@Cortex show what you would remember, then ask before saving` | `$cortex:remember` |
 | See the stack | `@Core Ops diagnose my Nucleus setup` | `$core-ops:diagnose` |
-| Route naturally | `@Nucleus Router what should handle this request?` | `$nucleus-router:route` |
+| Route naturally | `@Core Ops what should handle this request?` | `$core-ops:cos` |
 
 Claude slash-command names remain useful aliases in documentation. ChatGPT users can
 ask naturally or mention a plugin with `@`; Codex exposes namespaced skills. The
@@ -114,7 +112,7 @@ underlying workflow remains the same.
 
 ## Agents and degradation
 
-The six non-Cortex role definitions have read-only Codex bindings. When the host can
+The non-Cortex role definitions have read-only Codex bindings. When the host can
 delegate, they return research/ranking output to the parent workflow. When it cannot,
 the parent follows the same role inline. Agents never receive independent authority to
 write files, mutate CRM, send mail, or register schedules.
@@ -132,7 +130,7 @@ examples capability by capability. Important fallbacks include:
 
 ## Validate a checkout without real user data
 
-Place the 13 repositories as siblings under one parent directory, then run:
+Place the 9 repositories as siblings under one parent directory, then run:
 
 ```bash
 python3 scripts/generate_openai_adapters.py --check

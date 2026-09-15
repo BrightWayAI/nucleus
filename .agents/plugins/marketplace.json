@@ -5,18 +5,6 @@
   },
   "plugins": [
     {
-      "name": "nucleus-router",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/BrightWayAI/nucleus-router.git"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    },
-    {
       "name": "cortex",
       "source": {
         "source": "url",
