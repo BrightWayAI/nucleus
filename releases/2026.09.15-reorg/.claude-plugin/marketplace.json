@@ -1,6 +1,6 @@
 {
   "name": "nucleus",
-  "description": "Nucleus — one operating system of portable AI workflows and shared memory for Claude, ChatGPT, and Codex.",
+  "description": "Nucleus 2026.09.15-reorg coordinated catalog. Commit pins are authoritative in release.json and the native OpenAI marketplace.",
   "owner": {
     "name": "BrightWay AI"
   },
