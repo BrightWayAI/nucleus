@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "claude-cortex",
-      "version": "4.20.0",
+      "version": "4.20.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/claude-cortex"
@@ -19,7 +19,7 @@
     },
     {
       "name": "weekly-alignment",
-      "version": "1.5.0",
+      "version": "1.5.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/weekly-alignment"
@@ -31,7 +31,7 @@
     },
     {
       "name": "core-ops",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/core-ops"
@@ -43,7 +43,7 @@
     },
     {
       "name": "news-curator",
-      "version": "0.2.4",
+      "version": "0.2.6",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/news-curator"
@@ -55,7 +55,7 @@
     },
     {
       "name": "delivery",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/delivery"
@@ -67,7 +67,7 @@
     },
     {
       "name": "time-tracking",
-      "version": "0.2.4",
+      "version": "0.2.6",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/time-tracking"
@@ -79,7 +79,7 @@
     },
     {
       "name": "relationships",
-      "version": "0.3.2",
+      "version": "0.3.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/relationships"
@@ -91,7 +91,7 @@
     },
     {
       "name": "voice",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/voice"
@@ -103,7 +103,7 @@
     },
     {
       "name": "daily-brief",
-      "version": "0.6.6",
+      "version": "0.6.7",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/daily-brief"
