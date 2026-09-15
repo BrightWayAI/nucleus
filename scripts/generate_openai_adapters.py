@@ -31,8 +31,8 @@ PLUGINS = {
         "prompts": ["Set up my Cortex memory.", "Recall what we know about this topic.", "Show what this conversation would add before saving."],
         "degraded": "Direct local-memory access requires a filesystem-capable host and permission to the resolved config root. Cloud sessions require the approved bounded bridge; never redirect memory to another store silently.",
     },
-    "weekly-alignment": {
-        "display": "Weekly Alignment",
+    "alignment": {
+        "display": "Team Alignment",
         "short": "Find cross-team overlaps, conflicts, and decision risks",
         "long": "Scan configured Slack sources for cross-team alignment signals and produce daily pulses, weekly reports, and risk updates.",
         "category": "Teamwork",
@@ -41,26 +41,26 @@ PLUGINS = {
         "degraded": "A readable Slack app or MCP connector is required for scans. Without one, explain the dependency and stop; never invent channel activity. Previously saved local history may still be reviewed.",
         "skill_names": {"daily-pulse": "daily-pulse", "report": "report", "scan": "scan", "setup": "setup", "update-risks": "update-risks"},
     },
-    "core-ops": {
-        "display": "Core Ops",
-        "short": "Route work and run pipeline and stack operations",
-        "long": "Use a natural-language chief-of-staff front door, analyze CRM pipeline, inspect Nucleus health, record agent metrics, and register schedules when the host supports them.",
+    "ops": {
+        "display": "Chief of Staff",
+        "short": "Route work and run stack operations",
+        "long": "Use a natural-language chief-of-staff front door, inspect Nucleus health, record agent metrics, and register schedules when the host supports them. Delegates CRM pipeline analysis and forecasting to the growth plugin when installed.",
         "category": "Business",
         "capabilities": ["Read", "Write", "Interactive"],
-        "prompts": ["What can Nucleus do?", "Analyze my pipeline.", "Diagnose my Nucleus setup."],
+        "prompts": ["What can Nucleus do?", "Diagnose my Nucleus setup.", "Register my Nucleus schedules."],
         "degraded": "CRM, artifacts, and scheduling are independent capabilities. Use available inputs, name missing specialist plugins, and provide schedule definitions without claiming registration when no scheduler exists.",
     },
-    "news-curator": {
-        "display": "News Curator",
-        "short": "Research and draft a cited weekly news roundup",
-        "long": "Find recent stories, rank them for a configured audience, and assemble a voice-matched roundup with traceable sources.",
+    "research": {
+        "display": "Research",
+        "short": "Research and stage a cited weekly news roundup",
+        "long": "Find recent stories, rank them for a configured audience, and stage candidates with traceable sources for drafting elsewhere.",
         "category": "Research",
         "capabilities": ["Read", "Interactive"],
-        "prompts": ["Research this week's top stories.", "Draft my weekly roundup.", "Configure my roundup audience."],
-        "degraded": "Web search is required for fresh research. Mail/newsletter connectors are optional. If delegation is unavailable, run the curator and assembler stages inline and preserve source citations.",
+        "prompts": ["Research this week's top stories.", "Stage this week's roundup candidates.", "Configure my roundup audience."],
+        "degraded": "Web search is required for fresh research. Mail/newsletter connectors are optional. If delegation is unavailable, run the curator stage inline and preserve source citations.",
     },
-    "delivery": {
-        "display": "Delivery",
+    "clients": {
+        "display": "Client Success",
         "short": "Start, status-update, and QA a client engagement",
         "long": "Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; and run structured deliverable QA.",
         "category": "Productivity",
@@ -68,8 +68,8 @@ PLUGINS = {
         "prompts": ["Set up a new client project.", "Draft this week's client status updates.", "Review this deliverable before I send it."],
         "degraded": "When Drive or project-creation APIs are absent, return a folder blueprint and host-neutral workspace prompt. Use available evidence for status and QA, list skipped sources, and keep outbound updates as drafts.",
     },
-    "time-tracking": {
-        "display": "Time Tracking",
+    "admin": {
+        "display": "Admin",
         "short": "Classify calendar time and prepare reviewable invoices",
         "long": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
         "category": "Business",
@@ -77,27 +77,27 @@ PLUGINS = {
         "prompts": ["Track yesterday's billable time.", "Generate this month's invoice drafts.", "Configure my billing rules."],
         "degraded": "A calendar connector is optional: accept pasted events when absent. Generate Markdown or structured invoice data if document tooling is unavailable. Never send invoices automatically.",
     },
-    "relationships": {
-        "display": "Relationships",
+    "growth": {
+        "display": "Growth Engine",
         "short": "Prioritize relationship actions and draft useful touchpoints",
-        "long": "Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, and create context-aware touchpoint drafts.",
+        "long": "Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, rank and forecast pipeline, and create context-aware touchpoint drafts.",
         "category": "Sales",
         "capabilities": ["Read", "Write", "Interactive"],
-        "prompts": ["Build today's relationship brief.", "Draft a touchpoint for this person.", "Rebalance my relationship network."],
+        "prompts": ["Build today's relationship brief.", "Draft a touchpoint for this person.", "Analyze my pipeline."],
         "degraded": "Cortex, CRM, mail, calendar, Apollo, and research connectors enrich ranking but are optional. Run read-only role work inline when agents are unavailable, name skipped sources, and keep all outbound content as drafts.",
         "skill_names": {"setup": "setup"},
     },
-    "voice": {
-        "display": "Voice",
+    "comms": {
+        "display": "Comms Desk",
         "short": "Draft in your voice and learn from approved edits",
-        "long": "Create voice-matched drafts, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
+        "long": "Create voice-matched drafts, assemble the weekly roundup post from staged research candidates, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
         "category": "Writing",
         "capabilities": ["Read", "Write"],
-        "prompts": ["Write this in my voice.", "Learn from these edits.", "Review my current style rules."],
+        "prompts": ["Write this in my voice.", "Draft my roundup post.", "Learn from these edits."],
         "degraded": "Mail and publishing connectors are optional. Accept pasted samples and return copy-ready text when absent. Never send or publish automatically; style-file changes require user approval.",
     },
-    "daily-brief": {
-        "display": "Daily Brief",
+    "briefing": {
+        "display": "Today's Brief",
         "short": "Build and process a daily operating brief",
         "long": "Combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow.",
         "category": "Productivity",
@@ -108,31 +108,33 @@ PLUGINS = {
 }
 
 ALIASES = {
-    "core-ops": ["setup-core"],
-    "news-curator": ["setup-news"],
-    "delivery": ["setup-projects", "setup-status"],
-    "time-tracking": ["setup-time"],
-    "relationships": ["setup-relationships"],
-    "voice": ["setup-style", "style"],
-    "daily-brief": ["setup-brief"],
+    "ops": ["setup-core"],
+    "research": ["setup-news"],
+    "clients": ["setup-projects", "setup-status"],
+    "admin": ["setup-time"],
+    "growth": ["setup-relationships"],
+    "comms": ["setup-voice", "setup-style", "style"],
+    "briefing": ["setup-brief"],
 }
 
 DISABLED_ALIASES = {
-    ("core-ops", "setup-core"),
-    ("news-curator", "setup-news"),
-    ("delivery", "setup-projects"),
-    ("delivery", "setup-status"),
-    ("time-tracking", "setup-time"),
-    ("relationships", "setup-relationships"),
-    ("voice", "setup-style"),
-    ("daily-brief", "setup-brief"),
+    ("ops", "setup-core"),
+    ("research", "setup-news"),
+    ("clients", "setup-projects"),
+    ("clients", "setup-status"),
+    ("admin", "setup-time"),
+    ("growth", "setup-relationships"),
+    ("comms", "setup-voice"),
+    ("comms", "setup-style"),
+    ("briefing", "setup-brief"),
 }
 
 AGENTS = {
-    "weekly-alignment": ["alignment-scanner"],
-    "core-ops": ["chief-of-staff", "pipeline-analyst", "pipeline-forecast"],
-    "news-curator": ["news-curator", "post-assembler"],
-    "relationships": ["relationships-director"],
+    "alignment": ["alignment-scanner"],
+    "ops": ["chief-of-staff"],
+    "research": ["news-curator"],
+    "comms": ["post-assembler"],
+    "growth": ["relationships-director", "pipeline-analyst", "pipeline-forecast"],
 }
 
 PREAMBLE_START = "<!-- OPENAI-ADAPTER:START -->"

@@ -5,15 +5,15 @@ from __future__ import annotations
 
 # (Codex/native name, sibling repository directory, Claude marketplace name)
 PLUGIN_REPOSITORIES = (
-    ("cortex", "claude-cortex", "claude-cortex"),
-    ("weekly-alignment", "weekly-alignment", "weekly-alignment"),
-    ("core-ops", "core-ops", "core-ops"),
-    ("news-curator", "news-curator", "news-curator"),
-    ("delivery", "delivery", "delivery"),
-    ("time-tracking", "time-tracking", "time-tracking"),
-    ("relationships", "relationships", "relationships"),
-    ("voice", "voice", "voice"),
-    ("daily-brief", "daily-brief", "daily-brief"),
+    ("cortex", "cortex", "cortex"),
+    ("alignment", "alignment", "alignment"),
+    ("ops", "ops", "ops"),
+    ("research", "research", "research"),
+    ("clients", "clients", "clients"),
+    ("admin", "admin", "admin"),
+    ("growth", "growth", "growth"),
+    ("comms", "comms", "comms"),
+    ("briefing", "briefing", "briefing"),
 )
 
 PLUGIN_NAMES = tuple(name for name, _, _ in PLUGIN_REPOSITORIES)

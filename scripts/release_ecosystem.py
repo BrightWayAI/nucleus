@@ -123,11 +123,10 @@ def claude_marketplace(snapshot: dict[str, object]) -> dict[str, object]:
     rolling = load_json(ROOT / ".claude-plugin" / "marketplace.json")
     if not isinstance(rolling, dict):
         raise RuntimeError("Claude marketplace is not an object")
-    versions = {
-        ("claude-cortex" if row["name"] == "cortex" else row["name"]): row["version"]
-        for row in snapshot["plugins"]
-        if isinstance(row, dict)
-    }
+    versions = {row["name"]: row["version"] for row in snapshot["plugins"] if isinstance(row, dict)}
+    if "cortex" in versions and "claude-cortex" not in versions:
+        # Legacy pre-unification Claude catalogs named the Cortex plugin "claude-cortex".
+        versions.setdefault("claude-cortex", versions["cortex"])
     value = copy.deepcopy(rolling)
     for entry in value.get("plugins", []):
         entry["version"] = versions[entry["name"]]
@@ -186,19 +185,20 @@ def validate_claude_marketplace(
     if not isinstance(plugins, list) or not isinstance(rows, list):
         return ["Claude release catalog plugins must be an array"]
     errors: list[str] = []
-    expected_names = [
-        "claude-cortex" if row.get("name") == "cortex" else row.get("name")
-        for row in rows
-        if isinstance(row, dict)
-    ]
+    expected_names = [row.get("name") for row in rows if isinstance(row, dict)]
     actual_names = [entry.get("name") for entry in plugins if isinstance(entry, dict)]
-    if actual_names != expected_names:
+    # Legacy pre-unification Claude catalogs named the Cortex plugin "claude-cortex";
+    # accept either spelling positionally so old and new releases both validate.
+    normalized_actual = ["cortex" if name == "claude-cortex" else name for name in actual_names]
+    if normalized_actual != expected_names:
         errors.append("Claude release catalog names/order differ from release.json")
     rows_by_claude_name = {
-        ("claude-cortex" if row["name"] == "cortex" else row["name"]): row
+        row["name"]: row
         for row in rows
         if isinstance(row, dict) and isinstance(row.get("name"), str)
     }
+    if "cortex" in rows_by_claude_name:
+        rows_by_claude_name.setdefault("claude-cortex", rows_by_claude_name["cortex"])
     for entry in plugins:
         if not isinstance(entry, dict):
             errors.append("Claude release catalog entry must be an object")

@@ -98,7 +98,7 @@ def check_skills(repo: Path, errors: list[str]) -> None:
         require(fields.get("name") == folder, f"skill name/folder mismatch: {repo.name}/{folder}", errors)
         require(bool(fields.get("description")), f"missing skill description: {repo.name}/{folder}", errors)
         text = path.read_text()
-        if repo.name == "claude-cortex":
+        if repo.name == "cortex":
             require(
                 "commands/" in text or "canonical" in text or "scripts/cortex_cli.py" in text,
                 f"Cortex skill is not a canonical wrapper: {repo.name}/{folder}",
@@ -154,7 +154,7 @@ def check_active_architecture(repo: Path, errors: list[str]) -> None:
 
 
 def check_config_root_fixture(errors: list[str]) -> None:
-    module_path = LAB_ROOT / "claude-cortex" / "scripts" / "lib" / "config_root.py"
+    module_path = LAB_ROOT / "cortex" / "scripts" / "lib" / "config_root.py"
     spec = importlib.util.spec_from_file_location("cortex_config_root_fixture", module_path)
     require(spec is not None and spec.loader is not None, "cannot load Cortex config-root resolver", errors)
     if spec is None or spec.loader is None:
@@ -212,11 +212,11 @@ def main() -> int:
         for row in connector_plan.get("connectors", [])
         if isinstance(row, dict)
     ]
-    connector_command = (LAB_ROOT / "core-ops" / "commands" / "test-connectors.md").read_text()
+    connector_command = (LAB_ROOT / "ops" / "commands" / "test-connectors.md").read_text()
     for connector_id in connector_ids:
         require(
             f"`{connector_id}`" in connector_command,
-            f"core-ops connector workflow missing plan ID: {connector_id}",
+            f"ops connector workflow missing plan ID: {connector_id}",
             errors,
         )
 
@@ -233,16 +233,16 @@ def main() -> int:
         check_agents(repo, errors)
         check_active_architecture(repo, errors)
         require((repo / "AGENTS.md").exists(), f"missing AGENTS.md: {repo_name}", errors)
-        require((repo / "references" / "openai-portability.md").exists() or repo_name == "claude-cortex", f"missing portability contract: {repo_name}", errors)
+        require((repo / "references" / "openai-portability.md").exists() or repo_name == "cortex", f"missing portability contract: {repo_name}", errors)
 
     retired = {"nucleus-router", "lead-engine", "project-setup", "client-status", "referral-engine", "writing-style"}
     require(not retired.intersection(native_names), "native marketplace contains retired plugins", errors)
     require(not retired.intersection(claude_versions), "Claude marketplace contains retired plugins", errors)
-    require((LAB_ROOT / "core-ops" / "commands" / "cos.md").exists(), "core-ops is missing the chief-of-staff entrypoint", errors)
+    require((LAB_ROOT / "ops" / "commands" / "cos.md").exists(), "ops is missing the chief-of-staff entrypoint", errors)
     for command in ("pull-signals", "capture-signal", "pre-call-brief"):
-        require((LAB_ROOT / "relationships" / "commands" / f"{command}.md").exists(), f"relationships is missing absorbed command: {command}", errors)
+        require((LAB_ROOT / "growth" / "commands" / f"{command}.md").exists(), f"growth is missing absorbed command: {command}", errors)
     for command in ("project-setup", "client-status", "review-deliverable"):
-        require((LAB_ROOT / "delivery" / "commands" / f"{command}.md").exists(), f"delivery is missing absorbed command: {command}", errors)
+        require((LAB_ROOT / "clients" / "commands" / f"{command}.md").exists(), f"clients is missing absorbed command: {command}", errors)
     check_config_root_fixture(errors)
 
     releases = subprocess.run(

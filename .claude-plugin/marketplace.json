@@ -12,103 +12,103 @@
         "source": "github",
         "repo": "BrightWayAI/cortex"
       },
-      "description": "Cortex. Recall, search, and explicitly commit to one user-owned Cortex memory store from Claude, ChatGPT, or Codex.",
+      "description": "Recall, search, and explicitly commit to one user-owned Cortex memory store from Claude, ChatGPT, or Codex.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "alignment",
-      "version": "1.6.0",
+      "version": "1.6.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/alignment"
       },
-      "description": "Team Alignment. Scan configured Slack sources for cross-team alignment signals and produce daily pulses, weekly reports, and risk updates.",
+      "description": "Scan configured Slack sources for cross-team alignment signals and produce daily pulses, weekly reports, and risk updates.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "ops",
-      "version": "0.11.0",
+      "version": "0.11.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/ops"
       },
-      "description": "Chief of Staff. Use a natural-language chief-of-staff front door, inspect Nucleus health, record agent metrics, and register schedules when the host supports them. CRM pipeline analysis and forecasting now live in Growth Engine; /cos delegates there when it's installed.",
+      "description": "Use a natural-language chief-of-staff front door, inspect Nucleus health, record agent metrics, and register schedules when the host supports them. Delegates CRM pipeline analysis and forecasting to the growth plugin when installed.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "research",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/research"
       },
-      "description": "Research. Find recent stories, rank them for a configured audience, and stage a traceable candidate roundup. Drafting now lives in Comms Desk (/post); /roundup --draft chains into it when comms is installed.",
+      "description": "Find recent stories, rank them for a configured audience, and stage candidates with traceable sources for drafting elsewhere.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "clients",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/clients"
       },
-      "description": "Client Success. Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; and run structured deliverable QA.",
+      "description": "Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; and run structured deliverable QA.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "admin",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/admin"
       },
-      "description": "Admin. Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+      "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "growth",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/growth"
       },
-      "description": "Growth Engine. Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, create context-aware touchpoint drafts, and analyze/forecast CRM pipeline (moved from ops).",
+      "description": "Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, rank and forecast pipeline, and create context-aware touchpoint drafts.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "comms",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/comms"
       },
-      "description": "Comms Desk. A Nucleus starter plugin alongside Cortex and Chief of Staff. Owns /setup-voice (moved from Cortex), creates voice-matched drafts including /post (drafts Research's staged roundup candidates), compares drafts with final edits, and proposes durable style-rule updates only after repeated evidence.",
+      "description": "Create voice-matched drafts, assemble the weekly roundup post from staged research candidates, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "briefing",
-      "version": "0.10.1",
+      "version": "0.10.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/briefing"
       },
-      "description": "Today's Brief. Every periodic 'what's going on' surface in Nucleus: combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow. Also owns /review and /timeline (moved from Cortex) and /dashboard (moved from Chief of Staff).",
+      "description": "Combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow.",
       "author": {
         "name": "BrightWay AI"
       }
