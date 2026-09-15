@@ -137,10 +137,10 @@
       "category": "Sales"
     },
     {
-      "name": "writing-style",
+      "name": "voice",
       "source": {
         "source": "url",
-        "url": "https://github.com/BrightWayAI/writing-style.git"
+        "url": "https://github.com/BrightWayAI/voice.git"
       },
       "policy": {
         "installation": "AVAILABLE",

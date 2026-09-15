@@ -171,7 +171,7 @@ repeatability:
 | Recall context | `@Cortex recall Acme` | `$cortex:recall Acme` | `/recall Acme` |
 | Save a conversation | `@Cortex preview what you would remember, then ask before saving` | `$cortex:remember` | `/remember` |
 | Build today's brief | `@Daily Brief build today's brief` | `$daily-brief:brief` | `/brief` |
-| Draft in your voice | `@Writing Style draft this in my voice` | `$writing-style:style` | `/style` |
+| Draft in your voice | `@Voice draft this in my voice` | `$voice:style` | `/style` |
 | Review stack health | `@Core Ops diagnose my Nucleus setup` | `$core-ops:diagnose` | `/diagnose` |
 | Find the right workflow | `@Nucleus Router route this request` | `$nucleus-router:route` | `/route` |
 
@@ -213,7 +213,7 @@ capability instead of pretending the work ran.
 | Project manager | [project-setup](https://github.com/BrightWayAI/project-setup) | Engagement interview, folder blueprint, portable workspace prompt, and project plan |
 | Account manager | [client-status](https://github.com/BrightWayAI/client-status) | Weekly client-status drafts from available project evidence |
 | Finance | [time-tracking](https://github.com/BrightWayAI/time-tracking) | Calendar-based time classification and invoice drafts |
-| Communications | [writing-style](https://github.com/BrightWayAI/writing-style) | Voice-matched drafting and learning from approved edits |
+| Communications | [voice](https://github.com/BrightWayAI/voice) | Voice-matched drafting and learning from approved edits |
 | Marketing research | [news-curator](https://github.com/BrightWayAI/news-curator) | Cited news research and voice-matched roundup drafts |
 | Operations | [core-ops](https://github.com/BrightWayAI/core-ops) | Diagnostics, deliverable QA, pipeline analysis, metrics, and schedules |
 | Cross-team liaison | [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment) | Slack-based overlap, conflict, decision, and risk scanning |
@@ -266,7 +266,7 @@ nucleus-router + cortex + core-ops + project-setup + client-status + time-tracki
 **Content and relationships**
 
 ```text
-nucleus-router + cortex + writing-style + news-curator + relationships + referral-engine
+nucleus-router + cortex + voice + news-curator + relationships + referral-engine
 ```
 
 **Cross-team operator**
@@ -363,7 +363,7 @@ connection, pasted payload, or mocked response is not enough for a pass.
 | project-setup | 0.2.6 |
 | time-tracking | 0.2.5 |
 | weekly-alignment | 1.4.5 |
-| writing-style | 0.1.5 |
+| voice | 0.2.0 |
 | daily-brief | 0.6.4 |
 
 The native OpenAI catalog is

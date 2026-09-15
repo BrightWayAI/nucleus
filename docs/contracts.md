@@ -18,11 +18,11 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Breaking change protocol:** if `identity.md` schema changes, every reader plugin needs a coordinated update. Treat as a Nucleus-wide major version bump.
 
 `<config-root>/memory/me/voice.md`
-- **Writer:** cortex `/setup-voice` and writing-style `/style-learn`
-- **Readers:** relationships, lead-engine, news-curator (post-assembler), client-status, referral-engine, writing-style `/style`
+- **Writer:** cortex `/setup-voice` and voice `/style-learn`
+- **Readers:** relationships, lead-engine, news-curator (post-assembler), client-status, referral-engine, voice `/style`
 - **Format:** markdown with `## Tone`, `## Vocabulary`, `## Banned phrases`, `## Style rules` sections
 - **Version:** stable since cortex v4.0
-- **Note:** writing-style v0.x adds entries via `/style-learn` two-stage triage; format remains compatible with cortex readers.
+- **Note:** voice v0.x (formerly writing-style) adds entries via `/style-learn` two-stage triage; format remains compatible with cortex readers.
 
 ---
 
@@ -208,7 +208,7 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Writer:** relationships `/setup-relationships`
 - **Readers:** relationships `/relationships`, `/network-rebalance`, `/draft-touchpoint`, `/relationships-action`
 - **Sections (v0.1.1 — slimmed):** `## Identity` (minimal — for template variable filling only), `## Companion plugins` (runtime-detected), `## Tiers`, `## Close personal track`, `## Buckets`, `## Network-expansion voices`, `## Time budget`, `## Scoring overrides` (optional), `## Standalone-install fallbacks` (only populated when a peer file is missing), `## Provenance` (tracks which fields came from which peer file).
-- **Peer-import behavior (v0.1.1+):** at `/setup-relationships` time, the plugin reads from `<config-root>/memory/me/identity.md`, `<config-root>/memory/me/voice.md`, `<config-root>/plugins/{lead-engine,core-ops,referral-engine,bizdev-outreach,weekly-outreach,writing-style}.user-context.md` and cortex workstream nodes. **One-time import only — not runtime reads.** Identity, voice, ICP, CRM, Apollo, cooling rules live at their canonical peer files; the relationships plugin reads them live at runtime via the peer paths above.
+- **Peer-import behavior (v0.1.1+):** at `/setup-relationships` time, the plugin reads from `<config-root>/memory/me/identity.md`, `<config-root>/memory/me/voice.md`, `<config-root>/plugins/{lead-engine,core-ops,referral-engine,bizdev-outreach,weekly-outreach,voice}.user-context.md` and cortex workstream nodes. **One-time import only — not runtime reads.** Identity, voice, ICP, CRM, Apollo, cooling rules live at their canonical peer files; the relationships plugin reads them live at runtime via the peer paths above.
 - **Version:** added in relationships v0.1.0; slimmed in v0.1.1
 
 `<config-root>/relationships/today.md`

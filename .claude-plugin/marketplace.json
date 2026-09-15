@@ -138,13 +138,13 @@
       }
     },
     {
-      "name": "writing-style",
-      "version": "0.1.3",
+      "name": "voice",
+      "version": "0.2.0",
       "source": {
         "source": "github",
-        "repo": "BrightWayAI/writing-style"
+        "repo": "BrightWayAI/voice"
       },
-      "description": "Create voice-matched drafts, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
+      "description": "Create voice-matched drafts, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence. Renamed from writing-style, 2026-09-15.",
       "author": {
         "name": "BrightWay AI"
       }
