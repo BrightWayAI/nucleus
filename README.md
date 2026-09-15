@@ -138,8 +138,8 @@ writable roots, depending on the workflow.
 
 Then establish the two shared context files:
 
-- set up identity → `<config-root>/identity.md`;
-- set up voice → `<config-root>/voice.md`.
+- set up identity → `<config-root>/memory/me/identity.md`;
+- set up voice → `<config-root>/memory/me/voice.md`.
 
 All specialist plugins read those files. Their own settings live under
 `<config-root>/plugins/`.

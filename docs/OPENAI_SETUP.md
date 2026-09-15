@@ -90,8 +90,8 @@ folder.
 
 Identity and voice are not separate plugins:
 
-- `@Cortex set up my identity` writes `<config-root>/identity.md` after review.
-- `@Cortex set up my voice` writes `<config-root>/voice.md` after review.
+- `@Cortex set up my identity` writes `<config-root>/memory/me/identity.md` after review.
+- `@Cortex set up my voice` writes `<config-root>/memory/me/voice.md` after review.
 
 Every specialist reads those same files. Per-plugin setup writes settings under
 `<config-root>/plugins/`.
