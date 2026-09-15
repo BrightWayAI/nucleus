@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "claude-cortex",
-      "version": "4.20.1",
+      "version": "4.21.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/claude-cortex"
@@ -31,7 +31,7 @@
     },
     {
       "name": "core-ops",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/core-ops"
@@ -55,7 +55,7 @@
     },
     {
       "name": "delivery",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/delivery"
@@ -79,7 +79,7 @@
     },
     {
       "name": "relationships",
-      "version": "0.3.3",
+      "version": "0.3.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/relationships"
@@ -103,7 +103,7 @@
     },
     {
       "name": "daily-brief",
-      "version": "0.6.7",
+      "version": "0.6.8",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/daily-brief"

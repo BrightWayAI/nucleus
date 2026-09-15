@@ -211,11 +211,35 @@ capability instead of pretending the work ran.
 | Chief of Staff / Operations | [core-ops](https://github.com/BrightWayAI/core-ops) | Natural-language routing (`/cos`, replaces nucleus-router), diagnostics, pipeline analysis, metrics, and schedules |
 | Cross-team liaison | [weekly-alignment](https://github.com/BrightWayAI/weekly-alignment) | Slack-based overlap, conflict, decision, and risk scanning |
 
+## Autonomy and safety
+
+Every command, skill, and agent in Nucleus follows one autonomy policy, defined
+once in Cortex's `memory/CLAUDE.md` and inherited everywhere:
+
+- **Always** — read memory before acting, stage proposals instead of writing
+  memory unattended, cite sources.
+- **Ask first** — sending any email/DM/Slack message, creating or changing CRM
+  deals or stages, deleting or archiving a memory node, registering a scheduled
+  task, spending API credits (e.g. Apollo enrichment).
+- **Never** — send on your behalf without a per-message approval, write memory
+  from an unattended run (only staged drafts), store secrets or personal IDs,
+  or silently overwrite a fact instead of superseding it with a dated marker.
+
+`/start-nucleus` walks you through this policy once during onboarding and lets
+you customize any tier before you use anything else. The `chief-of-staff` agent
+(`/cos` in `core-ops`) — the natural-language front door — narrates read-only
+and drafting work as it runs, but stops and confirms before anything in the Ask
+First or Never tiers, regardless of how the request was phrased.
+
 ## Agents and connectors
 
-Nucleus includes focused research and ranking roles such as memory librarian,
-contact researcher, pipeline analyst, relationship ranker, news curator, and post
-assembler.
+Nucleus includes focused research and synthesis roles: `memory-librarian`
+(cross-node search) and `gap-researcher` (thin/stale memory research) in
+Cortex; `note-taker` (nightly transcript/session/CRM-event mining, mode-dispatched)
+also in Cortex; `relationships-director` (candidate ranking + contact research,
+mode-dispatched) in `relationships`; `pipeline-analyst`/`pipeline-forecast` in
+`core-ops`; `alignment-scanner` (Slack scan/pulse/report, mode-dispatched) in
+`weekly-alignment`; `chief-of-staff` (the front door) in `core-ops`.
 
 - When the host supports delegation, read-only agents return findings to the parent
   workflow.
@@ -345,15 +369,15 @@ connection, pasted payload, or mocked response is not enough for a pass.
 
 | Plugin | Version |
 |---|---:|
-| cortex | 4.20.1 |
-| core-ops | 0.6.1 |
-| relationships | 0.3.3 |
+| cortex | 4.21.2 |
+| core-ops | 0.6.2 |
+| relationships | 0.3.4 |
 | news-curator | 0.2.6 |
-| delivery | 0.3.1 |
+| delivery | 0.3.2 |
 | time-tracking | 0.2.6 |
 | weekly-alignment | 1.5.1 |
 | voice | 0.2.1 |
-| daily-brief | 0.6.7 |
+| daily-brief | 0.6.8 |
 
 The native OpenAI catalog is
 [`/.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json). The
