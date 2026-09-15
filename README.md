@@ -345,7 +345,7 @@ connection, pasted payload, or mocked response is not enough for a pass.
 
 | Plugin | Version |
 |---|---:|
-| cortex | 4.19.0 |
+| cortex | 4.20.0 |
 | core-ops | 0.6.0 |
 | relationships | 0.3.2 |
 | news-curator | 0.2.5 |
@@ -353,7 +353,7 @@ connection, pasted payload, or mocked response is not enough for a pass.
 | time-tracking | 0.2.5 |
 | weekly-alignment | 1.5.0 |
 | voice | 0.2.0 |
-| daily-brief | 0.6.4 |
+| daily-brief | 0.6.6 |
 
 The native OpenAI catalog is
 [`/.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json). The
