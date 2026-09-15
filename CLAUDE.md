@@ -56,7 +56,7 @@ Each plugin has its own repo with `commands/`, `skills/`, `agents/`, `references
 
 ## Config-root convention
 
-All plugins read user-specific config from `<config-root>/`, where `<config-root>` is the path stored in `~/Documents/.claude-plugin-config-root` (a single-line text file in the user's home directory, populated on first plugin setup). Layout:
+All plugins read user-specific config from `<config-root>/`, resolved via the shared precedence chain: explicit override → `CORTEX_CONFIG_ROOT` env var → `~/.cortex/config-root` (primary pointer, a single-line text file in the user's home directory, populated on first plugin setup) → `~/Documents/.claude-plugin-config-root` (legacy fallback) → `~/Documents/Claude` (last resort). Layout:
 
 ```
 <config-root>/

@@ -4,6 +4,8 @@ Thanks for considering a contribution. This guide covers contributing to any plu
 
 The marketplace itself (this repo) is a thin pointer file — almost no contributions land here. **Plugin contributions go to each plugin's individual repo.**
 
+**A note on Team/Enterprise distribution:** organization-managed Cowork marketplaces must point at private repos. If you're on a Claude Team or Enterprise plan, don't ask your admin to mirror this public repo into an org-managed marketplace — instead add it individually under Customize → Plugins → Add marketplace, same as any individual user.
+
 ## Marketplace structure
 
 ```

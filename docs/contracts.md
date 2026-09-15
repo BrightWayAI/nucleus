@@ -8,6 +8,34 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 ---
 
+## Container rules
+
+- Research finds.
+- Comms Desk writes.
+- Growth Engine decides who.
+- Client Success owns the account after signature.
+- Chief of Staff routes and monitors, owns no domain.
+- Cortex remembers.
+- Today's Brief is every "what's going on" surface at any cadence.
+- Admin is money and paperwork.
+- Team Alignment is internal coherence.
+
+## Where things live
+
+| Plugin | Owns | Explicitly does not own |
+|---|---|---|
+| cortex | Identity/voice data files (`memory/me/`), shared memory nodes, decay/rehearsal, indexing, `/listen` + `/morning` ingest pipeline, memory-as-git | Drafting, sending, deciding who to contact, any plugin's user-facing config schema |
+| ops | `chief-of-staff` agent (`/cos`), `/status`, `/diagnose`, schedule library (`/register-schedules`), cross-plugin health checks | Any domain workflow (pipeline, drafting, client work, money) — it routes and monitors only |
+| briefing | `/brief`, `/review`, `/timeline`, `/dashboard`, and every "what's going on" surface regardless of cadence (daily/weekly/ad hoc) | Deciding what to do about what it surfaces; it renders and annotates, downstream plugins act |
+| growth | `pipeline-analyst`/`pipeline-forecast` agents, relationship ranking and outreach targeting decisions (`relationships-director`), signal/referral pipeline | Drafting outreach copy (that's comms), owning the client relationship post-signature (that's clients) |
+| clients | The account after signature — engagement lifecycle, client-status drafts, deliverable QA | New-business decisioning (growth), invoicing/billing (admin) |
+| comms | Voice capture (`setup-voice`), all drafting (`post-assembler` agent, `/post`, `/style*`) | Deciding who to contact or what to research; it writes, it doesn't decide or find |
+| admin | Money and paperwork — time tracking, invoice generation | Any non-financial client or relationship workflow |
+| research | Finding and ranking — `news-curator` agent, `/roundup` staging to `staged/roundup/` | Drafting the final post (comms owns `/post` via `post-assembler`) |
+| alignment | Internal cross-team coherence — Slack scanning via `alignment-scanner` | External-facing communication or client/relationship decisions |
+
+---
+
 ## Foundation files
 
 `<config-root>/memory/me/identity.md`
@@ -18,11 +46,11 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Breaking change protocol:** if `identity.md` schema changes, every reader plugin needs a coordinated update. Treat as a Nucleus-wide major version bump.
 
 `<config-root>/memory/me/voice.md`
-- **Writer:** cortex `/setup-voice` and comms `/style-learn`
-- **Readers:** growth, research (post-assembler), clients `/client-status`, comms `/style`
+- **Writer:** comms `/setup-voice` and comms `/style-learn`
+- **Readers:** growth, comms (`post-assembler`), clients `/client-status`, comms `/style`
 - **Format:** markdown with `## Tone`, `## Vocabulary`, `## Banned phrases`, `## Style rules` sections
 - **Version:** stable since cortex v4.0
-- **Note:** comms v0.x (formerly voice, formerly writing-style) adds entries via `/style-learn` two-stage triage; format remains compatible with cortex readers.
+- **Note:** the file itself is cortex-owned data (lives under cortex's `memory/me/` scope), but the capture/interview command moved to comms's `/setup-voice` in the Phase 2 capability moves (2026-09-15). `/style-learn` two-stage triage still adds entries; format remains compatible with cortex readers.
 
 ---
 
@@ -114,6 +142,12 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Writer:** cortex `/morning` (rejected proposals)
 - **Reader:** future `/listen` runs (suppress proposing the same thing)
 - **Pre-v4.8.1 path:** `<config-root>/memory/.morning-reject-log.md`
+
+`<config-root>/staged/roundup/<date>.md`
+- **Writer:** research `/roundup` (stages picked candidates; never drafts)
+- **Reader:** comms `/post` (drafts the roundup post in the user's voice via `post-assembler`); `/roundup --draft` chains straight into `/post` when comms is installed
+- **Format:** summaries + source links + themes; see `research/commands/roundup.md`
+- **Contract:** research finds and stages, comms writes; `/roundup` completes normally with a "drafting unavailable" note if comms isn't installed
 
 ---
 
@@ -230,13 +264,19 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Returns:** ranked relationship actions or a deep single-contact research summary, according to the caller-selected mode
 - **Contract:** read-only against external systems (CRM, email, web); never writes
 
-`pipeline-analyst`, `pipeline-forecast` (ops)
+`pipeline-analyst`, `pipeline-forecast` (growth)
 - **Called by:** growth (new-business bucket), briefing planning, clients, admin, and forecast schedules
 - **Returns:** ranked pipeline analysis / forward projection
+- **Version:** moved from ops to `growth/agents/` in the Phase 2 capability moves (2026-09-15); ops retains only `/status` and `/diagnose`.
 
-`research`, `post-assembler` (research)
-- **Called by:** `/ai-roundup`
-- **Returns:** scanned-and-ranked stories / drafted post in user's voice
+`news-curator` (research)
+- **Called by:** `/roundup`
+- **Returns:** scanned-and-ranked stories with citations, staged for handoff (never drafts)
+
+`post-assembler` (comms)
+- **Called by:** `/post`
+- **Returns:** drafted post in the user's voice from research's staged candidates or pasted material
+- **Version:** moved from research to `comms/agents/` in the Phase 2 capability moves (2026-09-15).
 
 ---
 
@@ -325,6 +365,13 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Version:** added cortex v4.12.0
 
 ---
+
+## Dashboard artifact template
+
+`briefing/references/nucleus-dashboard-template.html`
+- **Writer/owner:** briefing (`/dashboard`)
+- **Reader:** briefing's `dashboard` skill when rendering the Cowork HTML artifact
+- **Version:** moved from ops (`core-ops`, pre-rename) to `briefing/references/` in the Phase 2 capability moves (2026-09-15), alongside the `/dashboard` command itself. `ops/commands/nucleus-dashboard.md` remains a thin deprecated-alias redirect; ops retains only `/status` and `/diagnose` as real commands.
 
 ## DASHBOARD line provenance (cortex v4.12.0+)
 
