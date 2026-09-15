@@ -29,18 +29,6 @@
       "category": "Productivity"
     },
     {
-      "name": "lead-engine",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/BrightWayAI/lead-engine.git"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Sales"
-    },
-    {
       "name": "weekly-alignment",
       "source": {
         "source": "url",
@@ -111,18 +99,6 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Business"
-    },
-    {
-      "name": "referral-engine",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/BrightWayAI/referral-engine.git"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Sales"
     },
     {
       "name": "relationships",

@@ -30,18 +30,6 @@
       }
     },
     {
-      "name": "lead-engine",
-      "version": "0.2.5",
-      "source": {
-        "source": "github",
-        "repo": "BrightWayAI/lead-engine"
-      },
-      "description": "Capture and score buying signals, research contacts, draft warm outreach, manage follow-up cadence, and prepare call briefs without auto-sending.",
-      "author": {
-        "name": "BrightWay AI"
-      }
-    },
-    {
       "name": "weekly-alignment",
       "version": "1.4.4",
       "source": {
@@ -114,25 +102,13 @@
       }
     },
     {
-      "name": "referral-engine",
-      "version": "0.2.5",
-      "source": {
-        "source": "github",
-        "repo": "BrightWayAI/referral-engine"
-      },
-      "description": "Review relationship context, cooling periods, and positive moments to prioritize referral actions and draft voice-matched asks.",
-      "author": {
-        "name": "BrightWay AI"
-      }
-    },
-    {
       "name": "relationships",
-      "version": "0.2.4",
+      "version": "0.3.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/relationships"
       },
-      "description": "Build a daily relationship cockpit, rebalance a network, and create context-aware touchpoint drafts from shared identity, voice, and memory.",
+      "description": "Build a daily relationship cockpit, rebalance a network, and create context-aware touchpoint drafts from shared identity, voice, and memory. Absorbs lead-engine (Apollo signal pipeline) and referral-engine (referral asks + cooling rules) as of 2026-09-15.",
       "author": {
         "name": "BrightWay AI"
       }

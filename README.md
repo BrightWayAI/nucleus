@@ -2,7 +2,7 @@
 
 **A portable operating system for AI-powered work.**
 
-Nucleus is a marketplace of 13 open-source plugins for memory, planning,
+Nucleus is a marketplace of 11 open-source plugins for memory, planning,
 relationships, business development, client delivery, writing, research, and
 operations. The same workflows run in ChatGPT, Codex, Claude Code, and Claude
 Cowork while reading and writing one user-owned set of Markdown files.
@@ -75,7 +75,7 @@ A ChatGPT workspace administrator:
 5. Reviews the import, then marks the desired plugins **Available** or
    **Installed** for the appropriate roles.
 
-Importing the marketplace discovers all 13 entries; it does not automatically
+Importing the marketplace discovers all 11 entries; it does not automatically
 install every plugin or grant access to local folders and connected services.
 See OpenAI's [plugin-management documentation](https://learn.chatgpt.com/docs/enterprise/plugin-management).
 
@@ -207,9 +207,7 @@ capability instead of pretending the work ran.
 | Chief of Staff | [nucleus-router](https://github.com/BrightWayAI/nucleus-router) | Natural-language routing across installed workflows |
 | Knowledge and context | [cortex](https://github.com/BrightWayAI/claude-cortex) | Shared memory, identity, voice, recall, learning, cleanup, and Obsidian support |
 | Executive assistant | [daily-brief](https://github.com/BrightWayAI/daily-brief) | Daily brief, annotation processing, and next-day planning |
-| Relationship manager | [relationships](https://github.com/BrightWayAI/relationships) | Prioritized relationship actions and context-aware drafts |
-| Head of outbound | [lead-engine](https://github.com/BrightWayAI/lead-engine) | Buying signals, warm outreach, cadence, and call preparation |
-| Head of partnerships | [referral-engine](https://github.com/BrightWayAI/referral-engine) | Referral opportunities, cooling periods, and draft asks |
+| Relationship manager | [relationships](https://github.com/BrightWayAI/relationships) | Prioritized relationship actions, signal-driven outreach, and referral asks (absorbs lead-engine + referral-engine, 2026-09-15) |
 | Project manager | [project-setup](https://github.com/BrightWayAI/project-setup) | Engagement interview, folder blueprint, portable workspace prompt, and project plan |
 | Account manager | [client-status](https://github.com/BrightWayAI/client-status) | Weekly client-status drafts from available project evidence |
 | Finance | [time-tracking](https://github.com/BrightWayAI/time-tracking) | Calendar-based time classification and invoice drafts |
@@ -254,7 +252,7 @@ nucleus-router + cortex + core-ops
 **Business development**
 
 ```text
-nucleus-router + cortex + core-ops + lead-engine + relationships + referral-engine
+nucleus-router + cortex + core-ops + relationships
 ```
 
 **Client delivery**
@@ -266,7 +264,7 @@ nucleus-router + cortex + core-ops + project-setup + client-status + time-tracki
 **Content and relationships**
 
 ```text
-nucleus-router + cortex + voice + news-curator + relationships + referral-engine
+nucleus-router + cortex + voice + news-curator + relationships
 ```
 
 **Cross-team operator**
@@ -320,7 +318,7 @@ See [multi-agent patterns](docs/multi-agent-patterns.md) and the
 
 ## Validation
 
-With the 13 repositories checked out as siblings:
+With the 11 repositories checked out as siblings:
 
 ```bash
 python3 scripts/generate_openai_adapters.py --check
@@ -339,7 +337,7 @@ write real Cortex memory.
 ## Coordinated releases and live connector certification
 
 The root marketplace is the rolling development catalog. Versioned snapshots under
-`releases/` pin all 13 plugin repositories to full Git commit SHAs. Before promotion,
+`releases/` pin all 11 plugin repositories to full Git commit SHAs. Before promotion,
 the release gate requires sanitized live connector reports from the host/profile pairs
 declared in the snapshot. See [the release runbook](docs/RELEASING.md) and
 [live connector testing](docs/CONNECTOR_INTEGRATION_TESTING.md).
@@ -355,9 +353,7 @@ connection, pasted payload, or mocked response is not enough for a pass.
 | nucleus-router | 0.2.4 |
 | cortex | 4.18.4 |
 | core-ops | 0.4.3 |
-| lead-engine | 0.2.6 |
-| relationships | 0.2.7 |
-| referral-engine | 0.2.6 |
+| relationships | 0.3.0 |
 | news-curator | 0.2.5 |
 | client-status | 0.2.6 |
 | project-setup | 0.2.6 |
