@@ -5,3 +5,8 @@
 # macOS metadata
 .DS_Store
 **/.DS_Store
+
+# Live connector test inputs and reports may contain local paths or credentials.
+connector-tests/*.local.json
+connector-tests/reports/
+__pycache__/

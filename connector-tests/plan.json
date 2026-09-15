@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "profiles": {
+    "operator": ["calendar", "mail", "crm"],
+    "collaboration": ["slack", "drive"],
+    "research": ["contact-enrichment", "transcripts"],
+    "full": ["calendar", "mail", "crm", "slack", "drive", "contact-enrichment", "transcripts"]
+  },
+  "connectors": [
+    {
+      "id": "calendar",
+      "usedBy": ["daily-brief", "time-tracking", "client-status", "relationships"],
+      "safeProbe": "List at most one event in a narrow test window and retain only count and response keys."
+    },
+    {
+      "id": "mail",
+      "usedBy": ["daily-brief", "lead-engine", "client-status", "referral-engine", "relationships"],
+      "safeProbe": "Search a designated test mailbox or marker and retain only count and response keys."
+    },
+    {
+      "id": "crm",
+      "usedBy": ["core-ops", "lead-engine", "client-status", "referral-engine", "relationships"],
+      "safeProbe": "Read one designated sandbox record or an empty bounded query and retain only count and response keys."
+    },
+    {
+      "id": "slack",
+      "usedBy": ["weekly-alignment", "daily-brief"],
+      "safeProbe": "Search a designated test channel with a bounded query and retain only count and response keys."
+    },
+    {
+      "id": "drive",
+      "usedBy": ["project-setup", "daily-brief", "client-status"],
+      "safeProbe": "List one item from a designated test folder and retain only count and response keys."
+    },
+    {
+      "id": "contact-enrichment",
+      "usedBy": ["lead-engine", "relationships"],
+      "safeProbe": "Look up a designated synthetic company or contact and retain only count and response keys."
+    },
+    {
+      "id": "transcripts",
+      "usedBy": ["cortex"],
+      "safeProbe": "List one transcript from a designated test source and retain only count and response keys."
+    }
+  ]
+}

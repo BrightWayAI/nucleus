@@ -300,6 +300,8 @@ With the 13 repositories checked out as siblings:
 python3 scripts/generate_openai_adapters.py --check
 python3 scripts/check_openai_ecosystem.py
 python3 scripts/smoke_codex_marketplace.py
+python3 scripts/release_ecosystem.py check --all --verify-checkouts
+python3 -m unittest discover -s tests -p 'test_*.py'
 python3 ../claude-cortex/scripts/check_repo.py
 ```
 
@@ -308,13 +310,25 @@ coverage, version agreement, read-only role bindings, isolated Codex installatio
 and config-root precedence using temporary homes and fixtures. They do not read or
 write real Cortex memory.
 
+## Coordinated releases and live connector certification
+
+The root marketplace is the rolling development catalog. Versioned snapshots under
+`releases/` pin all 13 plugin repositories to full Git commit SHAs. Before promotion,
+the release gate requires sanitized live connector reports from the host/profile pairs
+declared in the snapshot. See [the release runbook](docs/RELEASING.md) and
+[live connector testing](docs/CONNECTOR_INTEGRATION_TESTING.md).
+
+Core Ops `/test-connectors` performs actual bounded, read-only calls against authorized
+calendar, mail, CRM, Slack, Drive, enrichment, and transcript connectors. A configured
+connection, pasted payload, or mocked response is not enough for a pass.
+
 ## Current versions
 
 | Plugin | Version |
 |---|---:|
-| nucleus-router | 0.2.2 |
+| nucleus-router | 0.2.3 |
 | cortex | 4.15.0 |
-| core-ops | 0.3.3 |
+| core-ops | 0.4.0 |
 | lead-engine | 0.2.5 |
 | relationships | 0.2.4 |
 | referral-engine | 0.2.5 |

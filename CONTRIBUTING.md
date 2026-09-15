@@ -109,6 +109,9 @@ See [`docs/multi-agent-patterns.md`](docs/multi-agent-patterns.md) for chaining 
 - [ ] Slash commands have matching auto-firing skills.
 - [ ] No hardcoded user-specific values (company names, IDs, tools, brand specifics) in command bodies — those go in `references/user-context.md` and are read at runtime.
 - [ ] If your change affects another plugin's behavior (e.g., a new subagent that another plugin should delegate to), updated that plugin's README + integration guide too.
+- [ ] If the change is included in a coordinated Nucleus release, generated a pinned
+      release candidate with `scripts/release_ecosystem.py` and validated its live
+      connector evidence according to `docs/CONNECTOR_INTEGRATION_TESTING.md`.
 
 ## Style of writing in commands and skills
 

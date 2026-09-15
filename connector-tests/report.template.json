@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "release": "REPLACE_WITH_RELEASE_ID",
+  "host": "claude",
+  "profile": "operator",
+  "runAt": "2026-09-15T00:00:00Z",
+  "results": [
+    {"id": "calendar", "status": "not-run", "tool": null, "latencyMs": null, "observation": null, "errorCode": null},
+    {"id": "mail", "status": "not-run", "tool": null, "latencyMs": null, "observation": null, "errorCode": null},
+    {"id": "crm", "status": "not-run", "tool": null, "latencyMs": null, "observation": null, "errorCode": null},
+    {"id": "slack", "status": "not-run", "tool": null, "latencyMs": null, "observation": null, "errorCode": null},
+    {"id": "drive", "status": "not-run", "tool": null, "latencyMs": null, "observation": null, "errorCode": null},
+    {"id": "contact-enrichment", "status": "not-run", "tool": null, "latencyMs": null, "observation": null, "errorCode": null},
+    {"id": "transcripts", "status": "not-run", "tool": null, "latencyMs": null, "observation": null, "errorCode": null}
+  ]
+}

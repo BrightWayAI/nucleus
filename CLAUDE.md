@@ -81,6 +81,13 @@ This is the canonical write location for plugin runtime data. Don't write plugin
 - Plugins are individually versioned in their own `plugin.json` (the authoritative source).
 - **As of 2026-06-08, `marketplace.json` records each plugin's `version` for at-a-glance reference**, mirrored in the README "Plugin versions" table. Cowork still resolves the latest from each plugin's GitHub repo on next pull — these mirrors are for visibility, not resolution, so **keep them in sync when bumping a plugin** (update `plugin.json` → `marketplace.json` entry → README table).
 - Bump pattern: minor for new commands/agents, patch for fixes or non-breaking refactors, major for breaking API or config-layout changes.
+- Coordinated ecosystem releases are defined once under `releases/<release-id>/release.json`.
+  Follow `docs/RELEASING.md`; do not create a Claude-only release decision. The native
+  OpenAI catalog pins commits directly, while Claude uses the same version set and
+  release contract.
+- Live connector certification uses Core Ops `/test-connectors` and the shared plan in
+  `connector-tests/plan.json`. Claude must run its own live probes because its connector
+  authorization is host-specific, but the workflow and report schema are not duplicated.
 
 ## Nucleus as JARVIS — shipped (2026-05-16)
 

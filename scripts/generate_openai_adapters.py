@@ -20,7 +20,7 @@ LAB_ROOT = NUCLEUS_ROOT.parent
 
 PLUGINS = {
     "nucleus-router": {
-        "version": "0.2.2",
+        "version": "0.2.3",
         "display": "Nucleus Router",
         "short": "Route natural-language work to the right Nucleus capability",
         "long": "Use one natural-language front door to select and sequence installed Nucleus workflows across memory, operations, relationships, and planning.",
@@ -51,7 +51,7 @@ PLUGINS = {
         "skill_names": {"daily-pulse": "daily-pulse", "report": "report", "scan": "scan", "setup": "setup", "update-risks": "update-risks"},
     },
     "core-ops": {
-        "version": "0.3.3",
+        "version": "0.4.0",
         "display": "Core Ops",
         "short": "Run pipeline, delivery QA, diagnostics, and stack operations",
         "long": "Analyze CRM pipeline, review deliverables, inspect Nucleus health, record agent metrics, and register schedules when the host supports them.",
@@ -454,8 +454,8 @@ def changelog_entry(version: str) -> str:
 def update_changelog(repo: Path, version: str, write: bool, errors: list[str]) -> None:
     path = repo / "CHANGELOG.md"
     text = path.read_text()
-    marker = f"## [{version}] — OpenAI host adapter"
-    if marker in text:
+    marker = re.compile(rf"^## \[{re.escape(version)}\](?:\s|$)", re.MULTILINE)
+    if marker.search(text):
         return
     lines = text.splitlines(keepends=True)
     insert = 2

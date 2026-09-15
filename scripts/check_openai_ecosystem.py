@@ -170,6 +170,20 @@ def main() -> int:
         require(str(source.get("url", "")).startswith("https://github.com/BrightWayAI/"), f"invalid source URL: {entry.get('name')}", errors)
         require(entry.get("policy", {}).get("installation") in {"AVAILABLE", "INSTALLED_BY_DEFAULT"}, f"missing installation policy: {entry.get('name')}", errors)
 
+    connector_plan = load_json(NUCLEUS_ROOT / "connector-tests" / "plan.json", errors)
+    connector_ids = [
+        row.get("id")
+        for row in connector_plan.get("connectors", [])
+        if isinstance(row, dict)
+    ]
+    connector_command = (LAB_ROOT / "core-ops" / "commands" / "test-connectors.md").read_text()
+    for connector_id in connector_ids:
+        require(
+            f"`{connector_id}`" in connector_command,
+            f"core-ops connector workflow missing plan ID: {connector_id}",
+            errors,
+        )
+
     claude = load_json(NUCLEUS_ROOT / ".claude-plugin" / "marketplace.json", errors)
     claude_versions = {entry.get("name"): str(entry.get("version")) for entry in claude.get("plugins", [])}
     for repo_name in PLUGIN_NAMES:
@@ -189,7 +203,21 @@ def main() -> int:
     require("`references/pipeline.md`" not in lead_skill, "lead-engine still writes plugin-relative pipeline", errors)
     router = (LAB_ROOT / "nucleus-router" / "skills" / "route" / "SKILL.md").read_text()
     require("| bizdev-outreach |" not in router and "| weekly-outreach |" not in router, "router still routes to retired plugins", errors)
+    require(
+        "`/test-connectors`" in router and "certify this release" in router,
+        "router does not expose connector release certification",
+        errors,
+    )
     check_config_root_fixture(errors)
+
+    releases = subprocess.run(
+        [sys.executable, str(NUCLEUS_ROOT / "scripts" / "release_ecosystem.py"), "check", "--all"],
+        cwd=NUCLEUS_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    require(releases.returncode == 0, releases.stderr.strip() or "release snapshots are invalid", errors)
 
     if errors:
         print("Nucleus OpenAI ecosystem check failed:")

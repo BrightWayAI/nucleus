@@ -1,0 +1,19 @@
+name: Coordinated release gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Coordinated release ID
+        required: true
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require pinned catalog and live connector evidence
+        run: >-
+          python3 scripts/release_ecosystem.py check
+          --release "${{ inputs.release }}"
+          --require-live

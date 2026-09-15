@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "releases": [
+    {
+      "release": "2026.09.15-baseline",
+      "status": "candidate",
+      "createdAt": "2026-09-15",
+      "path": "./2026.09.15-baseline/release.json"
+    }
+  ]
+}

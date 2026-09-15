@@ -138,6 +138,7 @@ Place the 13 repositories as siblings under one parent directory, then run:
 python3 scripts/generate_openai_adapters.py --check
 python3 scripts/check_openai_ecosystem.py
 python3 scripts/smoke_codex_marketplace.py
+python3 scripts/release_ecosystem.py check --all
 ```
 
 The ecosystem check validates manifests, marketplace ordering, versions, command-to-
@@ -152,3 +153,7 @@ python3 ../claude-cortex/scripts/check_repo.py
 Connector behavior still requires the corresponding test workspace/account. Static
 validation can prove honest degradation and binding coverage; it cannot prove access
 to Slack, CRM, mail, calendar, or Drive credentials that were not supplied.
+
+Before promoting a coordinated release, run Core Ops `test-connectors` in each required
+host and validate the sanitized reports as described in
+`docs/CONNECTOR_INTEGRATION_TESTING.md`. A real tool call is required for a pass.

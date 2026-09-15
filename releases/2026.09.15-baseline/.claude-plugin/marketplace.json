@@ -1,13 +1,13 @@
 {
   "name": "nucleus",
-  "description": "Nucleus — one operating system of portable AI workflows and shared memory for Claude, ChatGPT, and Codex.",
+  "description": "Nucleus 2026.09.15-baseline coordinated catalog. Commit pins are authoritative in release.json and the native OpenAI marketplace.",
   "owner": {
     "name": "BrightWay AI"
   },
   "plugins": [
     {
       "name": "nucleus-router",
-      "version": "0.2.3",
+      "version": "0.2.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/nucleus-router"
@@ -55,7 +55,7 @@
     },
     {
       "name": "core-ops",
-      "version": "0.4.0",
+      "version": "0.3.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/core-ops"
