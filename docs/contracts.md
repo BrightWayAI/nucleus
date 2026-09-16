@@ -176,6 +176,13 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Format:** reporting cadence, audiences, sections, delivery channels, and approval defaults
 - **Migration:** may import once from `client-status.user-context.md`; runtime must not depend on the retired plugin path
 
+`<config-root>/plugins/clients.sow-template.md`
+- **Writer:** clients `/setup-projects` SOW sample flow; user-confirmed before write
+- **Readers:** clients `/sow`, clients `/review-deliverable`, ops `/status`, ops `/diagnose`
+- **Format:** `## Format spec` fenced JSON, ordered `## Section skeleton`, verbatim approved `## Boilerplate clauses`, and `## Defaults from sample`
+- **Version:** complete schema introduced in clients v0.7.1. A v0.7.0 file without `## Boilerplate clauses` is incomplete and must be enriched from its approved source sample.
+- **Privacy:** persist normalized reusable boilerplate only. Raw samples and engagement-specific section bodies remain temporary and must not be stored in the plugin/config directory.
+
 `<config-root>/plugins/<plugin>.user-context.md`
 - Same pattern for every plugin's setup output.
 

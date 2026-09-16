@@ -184,6 +184,41 @@ def check_config_root_fixture(errors: list[str]) -> None:
         require(result.path == env_root, "fixture environment precedence failed", errors)
 
 
+def check_clients_sow_surface(errors: list[str]) -> None:
+    """Keep the portable SOW path complete without executing third-party code."""
+    clients = LAB_ROOT / "clients"
+    required = (
+        clients / "commands" / "sow.md",
+        clients / "skills" / "sow" / "SKILL.md",
+        clients / "references" / "sow-content-schema.md",
+        clients / "scripts" / "sow_build.py",
+        clients / "scripts" / "sow_extract.py",
+        clients / "scripts" / "requirements-sow.txt",
+        clients / "tests" / "test_sow.py",
+    )
+    for path in required:
+        require(path.exists(), f"clients SOW surface missing: {path.relative_to(LAB_ROOT)}", errors)
+    for script_name in ("sow_build.py", "sow_extract.py"):
+        path = clients / "scripts" / script_name
+        if not path.exists():
+            continue
+        text = path.read_text()
+        require("# /// script" in text, f"clients SOW script lacks PEP 723 metadata: {script_name}", errors)
+        require("python-docx" in text, f"clients SOW script lacks python-docx dependency: {script_name}", errors)
+    skill = clients / "skills" / "sow" / "SKILL.md"
+    if skill.exists():
+        require(
+            "disable-model-invocation: true" not in skill.read_text(),
+            "clients SOW skill must remain natural-language invocable",
+            errors,
+        )
+    command = clients / "commands" / "sow.md"
+    if command.exists():
+        text = command.read_text()
+        for marker in ("sow-content-schema.md", "uv run scripts/sow_build.py", "Never invent legal boilerplate"):
+            require(marker in text, f"clients SOW workflow missing production gate: {marker}", errors)
+
+
 def main() -> int:
     errors: list[str] = []
     generated = subprocess.run(
@@ -244,6 +279,7 @@ def main() -> int:
     for command in ("project-setup", "client-status", "review-deliverable"):
         require((LAB_ROOT / "clients" / "commands" / f"{command}.md").exists(), f"clients is missing absorbed command: {command}", errors)
     check_config_root_fixture(errors)
+    check_clients_sow_surface(errors)
 
     releases = subprocess.run(
         [sys.executable, str(NUCLEUS_ROOT / "scripts" / "release_ecosystem.py"), "check", "--all"],

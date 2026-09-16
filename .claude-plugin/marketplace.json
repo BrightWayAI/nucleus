@@ -31,7 +31,7 @@
     },
     {
       "name": "ops",
-      "version": "0.12.0",
+      "version": "0.12.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/ops"
@@ -55,12 +55,12 @@
     },
     {
       "name": "clients",
-      "version": "0.7.0",
+      "version": "0.7.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/clients"
       },
-      "description": "Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; run structured deliverable QA; and generate Statements of Work in your own house format.",
+      "description": "Create engagement plans and portable workspace prompts, draft weekly client-status updates, run structured deliverable QA, and turn approved proposals into reviewed Statements of Work.",
       "author": {
         "name": "BrightWay AI"
       }

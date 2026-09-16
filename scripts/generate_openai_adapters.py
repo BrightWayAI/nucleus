@@ -61,12 +61,21 @@ PLUGINS = {
     },
     "clients": {
         "display": "Client Success",
-        "short": "Start, status-update, and QA a client engagement",
-        "long": "Create an engagement plan, portable AI workspace prompt, folder blueprint, and next action; draft weekly client-status updates; and run structured deliverable QA.",
+        "short": "Start, support, document, and QA client engagements",
+        "long": "Create engagement plans and portable workspace prompts, draft weekly client-status updates, run structured deliverable QA, and turn approved proposals into reviewed Statements of Work.",
         "category": "Productivity",
         "capabilities": ["Read", "Write", "Interactive"],
-        "prompts": ["Set up a new client project.", "Draft this week's client status updates.", "Review this deliverable before I send it."],
-        "degraded": "When Drive or project-creation APIs are absent, return a folder blueprint and host-neutral workspace prompt. Use available evidence for status and QA, list skipped sources, and keep outbound updates as drafts.",
+        "prompts": ["Set up a client engagement.", "Draft this week's client status update.", "Turn this proposal into a reviewed Statement of Work."],
+        "degraded": "When Drive or project-creation APIs are absent, return a folder blueprint and host-neutral workspace prompt. Use available evidence for status and QA, list skipped sources, and keep outbound updates as drafts. For SOW generation, use the host's document capability when available; otherwise use the bundled PEP 723 Python scripts through `uv run`. Never claim visual review when no renderer is available.",
+        "portable_notes": """### Generated documents on OpenAI hosts
+
+Treat a canonical `AskUserQuestion` step as one grouped question using the host's
+available elicitation UI or a single chat message. Treat `SendUserFile` as the host's
+generated-file attachment when available; in Codex CLI, save the file inside the
+workspace and report its absolute path plus the checks performed. For `.docx` visual
+QA, use the installed document-artifact renderer when available. A raw XML/text check
+does not replace rendered-page inspection.
+""",
     },
     "admin": {
         "display": "Admin",
@@ -236,6 +245,8 @@ send, schedule registration, or destructive action at the point of action.
 
 
 def portability_md(name: str, data: dict[str, object]) -> str:
+    portable_notes = str(data.get("portable_notes", "")).strip()
+    portable_notes_block = f"\n\n{portable_notes}" if portable_notes else ""
     return f"""# OpenAI portability contract — {data['display']}
 
 This file binds the plugin's canonical Claude-oriented examples to ChatGPT and Codex.
@@ -290,7 +301,7 @@ redirected to another store.
 
 ## Plugin-specific degradation
 
-{data['degraded']}
+{data['degraded']}{portable_notes_block}
 
 Always report unavailable or skipped capabilities in the result. A degraded run must
 remain useful where possible, but it must never imply that missing data was read or an
