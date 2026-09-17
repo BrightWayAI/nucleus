@@ -112,7 +112,23 @@ does not replace rendered-page inspection.
         "category": "Productivity",
         "capabilities": ["Read", "Write", "Interactive"],
         "prompts": ["Build today's brief.", "Process these brief annotations.", "Plan my next business day."],
-        "degraded": "Cowork's interactive artifact is not portable. In ChatGPT and Codex, write a Markdown snapshot and use pasted or local annotation state. Missing connectors are listed and skipped; no mail, CRM, or calendar mutation occurs without confirmation.",
+        "degraded": "Cowork's interactive artifact is not portable. In ChatGPT and Codex, write a Markdown snapshot and preserve user-supplied actions in the canonical local v0.7.0 state file so cortex /listen can mine the same round-trip. Missing connectors are listed and skipped; no mail, CRM, or calendar mutation occurs without confirmation.",
+        "portable_notes": """### Chat-native brief state on OpenAI hosts
+
+When no interactive artifact is available, render the Markdown brief with the same
+stable task, outreach, and event ids used by the canonical artifact. If the user
+marks an item done, delegates it, snoozes it, changes its priority, adds an
+annotation, or supplies today's reflection in chat, merge only those explicit
+choices into `<config-root>/briefs/<YYYY-MM-DD>.state.json` using the canonical
+v0.7.0 shape from `commands/brief.md`. Preserve existing keys and update
+`last_interaction_at`; never infer a click or disposition from silence.
+
+This local state file is the OpenAI-host equivalent of the artifact's state mirror.
+`/process-brief` may act on it during the day, and cortex `/listen` mines it
+overnight before `/morning` reviews durable memory proposals. If no explicit state
+was recorded, `/listen` may still run its evidence-based inference pass against the
+Markdown twin and available archive sources.
+""",
     },
 }
 

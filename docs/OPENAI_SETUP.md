@@ -70,7 +70,7 @@ Then talk to the chief of staff:
 
 - **Overnight refresh.** In Claude Cowork a scheduled task runs the ingest at night. ChatGPT runs it only if your host exposes a scheduler and you confirm the registration. If it doesn't, say `@Cortex listen` before `run my morning` and it does the same ingest on demand.
 - **Connected apps.** Gmail, Calendar, HubSpot, Slack, Drive, and Apollo come from your workspace's apps and connectors, not from Nucleus. Plugins check at runtime and tell you which sources they skipped; they never invent data for a connector that isn't there.
-- **Artifacts.** Where Cowork renders an interactive HTML brief, ChatGPT gets Markdown or a supported document artifact with the same content.
+- **Artifacts.** Where Cowork renders an interactive HTML brief, ChatGPT and Codex get Markdown or a supported document artifact with the same content. Actions you state in chat (done, delegate, snooze, reprioritize, annotate, or reflect) are saved to the same local v0.7 brief-state file that Cortex `/listen` mines overnight; silence never becomes an inferred action.
 
 ---
 
