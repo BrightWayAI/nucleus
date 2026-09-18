@@ -1,0 +1,125 @@
+{
+  "name": "nucleus",
+  "interface": {
+    "displayName": "Nucleus 2026.09.18-rc.1"
+  },
+  "plugins": [
+    {
+      "name": "cortex",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/BrightWayAI/cortex.git",
+        "sha": "2bdfdb2ada6252254a2d9baa77c077ef4f2eb091"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "alignment",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/BrightWayAI/alignment.git",
+        "sha": "d1d9dcd71418ff1b4a4bb63768449e29aa4e3c38"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Teamwork"
+    },
+    {
+      "name": "ops",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/BrightWayAI/ops.git",
+        "sha": "b526be3421e81574ad3adbfd66aa083a465c51da"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business"
+    },
+    {
+      "name": "research",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/BrightWayAI/research.git",
+        "sha": "e74fad659f15666df44d4545ae796851091f972d"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Research"
+    },
+    {
+      "name": "clients",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/BrightWayAI/clients.git",
+        "sha": "94bca71b7b68bb72b638477d8740a1b6e53f8259"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "admin",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/BrightWayAI/admin.git",
+        "sha": "11803a236165bde8bbfb292cbca509e7d5e989a5"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business"
+    },
+    {
+      "name": "growth",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/BrightWayAI/growth.git",
+        "sha": "655ca1e6b0fd9e27780d518552fc29ebc9bef43b"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Sales"
+    },
+    {
+      "name": "comms",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/BrightWayAI/comms.git",
+        "sha": "2fdbcb153e52332d79f843e2393e61b618e0ad3e"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Writing"
+    },
+    {
+      "name": "briefing",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/BrightWayAI/briefing.git",
+        "sha": "b6294bdb89fd336c28724e256f1df88d4ee9c7b9"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

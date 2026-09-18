@@ -93,6 +93,63 @@ $cortex:start-nucleus
 
 Codex needs your memory folder as a **readable root** for recall and a **writable root** for anything that saves (setup, `remember`, `morning`). Grant the resolved absolute path in the sandbox settings when Codex asks. Then `$cortex:morning` each day, and `$ops:cos <request>` for everything else.
 
+### Scheduled listen verification
+
+The nightly-listen fix is pinned for review in
+[`2026.09.18-rc.1`](../releases/2026.09.18-rc.1/release.json). It remains a
+candidate with [known release blockers](../releases/2026.09.18-rc.1/NOTES.md).
+Installing that catalog does not repair an existing scheduled task.
+
+OpenAI documents desktop scheduled tasks running in a local project or worktree,
+with the computer on and the app running. Web tasks cannot directly use a folder on
+your computer, and Codex CLI has no Scheduled management interface.
+See [OpenAI scheduled-task documentation](https://learn.chatgpt.com/docs/automations?surface=app)
+(reviewed 2026-09-18).
+
+The Cowork names `scheduler.register`, `create_trigger`, `list_triggers`,
+`requires_local_device`, and `derived_state.folders_state` are not a verified Codex
+API mapping. This review found no scheduler management tool exposed in the active
+Codex session, and the official documentation does not establish an equivalent
+programmatic folder-binding response. Local task metadata can describe the intended
+environment and working directories; it cannot prove live folder access.
+
+For an OpenAI-host registration to satisfy the shared contract:
+
+1. Resolve the absolute Cortex root and select the local execution environment
+   that can reach it. A worktree must still reach the original root.
+2. Use only the scheduler tools actually exposed by that host. Verify the saved
+   task's execution environment and folder access through a supported live readback;
+   do not substitute a cached `ACTIVE` flag or invent Cowork response fields.
+3. Verify read/write access in the scheduled execution context and obtain a
+   terminal metadata-only receipt. An interactive session's permissions do not
+   prove the unattended run has those permissions.
+4. Report the loop healthy only with verified binding and a successful receipt
+   from the same host/task within 26 hours. If verification is unavailable, say
+   **unverified**; return manual setup instructions or run `$cortex:listen` on demand.
+
+The published plugins write receipts to
+`<config-root>/plugins/ops/schedule-runs/<schedule>/<run-id>.json`; the handoff's
+`memory/staged/queues/receipts/` path was not implemented. The pinned receipt
+success fields also disagree, as recorded in the candidate audit. A failed root
+probe must stop the workflow and emit failure metadata to an authorized fallback
+or the run log when the root cannot be written. A failed shell command alone does
+not establish how the host will classify the overall agent run; verify this before
+claiming unattended failure propagation works.
+
+### Brief state without Cowork
+
+The shared v0.7.0 `<config-root>/briefs/<date>.state.json` remains the OpenAI
+input for explicit chat actions and fallback closure derivation. A Markdown brief
+does not need a `.artifact-runtime.json` file. An existing pointer from Claude is
+only a locator: `capability: "db"` does not make a hosted artifact readable by Codex.
+Use an available authorized bridge, or report missing readback and retain local
+state. Do not overwrite newer local actions with an unverified hosted snapshot.
+
+If neither closures nor readable state exists, the brief must disclose that
+yesterday's state is missing. Fallback closures help with explicit completions,
+but the pinned fallback still has snooze, suppression, reflection, and later-remine
+gaps documented in the candidate audit. It is not proof that nightly ingest ran.
+
 ---
 
 ## Everyday commands, side by side

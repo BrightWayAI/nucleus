@@ -1,0 +1,117 @@
+{
+  "name": "nucleus",
+  "description": "Nucleus 2026.09.18-rc.1 coordinated catalog. Commit pins are authoritative in release.json and the native OpenAI marketplace.",
+  "owner": {
+    "name": "BrightWay AI"
+  },
+  "plugins": [
+    {
+      "name": "cortex",
+      "version": "4.28.0",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/cortex"
+      },
+      "description": "Recall, search, and explicitly commit to one user-owned Cortex memory store from Claude, ChatGPT, or Codex.",
+      "author": {
+        "name": "BrightWay AI"
+      }
+    },
+    {
+      "name": "alignment",
+      "version": "1.6.1",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/alignment"
+      },
+      "description": "Scan configured Slack sources for cross-team alignment signals and produce daily pulses, weekly reports, and risk updates.",
+      "author": {
+        "name": "BrightWay AI"
+      }
+    },
+    {
+      "name": "ops",
+      "version": "0.13.0",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/ops"
+      },
+      "description": "Use a natural-language chief-of-staff front door, inspect Nucleus health, record agent metrics, and register schedules when the host supports them. Delegates CRM pipeline analysis and forecasting to the growth plugin when installed.",
+      "author": {
+        "name": "BrightWay AI"
+      }
+    },
+    {
+      "name": "research",
+      "version": "0.5.1",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/research"
+      },
+      "description": "Find recent stories, rank them for a configured audience, and stage candidates with traceable sources for drafting elsewhere.",
+      "author": {
+        "name": "BrightWay AI"
+      }
+    },
+    {
+      "name": "clients",
+      "version": "0.7.1",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/clients"
+      },
+      "description": "Create engagement plans and portable workspace prompts, draft weekly client-status updates, run structured deliverable QA, and turn approved proposals into reviewed Statements of Work.",
+      "author": {
+        "name": "BrightWay AI"
+      }
+    },
+    {
+      "name": "admin",
+      "version": "0.4.1",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/admin"
+      },
+      "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+      "author": {
+        "name": "BrightWay AI"
+      }
+    },
+    {
+      "name": "growth",
+      "version": "0.6.2",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/growth"
+      },
+      "description": "Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, rank and forecast pipeline, and create context-aware touchpoint drafts.",
+      "author": {
+        "name": "BrightWay AI"
+      }
+    },
+    {
+      "name": "comms",
+      "version": "0.5.1",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/comms"
+      },
+      "description": "Create voice-matched drafts, assemble the weekly roundup post from staged research candidates, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
+      "author": {
+        "name": "BrightWay AI"
+      }
+    },
+    {
+      "name": "briefing",
+      "version": "0.12.0",
+      "source": {
+        "source": "github",
+        "repo": "BrightWayAI/briefing"
+      },
+      "description": "Combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow.",
+      "author": {
+        "name": "BrightWay AI"
+      }
+    }
+  ]
+}

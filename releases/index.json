@@ -12,6 +12,12 @@
       "status": "candidate",
       "createdAt": "2026-09-15",
       "path": "./2026.09.15-reorg/release.json"
+    },
+    {
+      "release": "2026.09.18-rc.1",
+      "status": "candidate",
+      "createdAt": "2026-09-18",
+      "path": "./2026.09.18-rc.1/release.json"
     }
   ]
 }
