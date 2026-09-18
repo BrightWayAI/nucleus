@@ -221,17 +221,26 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Schedule entries reference commands from multiple plugins** — implicit contract that those commands exist.
 
 `<config-root>/plugins/ops/schedule-registrations/<host-id>.json`
-- **Writer:** ops `/register-schedules`, atomically after a confirmed scheduler mutation
+- **Writer:** ops `/register-schedules`, atomically after a confirmed scheduler mutation that passes folder-binding verification
 - **Reader:** ops `/register-schedules` reconciliation on that host
-- **Format:** schema `1.0.0`; scheduler ID + definition fingerprint + registration/verification timestamps
+- **Format:** schema `1.0.0`; scheduler ID + definition fingerprint (now includes `requires_local_device` + `folders`) + `requires_local_device`/`folders` themselves + registration/verification timestamps
 - **Host boundary:** never sync an ID as if it were portable; live scheduler state wins over the cache
+- **Folder-binding invariant (2026-09-18):** every schedule reads/writes `<config-root>`, so every `create_trigger`/`update_trigger` call requests `requires_local_device=true` and `folders=[<config-root>]`. `/register-schedules` verifies via `list_triggers`/`derived_state.folders_state` immediately after registering and refuses to write a record for a row that fails verification (reported `failed: no-folder-binding` instead). `/register-schedules --verify` re-checks an existing registration's binding read-only. This is what makes an unbound `nightly-listen` task loud instead of silently never reaching `<config-root>`.
 
 `<config-root>/plugins/ops/schedule-runs/<schedule>/<run-id>.json`
-- **Writer:** scheduled workflow when the host permits local receipt writes
-- **Readers:** `/diagnose`, `/nucleus-status`, humans auditing automation
+- **Writer:** scheduled workflow when the host permits local receipt writes — including cortex `/listen`, which writes one every run (Step 1.5j) with `status`, `state_source` (`state.json | artifact-db | none`), and brief-mining counts, and writes `status: "failed"`/`error_code: "config_root_unreachable"` here (or to stdout if no writable location is reachable at all) when its Step 0 reachability probe fails
+- **Readers:** `/diagnose`, ops `/status` (SCHEDULED LOOP section — requires a `<26h` succeeded receipt AND a verified live folder binding via `/register-schedules --verify`, never the scheduler's own success flag alone), humans auditing automation
 - **Format:** metadata only — outcome, source coverage statuses, output paths/hashes, sanitized error codes; never connector payloads or memory content
 
 ---
+
+## Brief artifact-runtime pointer (2026-09-18)
+
+`<config-root>/briefs/.artifact-runtime.json`
+- **Writer:** briefing `/brief` Step 3.0, overwritten on every hosted-artifact publish that discovers a shared-state capability. No-op on desktop Cowork (which mirrors state directly to disk and never needs this pointer).
+- **Format:** `{"artifact_url": "...", "capability": "db", "collection": "briefs", "doc_id_pattern": "<date>", "updated_at": "<ISO-8601>"}`
+- **Readers:** briefing `/brief` Step 0.A2 preflight (reads yesterday's doc back before the closures pass), cortex `/listen` Step 1.5a preflight (reads `<target_date>`'s doc back before mining) — both avoid re-discovering the artifact-capabilities skill's capability on every run by trusting this pointer.
+- **Absent/stale handling:** a missing file, or a read failure against the capability it names, is logged and treated as absent — never a hard failure for the calling command.
 
 ## Collaborative memory writes
 
@@ -414,7 +423,7 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **State contract (canonical v0.7.0):** one JSON blob at localStorage key `brief-YYYY-MM-DD`, mirrored to `<config-root>/briefs/<date>.state.json`: `{schema_version:"0.7.0", tasks:{<task_id>:{action,detail,return_on,priority,reprioritized,ts,name}}, annotations:{<item_id>:str}, outreach_actions:{<id>:{name,action,bucket,signal,value_add,detail,return_on,ts}}, reflection:{biggest,blocked,one_thing,ts}, tasks_checked:{<task_id>:bool}, last_interaction_at:iso8601}`. `tasks_checked` remains a v0.4 compatibility mirror. Versions 0.4.x-0.6.0 are additive-compatible; missing `reflection` and `return_on` mean absent, not malformed.
 - **State writers:** the Cowork artifact mirror when a verified filesystem MCP tool is available; a discovered hosted-artifact shared-state bridge plus command preflight; `/brief`'s initial empty-state write; `/process-brief` and optional `/end-day` paste paths; and ChatGPT/Codex skills when the user explicitly records an action in chat. OpenAI hosts render stable ids in Markdown and merge only user-supplied choices into the same v0.7.0 file; they never infer a disposition from silence.
 - **State read chain:** hosted shared-state preflight when previously discovered → `<date>.state.json` → legacy widget context → paste from **Sync brief state**. `/end-day` alone adds a manual multi-select fallback. Unattended `/listen` never prompts; absent/unreadable state degrades to evidence-based inference against the Markdown/seed plus archive.
-- **Closures contract:** `<config-root>/briefs/<date>.closures.json`, written by cortex `/listen` Step 1.5e, carries `{closed, carried, snoozed, suppressed, annotations}` for briefing `/brief` Step D0. Only explicit or user-accepted decisions enter `closed`; unreviewed inferences remain staged proposals.
+- **Closures contract:** `<config-root>/briefs/<date>.closures.json`, normally written by cortex `/listen` Step 1.5e, carries `{closed, carried, snoozed, suppressed, annotations}` for briefing `/brief` Step D0. Only explicit or user-accepted decisions enter `closed`; unreviewed inferences remain staged proposals. **Fallback writer (2026-09-18):** if `/listen` hasn't run for a date, briefing `/brief` Step 0D0 derives the same shape directly from `<date>.state.json` (or a readable artifact-db doc) and writes it itself with `written_by: "/brief fallback"`. Whichever command writes it first is authoritative — `/listen` will not overwrite an existing closures.json for that date.
 - **Snooze contract:** `<config-root>/briefs/.snooze-ledger.json`, written by cortex `/listen` Step 1.5h, is keyed by brief item id with `{title,kind,node,return_on,skipped_on,skip_count,last_detail}`. Briefing `/brief` hides future entries and restores due entries. For outreach with a known person slug, `/listen` also mirrors the date into growth's `relationships/snoozes.json`.
 - **Idempotency marker:** optional cortex `/end-day` writes `<date>.state.processed` after same-day explicit write-backs. Cortex `/listen` then skips duplicate explicit writes but still performs the inference pass. `--remine` additionally deduplicates against the prior draft, event log, and ledgers.
 - **Brief filtering contract:** briefing `/brief` reads `memory/me/surfacing-prefs.md`, the prior date's closures, and the snooze ledger before every render. Cortex `/listen` stages `not_important` and repeat-ignore learning for `/morning`; optional `/end-day` may apply the same semantics synchronously.

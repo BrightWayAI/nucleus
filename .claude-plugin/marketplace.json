@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "cortex",
-      "version": "4.27.0",
+      "version": "4.28.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/cortex"
@@ -31,7 +31,7 @@
     },
     {
       "name": "ops",
-      "version": "0.12.1",
+      "version": "0.13.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/ops"
@@ -103,7 +103,7 @@
     },
     {
       "name": "briefing",
-      "version": "0.11.0",
+      "version": "0.12.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/briefing"
