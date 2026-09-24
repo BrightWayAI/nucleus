@@ -49,6 +49,18 @@ PLUGINS = {
         "capabilities": ["Read", "Write", "Interactive"],
         "prompts": ["What can Nucleus do?", "Diagnose my Nucleus setup.", "Register my Nucleus schedules."],
         "degraded": "CRM, artifacts, and scheduling are independent capabilities. Use available inputs, name missing specialist plugins, and provide schedule definitions without claiming registration when no scheduler exists.",
+        "portable_notes": """### Scheduled-task binding on OpenAI hosts
+
+Cowork's `selected_device_id`, `folder_paths`, `requires_local_device`,
+`list_triggers`, and `derived_state.folders_state` are source-host examples, not
+Codex API fields. Discover the host's actual scheduler capabilities before
+registering or verifying a task. If no supported registration or live binding
+inspection is exposed, provide manual definitions and report binding unverified.
+Local automation configuration alone does not prove live folder access; do not
+apply Cowork UI repair instructions to Codex or claim a healthy nightly loop from
+a cached registration. Preserve the canonical receipt checks and distinguish a
+successful workflow receipt from a verified scheduler binding.
+""",
     },
     "research": {
         "display": "Research",
@@ -62,12 +74,34 @@ PLUGINS = {
     "clients": {
         "display": "Client Success",
         "short": "Start, support, document, and QA client engagements",
-        "long": "Create engagement plans and portable workspace prompts, draft weekly client-status updates, run structured deliverable QA, and turn approved proposals into reviewed Statements of Work.",
+        "long": "Set up engagements from executed contracts with separate finance and project access zones, maintain the Cortex project record, draft client-status updates, review deliverables, and generate Statements of Work.",
         "category": "Productivity",
         "capabilities": ["Read", "Write", "Interactive"],
         "prompts": ["Set up a client engagement.", "Draft this week's client status update.", "Turn this proposal into a reviewed Statement of Work."],
-        "degraded": "When Drive or project-creation APIs are absent, return a folder blueprint and host-neutral workspace prompt. Use available evidence for status and QA, list skipped sources, and keep outbound updates as drafts. For SOW generation, use the host's document capability when available; otherwise use the bundled PEP 723 Python scripts through `uv run`. Never claim visual review when no renderer is available.",
-        "portable_notes": """### Generated documents on OpenAI hosts
+        "degraded": "When storage writes are unavailable, return a zone-separated filing plan and Scope Brief for manual execution, and report those actions as pending. Missing finance access produces a finance handoff while authorized project-zone steps continue. Cortex's client node is the portable project record; do not generate a host-specific project or workspace prompt. Use available evidence for status and QA, list skipped sources, and keep outbound updates as drafts. For SOW generation, use the host's document capability when available; otherwise use the bundled PEP 723 Python scripts through `uv run`. Never claim visual review when no renderer is available.",
+        "portable_notes": """### Contract-driven project setup on OpenAI hosts
+
+Follow `commands/project-setup.md` for executed-contract verification, required
+Access zones and Naming conventions, prep mode, and `--dry-run`. A missing
+connector never relaxes those requirements or the pricing-leak check. Keep
+finance-only terms out of shared documents, calendar descriptions, and memory.
+Do not substitute a QuickBooks write for the draft-only finance notification.
+
+The canonical Step 5 plan is the approval boundary: preview exact mutations and
+targets together, then execute approved rows without asking again for each row.
+Ask again only for a changed action or target, or a permission the host requires.
+Prep mode and `--dry-run` perform no Step 6 writes, including memory or connector
+draft creation. Permission audits are report-only; if permission enumeration is
+unavailable, report the audit as unverified. Never infer safe access from a move
+or copy, and never delete originals when a cross-drive move is unsupported.
+
+For client/person memory initialization, use the installed Cortex workflow and
+its shared `cortex_cli.py` mutation path with the current schema and locking.
+If that capability or filesystem access is unavailable, return the proposed
+project-safe node content and mark memory initialization pending. Do not bypass
+Cortex with a direct file write or recreate the removed Claude Project prompt.
+
+### Generated documents on OpenAI hosts
 
 Treat a canonical `AskUserQuestion` step as one grouped question using the host's
 available elicitation UI or a single chat message. Treat `SendUserFile` as the host's

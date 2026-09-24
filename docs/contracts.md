@@ -168,6 +168,8 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Writer:** clients `/setup-projects`; user-editable
 - **Readers:** clients project workflows, clients `/client-status`, admin invoice/project resolution
 - **Format:** engagement catalog, client/project aliases, commercial defaults, and connector mapping
+- **Version 0.8.0:** `## Access zones` and `## Naming conventions` are required for project setup. `/setup-projects` adds them with user-confirmed zone assignments while preserving existing settings. `## Notification recipients` holds separate finance and delivery-team lists; missing lists may be captured during setup.
+- **Access contract:** executed contracts and commercial terms stay in the finance zone. Scope Briefs, calendar descriptions, and shared Cortex client/person nodes contain project-safe fields only and pass the pricing-leak check. Missing finance access produces a handoff, not a project-zone copy of the contract. The Cortex client node owns the phased plan and immediate next step; host-specific project prompts are no longer outputs.
 - **Migration:** may import once from `project-setup.user-context.md`; runtime must not depend on the retired plugin path
 
 `<config-root>/plugins/clients-status.user-context.md`

@@ -55,12 +55,12 @@
     },
     {
       "name": "clients",
-      "version": "0.7.1",
+      "version": "0.8.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/clients"
       },
-      "description": "Create engagement plans and portable workspace prompts, draft weekly client-status updates, run structured deliverable QA, and turn approved proposals into reviewed Statements of Work.",
+      "description": "Set up engagements from executed contracts with separate finance and project access zones, maintain the Cortex project record, draft client-status updates, review deliverables, and generate Statements of Work.",
       "author": {
         "name": "BrightWay AI"
       }
