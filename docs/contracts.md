@@ -185,6 +185,19 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 - **Version:** complete schema introduced in clients v0.7.1. A v0.7.0 file without `## Boilerplate clauses` is incomplete and must be enriched from its approved source sample.
 - **Privacy:** persist normalized reusable boilerplate only. Raw samples and engagement-specific section bodies remain temporary and must not be stored in the plugin/config directory.
 
+`<config-root>/plugins/admin.user-context.md`
+- **Writer:** admin `/setup-time`; user-editable
+- **Readers:** admin `/track-time`, `/invoices`, `/seed-register`, `/setup-notice`; clients `/project-setup` Step 6.4/6.5 (billing register + accountant recipients, when configured)
+- **Format:** per-client billing config (`## Clients and billing`), categories, calendar tagging, block rules, invoice preferences, time-log location, and (as of admin v0.5.0) `## Billing register` (backend, location, accounting connector, contract location) and `## Billing packet / accountant handoff` (accountant recipients, packet format, prep/send days, legacy-invoice-documents toggle)
+- **Version 0.5.0:** billing register and accountant-handoff sections added; additive, no breaking change to the existing per-client block
+
+`<config-root>/plugins/admin-register/` (or an Airtable base, per `## Billing register`)
+- **Writer:** admin `/seed-register` (bootstrap from accounting connector + contracts), admin `/setup-notice` and clients `/project-setup` Step 6.4 (per-engagement records), user edits
+- **Readers:** admin `/invoices` (billing packet generation and validation)
+- **Schema:** admin `references/register-schema.md` — Customers, Projects, Line Items, Cost Assignments, Billing Packets log. Local-file entities are one CSV per entity; Airtable maps one table per entity.
+- **Critical contract:** `accounting_name` fields on Customers/Projects and `accounting_product_service` on Line Items must match the accounting system exactly — admin `/invoices` validates against these before drafting a packet. Unclear fields are written as the literal string `NEEDS CONFIRMATION`, never guessed, and block only the affected line at draft time.
+- **Shared logic:** `admin` `references/setup-notice-generation.md` is invoked directly by clients `/project-setup` (cross-plugin reference to admin's reference doc, same pattern as clients already using admin's `/setup-time` as a companion-plugin step) — if admin's register-record shape changes, this doc is the single source both plugins must stay in sync with.
+
 `<config-root>/plugins/<plugin>.user-context.md`
 - Same pattern for every plugin's setup output.
 

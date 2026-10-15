@@ -55,7 +55,7 @@
     },
     {
       "name": "clients",
-      "version": "0.8.0",
+      "version": "0.8.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/clients"
@@ -67,12 +67,12 @@
     },
     {
       "name": "admin",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/admin"
       },
-      "description": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+      "description": "Turn calendar events into a local, reviewable time log and generate a billing packet for your accountant from a configurable billing register, seeded from your accounting system and signed contracts.",
       "author": {
         "name": "BrightWay AI"
       }

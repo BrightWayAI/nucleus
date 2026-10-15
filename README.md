@@ -161,7 +161,7 @@ Two things differ from Cowork. Overnight refresh runs only if your host exposes 
 | Who should I reach out to? | Growth Engine | Ranked outreach with ready-to-send drafts |
 | Status update for Acme | Client Success | Weekly client status from the week's evidence |
 | Review this deliverable | Client Success | Structured QA against your brand and the brief |
-| Bill last month | Admin | Invoice drafts from your approved time log |
+| Bill last month | Admin | Accountant billing packet from your approved time log |
 | Research X | Research | Cited findings from memory plus the open web |
 | What's the team misaligned on? | Team Alignment | Conflicts, decisions, and risks from Slack |
 | Close the week | Today's Brief + Cortex | Weekly review, cleanup, next-week prep |
@@ -332,7 +332,7 @@ How every host finds your memory folder, in order: an explicit override, `CORTEX
 | Growth Engine | `growth` | Relationship cockpit, buying signals, referral asks, pre-call briefs, pipeline analysis and forecast | [BrightWayAI/growth](https://github.com/BrightWayAI/growth) |
 | Client Success | `clients` | Engagement kickoff, weekly client status, deliverable QA | [BrightWayAI/clients](https://github.com/BrightWayAI/clients) |
 | Comms Desk | `comms` | Voice capture, voice-matched drafting, post assembly, style learning | [BrightWayAI/comms](https://github.com/BrightWayAI/comms) |
-| Admin | `admin` | Time log, invoices | [BrightWayAI/admin](https://github.com/BrightWayAI/admin) |
+| Admin | `admin` | Time log, accountant billing packets | [BrightWayAI/admin](https://github.com/BrightWayAI/admin) |
 | Research | `research` | Cited research, news roundup candidates, memory-gap research | [BrightWayAI/research](https://github.com/BrightWayAI/research) |
 | Team Alignment | `alignment` | Slack cross-team alignment scanning | [BrightWayAI/alignment](https://github.com/BrightWayAI/alignment) |
 

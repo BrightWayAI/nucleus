@@ -113,12 +113,12 @@ does not replace rendered-page inspection.
     },
     "admin": {
         "display": "Admin",
-        "short": "Classify calendar time and prepare reviewable invoices",
-        "long": "Turn calendar events into a local, reviewable time log and generate invoice drafts from configured client billing rules.",
+        "short": "Classify calendar time and prepare accountant billing packets",
+        "long": "Turn calendar events into a local, reviewable time log and generate a billing packet for your accountant from a configurable billing register, seeded from your accounting system and signed contracts.",
         "category": "Business",
         "capabilities": ["Read", "Write"],
-        "prompts": ["Track yesterday's billable time.", "Generate this month's invoice drafts.", "Configure my billing rules."],
-        "degraded": "A calendar connector is optional: accept pasted events when absent. Generate Markdown or structured invoice data if document tooling is unavailable. Never send invoices automatically.",
+        "prompts": ["Track yesterday's billable time.", "Generate this month's billing packet.", "Seed my billing register."],
+        "degraded": "A calendar connector is optional: accept pasted events when absent. An accounting connector (for /seed-register) and Airtable (for the register backend) are also optional: fall back to local files and manual entry, marking unconfirmed fields NEEDS CONFIRMATION rather than guessing. Generate Markdown or structured packet data if document tooling is unavailable. Never send invoices or the accountant packet automatically.",
     },
     "growth": {
         "display": "Growth Engine",
