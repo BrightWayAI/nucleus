@@ -167,6 +167,13 @@ def check_config_root_fixture(errors: list[str]) -> None:
         home.mkdir()
         default = module.resolve_config_root(home=home, environ={})
         require(default.path == home / "Documents" / "Claude", "fixture default config root failed", errors)
+        cloud_root = home / "cortex-root"
+        cloud_root.mkdir()
+        result = module.resolve_config_root(home=home, environ={})
+        require(result.path == default.path, "unmaterialized cloud root must not override fallback", errors)
+        (cloud_root / ".cortex-repos.json").write_text("{}\n")
+        result = module.resolve_config_root(home=home, environ={})
+        require(result.path == cloud_root, "fixture materialized cloud root failed", errors)
         legacy_root = Path(tmp) / "legacy-root"
         legacy = home / "Documents" / ".claude-plugin-config-root"
         legacy.parent.mkdir(parents=True)
@@ -182,6 +189,13 @@ def check_config_root_fixture(errors: list[str]) -> None:
         env_root = Path(tmp) / "env-root"
         result = module.resolve_config_root(home=home, environ={"CORTEX_CONFIG_ROOT": str(env_root)})
         require(result.path == env_root, "fixture environment precedence failed", errors)
+        vendor.write_text("relative/invalid-root\n")
+        try:
+            module.resolve_config_root(home=home, environ={})
+        except module.ConfigRootError:
+            pass
+        else:
+            errors.append("malformed vendor pointer silently fell back to cloud or legacy root")
 
 
 def check_clients_sow_surface(errors: list[str]) -> None:
@@ -269,6 +283,13 @@ def main() -> int:
         check_active_architecture(repo, errors)
         require((repo / "AGENTS.md").exists(), f"missing AGENTS.md: {repo_name}", errors)
         require((repo / "references" / "openai-portability.md").exists() or repo_name == "cortex", f"missing portability contract: {repo_name}", errors)
+        if repo_name != "cortex":
+            portability = repo / "references" / "openai-portability.md"
+            if portability.exists():
+                text = portability.read_text()
+                for term in ("core-contract.md", ".cortex-repos.json", ".cortex-role",
+                             "bootstrap --print-env", "MCP-only", "unreachable root"):
+                    require(term in text, f"{repo_name}: missing cloud-root contract: {term}", errors)
 
     retired = {"nucleus-router", "lead-engine", "project-setup", "client-status", "referral-engine", "writing-style"}
     require(not retired.intersection(native_names), "native marketplace contains retired plugins", errors)

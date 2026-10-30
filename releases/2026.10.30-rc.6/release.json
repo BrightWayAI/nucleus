@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "release": "2026.10.30-rc.6",
+  "status": "candidate",
+  "createdAt": "2026-10-30",
+  "plugins": [
+    {
+      "name": "cortex",
+      "repository": "https://github.com/BrightWayAI/cortex.git",
+      "version": "4.30.0",
+      "commit": "d857c001251fd675d079d063bb4409c396cd027c"
+    },
+    {
+      "name": "alignment",
+      "repository": "https://github.com/BrightWayAI/alignment.git",
+      "version": "1.6.2",
+      "commit": "1d3a0d93616c8d0e967112930fa6006dbc94d21c"
+    },
+    {
+      "name": "ops",
+      "repository": "https://github.com/BrightWayAI/ops.git",
+      "version": "0.14.1",
+      "commit": "c1a3ca81d692d46918e4a8c77a83185d49ae482a"
+    },
+    {
+      "name": "research",
+      "repository": "https://github.com/BrightWayAI/research.git",
+      "version": "0.5.3",
+      "commit": "a2c9acf83409a3efba51e10b67e83ba03ad61daf"
+    },
+    {
+      "name": "clients",
+      "repository": "https://github.com/BrightWayAI/clients.git",
+      "version": "0.8.4",
+      "commit": "5bb6b472f161499e61b06fc8162fd22cec1940ef"
+    },
+    {
+      "name": "admin",
+      "repository": "https://github.com/BrightWayAI/admin.git",
+      "version": "0.5.2",
+      "commit": "0d49ad80a3859b49032079ee5185759568c03a3c"
+    },
+    {
+      "name": "growth",
+      "repository": "https://github.com/BrightWayAI/growth.git",
+      "version": "0.6.5",
+      "commit": "dd54f5cb3aceb04856704dc414698d30fbaaa7a6"
+    },
+    {
+      "name": "comms",
+      "repository": "https://github.com/BrightWayAI/comms.git",
+      "version": "0.5.3",
+      "commit": "f6ca22eec4510ed6f38d5a7131bcc6c5b470f07b"
+    },
+    {
+      "name": "briefing",
+      "repository": "https://github.com/BrightWayAI/briefing.git",
+      "version": "0.12.3",
+      "commit": "b3863540a46f808db906bba9f3665b1c3dfa8aa6"
+    }
+  ],
+  "requiredConnectorProfiles": [
+    {
+      "host": "claude",
+      "profile": "operator"
+    },
+    {
+      "host": "chatgpt",
+      "profile": "operator"
+    }
+  ],
+  "connectorEvidence": [
+    "connector-evidence/chatgpt-operator.json"
+  ]
+}

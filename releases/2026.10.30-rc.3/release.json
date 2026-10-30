@@ -71,6 +71,7 @@
   ],
   "connectorEvidence": [
     "connector-evidence/claude-operator.json",
-    "connector-evidence/claude-full.json"
+    "connector-evidence/claude-full.json",
+    "connector-evidence/chatgpt-operator.json"
   ]
 }

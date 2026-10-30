@@ -19,7 +19,7 @@
     },
     {
       "name": "alignment",
-      "version": "1.6.1",
+      "version": "1.6.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/alignment"
@@ -31,7 +31,7 @@
     },
     {
       "name": "ops",
-      "version": "0.14.0",
+      "version": "0.14.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/ops"
@@ -43,7 +43,7 @@
     },
     {
       "name": "research",
-      "version": "0.5.2",
+      "version": "0.5.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/research"
@@ -55,7 +55,7 @@
     },
     {
       "name": "clients",
-      "version": "0.8.3",
+      "version": "0.8.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/clients"
@@ -67,7 +67,7 @@
     },
     {
       "name": "admin",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/admin"
@@ -79,7 +79,7 @@
     },
     {
       "name": "growth",
-      "version": "0.6.4",
+      "version": "0.6.5",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/growth"
@@ -91,7 +91,7 @@
     },
     {
       "name": "comms",
-      "version": "0.5.2",
+      "version": "0.5.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/comms"
@@ -103,7 +103,7 @@
     },
     {
       "name": "briefing",
-      "version": "0.12.2",
+      "version": "0.12.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/briefing"

@@ -38,6 +38,24 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 
 ## Foundation files
 
+### Config-root and cloud lifecycle
+
+Cortex owns resolution and synchronization through `references/core-contract.md`
+§1 and §11B, `scripts/lib/config_root.py`, and `scripts/cortex_cli.py`. All eight
+companion plugins consume this contract through their generated
+`references/openai-portability.md`; the shared generator lives in Nucleus.
+
+Readers must preserve explicit and pointer precedence, recognize a materialized
+`~/cortex-root`, and check reachability before using state. Cortex 4.30.0 adds the
+read-only `root-status` command. An unavailable root must not become an empty-memory
+success or an implicit replacement root. Filesystem cloud hosts use the designated
+org/private repos and Cortex bootstrap/sync; MCP-only hosts need exposed operations
+or verified host-side orchestration. Every scheduled job verifies its own binding.
+
+These adapter changes are published in the companion patch versions pinned by
+`2026.10.30-rc.6`. Existing sessions and installed caches must load those versions
+before claiming the new instructions are active.
+
 `<config-root>/memory/me/identity.md`
 - **Writer:** cortex `/setup-identity`
 - **Readers:** every plugin (skipped in their setup if exists)
