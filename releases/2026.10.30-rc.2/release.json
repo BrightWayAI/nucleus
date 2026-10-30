@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "release": "2026.10.30-rc.2",
+  "status": "candidate",
+  "createdAt": "2026-10-30",
+  "plugins": [
+    {
+      "name": "cortex",
+      "repository": "https://github.com/BrightWayAI/cortex.git",
+      "version": "4.29.3",
+      "commit": "b9d28c6d5cc54821409cb4d6e61e77a51465f1d1"
+    },
+    {
+      "name": "alignment",
+      "repository": "https://github.com/BrightWayAI/alignment.git",
+      "version": "1.6.1",
+      "commit": "d1d9dcd71418ff1b4a4bb63768449e29aa4e3c38"
+    },
+    {
+      "name": "ops",
+      "repository": "https://github.com/BrightWayAI/ops.git",
+      "version": "0.13.0",
+      "commit": "f00e8d42066277b46c31cf700d4dd46ad1f998ea"
+    },
+    {
+      "name": "research",
+      "repository": "https://github.com/BrightWayAI/research.git",
+      "version": "0.5.1",
+      "commit": "e74fad659f15666df44d4545ae796851091f972d"
+    },
+    {
+      "name": "clients",
+      "repository": "https://github.com/BrightWayAI/clients.git",
+      "version": "0.8.2",
+      "commit": "c4eda048f80b443a47ebef0540a11441d3b879d4"
+    },
+    {
+      "name": "admin",
+      "repository": "https://github.com/BrightWayAI/admin.git",
+      "version": "0.5.0",
+      "commit": "2d5fad9cb48c348fce7b4c61f4d7c24e8aa1fffb"
+    },
+    {
+      "name": "growth",
+      "repository": "https://github.com/BrightWayAI/growth.git",
+      "version": "0.6.3",
+      "commit": "a6c14312217624bb413f4d27013a86b88eb88896"
+    },
+    {
+      "name": "comms",
+      "repository": "https://github.com/BrightWayAI/comms.git",
+      "version": "0.5.1",
+      "commit": "2fdbcb153e52332d79f843e2393e61b618e0ad3e"
+    },
+    {
+      "name": "briefing",
+      "repository": "https://github.com/BrightWayAI/briefing.git",
+      "version": "0.12.1",
+      "commit": "7f613843fb05abd17420165de6e65793333bb9fd"
+    }
+  ],
+  "requiredConnectorProfiles": [
+    {
+      "host": "claude",
+      "profile": "operator"
+    },
+    {
+      "host": "chatgpt",
+      "profile": "operator"
+    }
+  ],
+  "connectorEvidence": []
+}

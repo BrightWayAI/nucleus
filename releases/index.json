@@ -24,6 +24,12 @@
       "status": "candidate",
       "createdAt": "2026-10-30",
       "path": "./2026.10.30-rc.1/release.json"
+    },
+    {
+      "release": "2026.10.30-rc.2",
+      "status": "candidate",
+      "createdAt": "2026-10-30",
+      "path": "./2026.10.30-rc.2/release.json"
     }
   ]
 }
