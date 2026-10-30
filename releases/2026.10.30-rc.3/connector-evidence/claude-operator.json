@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "release": "2026.10.30-rc.3",
+  "host": "claude",
+  "profile": "operator",
+  "runAt": "2026-10-30T17:26:00Z",
+  "results": [
+    {
+      "id": "calendar",
+      "status": "pass",
+      "tool": "mcp__claude_ai_Google_Calendar__list_events",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 1,
+        "contentTypes": [
+          "structured"
+        ],
+        "topLevelKeys": [
+          "accessRole",
+          "defaultReminders",
+          "events",
+          "nextPageToken",
+          "summary",
+          "timeZone",
+          "updated"
+        ]
+      },
+      "errorCode": null
+    },
+    {
+      "id": "mail",
+      "status": "pass",
+      "tool": "mcp__claude_ai_Gmail__search_threads",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 1,
+        "contentTypes": [
+          "structured"
+        ],
+        "topLevelKeys": [
+          "resultCountEstimate",
+          "threads"
+        ]
+      },
+      "errorCode": null
+    },
+    {
+      "id": "crm",
+      "status": "pass",
+      "tool": "mcp__claude_ai_HubSpot__search_crm_objects",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 1,
+        "contentTypes": [
+          "structured"
+        ],
+        "topLevelKeys": [
+          "results",
+          "total",
+          "urlTemplate",
+          "offset"
+        ]
+      },
+      "errorCode": null
+    },
+    {
+      "id": "slack",
+      "status": "not-run",
+      "tool": null,
+      "latencyMs": null,
+      "observation": null,
+      "errorCode": null
+    },
+    {
+      "id": "drive",
+      "status": "not-run",
+      "tool": null,
+      "latencyMs": null,
+      "observation": null,
+      "errorCode": null
+    },
+    {
+      "id": "contact-enrichment",
+      "status": "not-run",
+      "tool": null,
+      "latencyMs": null,
+      "observation": null,
+      "errorCode": null
+    },
+    {
+      "id": "transcripts",
+      "status": "not-run",
+      "tool": null,
+      "latencyMs": null,
+      "observation": null,
+      "errorCode": null
+    }
+  ]
+}

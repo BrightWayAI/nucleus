@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "release": "2026.10.30-rc.3",
+  "host": "claude",
+  "profile": "full",
+  "runAt": "2026-10-30T17:26:00Z",
+  "results": [
+    {
+      "id": "calendar",
+      "status": "pass",
+      "tool": "mcp__claude_ai_Google_Calendar__list_events",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 1,
+        "contentTypes": [
+          "structured"
+        ],
+        "topLevelKeys": [
+          "accessRole",
+          "defaultReminders",
+          "events",
+          "nextPageToken",
+          "summary",
+          "timeZone",
+          "updated"
+        ]
+      },
+      "errorCode": null
+    },
+    {
+      "id": "mail",
+      "status": "pass",
+      "tool": "mcp__claude_ai_Gmail__search_threads",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 1,
+        "contentTypes": [
+          "structured"
+        ],
+        "topLevelKeys": [
+          "resultCountEstimate",
+          "threads"
+        ]
+      },
+      "errorCode": null
+    },
+    {
+      "id": "crm",
+      "status": "pass",
+      "tool": "mcp__claude_ai_HubSpot__search_crm_objects",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 1,
+        "contentTypes": [
+          "structured"
+        ],
+        "topLevelKeys": [
+          "results",
+          "total",
+          "urlTemplate",
+          "offset"
+        ]
+      },
+      "errorCode": null
+    },
+    {
+      "id": "slack",
+      "status": "pass",
+      "tool": "mcp__claude_ai_Slack__slack_search_channels",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 0,
+        "contentTypes": [
+          "markdown"
+        ],
+        "topLevelKeys": [
+          "results",
+          "pagination_info"
+        ]
+      },
+      "errorCode": null
+    },
+    {
+      "id": "drive",
+      "status": "pass",
+      "tool": "mcp__claude_ai_Google_Drive__list_recent_files",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 1,
+        "contentTypes": [
+          "structured"
+        ],
+        "topLevelKeys": [
+          "files",
+          "nextPageToken"
+        ]
+      },
+      "errorCode": null
+    },
+    {
+      "id": "contact-enrichment",
+      "status": "pass",
+      "tool": "mcp__claude_ai_Apollo_io__apollo_contacts_search",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 1,
+        "contentTypes": [
+          "structured"
+        ],
+        "topLevelKeys": [
+          "contacts",
+          "model_ids",
+          "breadcrumbs",
+          "partial_results_only",
+          "has_join",
+          "disable_eu_prospecting",
+          "partial_results_limit",
+          "pagination"
+        ]
+      },
+      "errorCode": null
+    },
+    {
+      "id": "transcripts",
+      "status": "pass",
+      "tool": "mcp__claude_ai_Granola__list_meetings",
+      "latencyMs": null,
+      "observation": {
+        "recordCount": 1,
+        "contentTypes": [
+          "xml-text"
+        ],
+        "topLevelKeys": [
+          "requested_range",
+          "meetings_data",
+          "pagination"
+        ]
+      },
+      "errorCode": null
+    }
+  ]
+}
