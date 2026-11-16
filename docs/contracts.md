@@ -241,6 +241,7 @@ before claiming the new instructions are active.
 - **1.0.0-shape policy:** has no medium tier. Every `Ask first` item, and anything that would be medium, is handled as high.
 - **Unattended runs:** low-risk work only; everything else is staged. Durable memory is never written unattended. The medium tier does not change this.
 - **Route plans:** ops `/cos` `route_plan.risk_tier` is `low | medium | high | never` (ops 0.16.0; was `always | ask_first | never`). The value is the planner's estimate; the higher tier applies if the workflow does more.
+- **Parallel plans (ops 0.19.0):** `route_plan.mode` is `single` (default) or `parallel`. A parallel plan has 2 to 4 `workers`, each `{id, target, brief, output, required_context, risk_tier: low}`, and an `assemble` sentence. Workers only read and draft; each gets its brief and named context, never the conversation. `then` (either mode) lists steps that write, send, or change a record as `{action, target | null, risk_tier, why}`; a send is always a separate `high` step. The top-level `risk_tier` is the highest in `workers` and `then`. The parent keeps each fact with its source, shows worker disagreements, and reports a failed worker as a missing part.
 - **Confirmation modes** (`auto` / `suggest` / `confirm` / `manual`) belong to commands and never lower a tier.
 
 ## Nudges (Phase 2; growth 0.7.0+)
