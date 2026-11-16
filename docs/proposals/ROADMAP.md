@@ -76,15 +76,24 @@ Carried out of Phase 1, not yet proven in real use:
   check-in"; unattended memory merges, to revisit once
   `memory/staged/verifier-outcomes.md` has two weeks of data.
 
-### Phase 2 — signals
+### Phase 2 — nudges (in progress)
 
-- `sweep-heartbeat.md` rewritten as an event dispatcher: a cloud task polls a defined
-  list of business events and starts the matching workflow. Each trigger declares its
-  event, workflow, risk tier and how it avoids firing twice.
-- First triggers: contract signed, meeting ended, client or prospect email received,
-  open deal quiet for N days, invoice overdue.
-- Triggered work stages drafts or proposals under the Phase 1 tiers. Nothing is sent.
-- **Open decisions (owner):** N for the quiet-deal trigger; which triggers go on first.
+Plan approved 2026-11-16. The owner chose two triggers: a deal that has gone quiet
+(15 days) and a follow-up that went blank. The second is built as two checks: no reply
+to something sent (5 business days), and something owed that was never sent (past its
+date, or 7 days undated). A daily check replaces the always-on dispatcher first
+proposed; the reasons are in `sweep-heartbeat.md`.
+
+| Item | Where | State |
+|---|---|---|
+| 1. Spec and file formats | `sweep-heartbeat.md`, `contracts.md` | in review |
+| 2. Date math and "do not flag twice" script, with tests | growth | not started |
+| 3. `/nudges` command and the user-owned thresholds file | growth | not started |
+| 4. `daily-nudges` schedule row (cloud) | ops | not started |
+| 5. `/morning` shows **Needs a nudge** with snooze and dismiss | cortex | not started |
+
+Not built unless asked for: triggers that react to an event (contract signed, meeting
+ended, email received, invoice overdue).
 
 ### Phase 3 — orchestration and framing
 
@@ -111,7 +120,7 @@ Carried out of Phase 1, not yet proven in real use:
 
 | Proposal | Status |
 |---|---|
-| `sweep-heartbeat.md` | Not built. To be rewritten as the Phase 2 event dispatcher. |
+| `sweep-heartbeat.md` | Rewritten 2026-11-16 as the Phase 2 nudges spec. The `/sweep` heartbeat it used to describe was not built. |
 
 ## Known loose ends (not scheduled)
 

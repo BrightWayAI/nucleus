@@ -137,10 +137,8 @@ before claiming the new instructions are active.
 - **Format:** see `cortex/agents/gap-researcher.md` output section
 - **Pre-v4.8.1 path:** `<config-root>/memory/.research-drafts/<date>-research-gaps.md`
 
-`<config-root>/memory/staged/heartbeat-drafts/<today>.md` (proposed; not yet shipped)
-- **Writer:** cortex `/sweep` (future)
-- **Reader:** cortex `/end-day` Step 3.5 (future)
-- **Spec:** `nucleus/docs/proposals/sweep-heartbeat.md`
+`<config-root>/memory/staged/heartbeat-drafts/<today>.md` (withdrawn 2026-11-16)
+- Proposed for a `/sweep` heartbeat that was never built. Nothing writes or reads this path. The proposal was replaced by the daily nudges check; see "Nudges" below.
 
 `<config-root>/memory/staged/queues/reindex`
 - **Writer:** cortex `/remember` Step 3.5 (deferred refresh marker)
@@ -244,6 +242,23 @@ before claiming the new instructions are active.
 - **Unattended runs:** low-risk work only; everything else is staged. Durable memory is never written unattended. The medium tier does not change this.
 - **Route plans:** ops `/cos` `route_plan.risk_tier` is `low | medium | high | never` (ops 0.16.0; was `always | ask_first | never`). The value is the planner's estimate; the higher tier applies if the workflow does more.
 - **Confirmation modes** (`auto` / `suggest` / `confirm` / `manual`) belong to commands and never lower a tier.
+
+## Nudges (Phase 2; growth, planned)
+
+Spec: `docs/proposals/sweep-heartbeat.md`. Formats are fixed here before the code is written.
+
+`<config-root>/plugins/growth/triggers.md`
+- **Owner:** user. **Starter:** growth `references/triggers.template.md`.
+- **Format:** a Markdown table, one row per trigger: `Trigger` (`stale-deal` | `no-reply` | `owed-follow-up`), `On` (`yes` | `no`), `Threshold` (a number), `Unit` (`days` | `business-days`), `Notes`. A missing file or row means the default: `stale-deal` 15 days, `no-reply` 5 business days, `owed-follow-up` 7 days (undated; a dated item fires the day after its date).
+
+`<config-root>/memory/staged/nudges/<date>.md`
+- **Writer:** growth `/nudges`, through `cortex_cli.py`. **Reader:** cortex `/morning`.
+- **Format:** one `### Nudge <n>` block per item with `Trigger`, `Key`, `Subject` (deal, thread, or commitment), `Quiet since` (date), `Days quiet`, `Source` (CRM record ID, thread ID, or memory path), and `Draft` (the prepared message, or `none`). Private: syncs through the private repository only.
+
+`<config-root>/memory/staged/nudges/ledger.jsonl`
+- **Writer:** growth `/nudges` (flags) and cortex `/morning` (snooze, dismiss), append-only through `cortex_cli.py append-line`.
+- **Format:** one JSON object per line: `ts`, `key` (`<trigger>:<id>`), `event` (`flagged` | `snoozed` | `dismissed`), `as_of` (the last-activity date the flag was based on), `until` (snooze only), `by` (actor ID).
+- **Rule:** a key is flagged again only when its last-activity date is later than the `as_of` of its last `flagged` line, or the trigger's threshold has passed again since that line. A `dismissed` key is never flagged. A `snoozed` key is not flagged before `until`.
 
 ## Daily flow contracts
 
