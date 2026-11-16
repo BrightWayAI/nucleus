@@ -17,17 +17,24 @@ start until the one before it is merged.
 
 ## Active: signal-driven, self-verifying refactor
 
-### Phase 0 — cleanup (in review)
+### Phase 0 — cleanup (merged 2026-11-16)
 
 | Item | Where | State |
 |---|---|---|
-| Note-source adapter reference moved out of `agents/` so it stops registering as an agent | cortex 4.30.1 | branch ready |
-| Regression tests for the hot-cache formats fixed in 4.28.1 | cortex 4.30.2 | branch ready |
-| `autonomy.md` merged into `autonomy-policy.md`; retired commands removed | cortex 4.30.3 | branch ready |
-| `/migrate-plugin-configs` for legacy files in `<config-root>/plugins/` | cortex 4.31.0 | branch ready; not yet run on a live root |
-| Agent-log schema examples use current names | ops 0.14.2 | branch ready |
-| Schedule library `Runs on` (`cloud` \| `local-device`); the local-device-only rule is gone | ops 0.15.0 + `contracts.md` | branch ready |
-| This roadmap; history moved out of `CLAUDE.md` | nucleus | branch ready |
+| Note-source adapter reference moved out of `agents/` so it stops registering as an agent | cortex 4.30.1 | merged |
+| Regression tests for the hot-cache formats fixed in 4.28.1 | cortex 4.30.2 | merged |
+| `autonomy.md` merged into `autonomy-policy.md`; retired commands removed | cortex 4.30.3 | merged |
+| `/migrate-plugin-configs` for legacy files in `<config-root>/plugins/` | cortex 4.31.0 | merged; applied to the live root 2026-11-16 |
+| Agent-log schema examples use current names | ops 0.14.2 | merged |
+| Schedule library `Runs on` (`cloud` \| `local-device`); the local-device-only rule is gone | ops 0.15.0 + `contracts.md` | merged |
+| This roadmap; history moved out of `CLAUDE.md` | nucleus | merged |
+| Eval setup: fixture config root for the morning cases; routing cases carry a plugin catalog | cortex 4.31.1, ops 0.15.1 | branch ready |
+
+Evals after the fix (3 runs per case, all runs must pass): cortex 3 of 5 cases, ops 5 of
+9 with the default judge. Still failing: `draft-checkin-routing` (the router picks
+growth `/draft-touchpoint`, the grader expects comms `/style`; an overlap to settle in
+Phase 3), `catch-me-up` (asks whether Acme is a client or a prospect), and three cases
+that pass 2 of 3. Run with `--judge-model sonnet`; see each repo's `evals/README.md`.
 
 ### Phase 1 — verification and risk tiers (next)
 
