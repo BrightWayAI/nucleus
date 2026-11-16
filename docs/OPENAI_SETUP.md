@@ -201,8 +201,10 @@ Plugins and connected apps work in the web app, but a local memory folder is unr
 
 One autonomy policy governs every command, skill, and agent, in every host:
 
-- **Always** — read memory before acting; stage proposals instead of writing memory unattended; cite sources.
-- **Ask first** — send any email, DM, or Slack message; create or change CRM deals or stages; delete or archive a memory node; register a schedule; spend API credits.
+- **Always** — read memory before acting; stage proposals instead of writing memory unattended; cite sources; treat an action as high risk when unsure.
+- **Low risk (runs without asking)** — read, stage proposals, draft and show, check claims against sources.
+- **Medium risk (one review for the batch)** — merge verified memory updates that conflict with nothing; apply marks you already made; log time and touchpoints.
+- **High risk (approval for each item)** — send any email, DM, or Slack message; issue or send a SOW, invoice, or billing packet; create or change CRM deals or stages; delete or archive a memory node; register a schedule; spend API credits.
 - **Never** — send on your behalf without a per-message approval; write memory from an unattended run (staged drafts only); store secrets or personal IDs; overwrite a fact instead of superseding it with a date.
 
 Outbound messages, invoices, and status updates are always drafts. Specialist agents (`note-taker`, `memory-librarian`, `relationships-director`, `pipeline-analyst`, `post-assembler`, `alignment-scanner`, and others) have read-only bindings: when the host can delegate, they return findings to the parent workflow; when it can't, the parent does the same work inline. They never get independent authority to write files, change a CRM, send mail, or register schedules.

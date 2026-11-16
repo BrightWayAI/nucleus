@@ -224,15 +224,17 @@ Nucleus never deletes a fact. When something changes, the old entry is marked su
 
 ## Safety: what Nucleus will and won't do
 
-One autonomy policy governs every command, skill, and agent. You review it during setup and can tighten or loosen any tier.
+One autonomy policy governs every command, skill, and agent. You review it during setup and can tighten or loosen it. Every action falls in one of three tiers, and two lists apply to all of them.
 
-| Always | Ask first | Never |
+| Low risk: runs without asking | Medium risk: one review for the batch | High risk: approval for each item |
 |---|---|---|
-| Read memory before acting | Send any email, DM, or Slack message | Send on your behalf without a per-message approval |
-| Stage proposals instead of editing memory unattended | Create or change CRM deals or stages | Write memory from an unattended run (staged drafts only) |
-| Cite sources for every proposed fact | Delete or archive a memory node | Store secrets, card numbers, or government IDs |
-| | Register or change a scheduled task | Silently overwrite a fact (it supersedes with a date) |
-| | Spend API credits (e.g. Apollo enrichment) | |
+| Read memory, files, and connected sources | Merge memory updates that passed verification and conflict with nothing | Send any email, DM, or Slack message |
+| Stage proposals for review | Apply marks you already made (done, skipped, snoozed) | Issue or send a SOW, proposal, invoice, or billing packet |
+| Draft a message or document and show it | Log time and touchpoints to your own records | Create or change CRM deals or stages |
+| Check claims against their sources | Save a draft into your drafts folder | Delete or archive a memory node |
+| Refresh derived files and write run receipts | | Register or change a scheduled task; spend API credits |
+
+**Always:** read memory before acting, cite a source for every proposed fact, and treat an action as high risk when unsure. **Never:** send on your behalf without a per-message approval, write memory from an unattended run (staged drafts only), store secrets or card numbers, or silently overwrite a fact.
 
 Outbound messages, invoices, and client updates are always drafts. Connectors (Gmail, Calendar, HubSpot, Slack, Drive, Apollo, and others) are separate; installing Nucleus doesn't grant access to any of them, and plugins tell you which sources they skipped.
 
