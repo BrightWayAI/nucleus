@@ -171,6 +171,12 @@ before claiming the new instructions are active.
 
 ## Per-plugin user-context files
 
+`<config-root>/plugins/archive/`
+- **Writer:** cortex `/migrate-plugin-configs` (4.31.0) and manual moves; append-only in practice
+- **Readers:** none at runtime. No command may depend on a file here.
+- **Naming:** `<original-name-without-.md>.<YYYY-MM-DD>.md`; backups as `<base>.<YYYY-MM-DD>.bak.md`
+- **Rule:** a retired config file is archived only after its replacement exists. `plan-tomorrow.user-context.md` is still read by briefing and is not legacy.
+
 `<config-root>/plugins/cortex.user-context.md`
 - **Writer:** cortex `/setup-sources` (sources section), `/setup-obsidian` (obsidian section); user-editable
 - **Readers:** all cortex commands consulting autonomy, hot-cache config, decay config, sources, listen settings, sweep settings (future), memory_as_git settings (future)
@@ -251,19 +257,21 @@ before claiming the new instructions are active.
 - **Writer:** user or ops `/register-schedules` when copying the immutable starter
 - **Reader:** ops `/register-schedules`; host schedulers receive translated definitions
 - **Format:** see `ops/references/schedules.template.md`
+- **`Runs on` column (ops 0.15.0, 2026-11-16):** each row is `cloud` or `local-device`. A row without the column is `local-device`. `cloud` is valid only for a workflow that documents a cloud contract (bootstrap the two sync repositories, run, publish); cortex `/listen` does as of 4.29.
+- **Created by:** the user, ops `/register-schedules`, or cortex `/migrate-plugin-configs` (4.31.0), which carries a pre-reorg `plugins/ops.schedules.md` here or copies the starter. None of them overwrites an existing file.
 - **Schedule entries reference commands from multiple plugins** — implicit contract that those commands exist.
 
 `<config-root>/plugins/ops/schedule-registrations/<host-id>.json`
-- **Writer:** ops `/register-schedules`, atomically after a confirmed scheduler mutation that passes folder-binding verification
+- **Writer:** ops `/register-schedules`, atomically after a confirmed scheduler mutation that passes binding verification for the row's `runs_on` mode
 - **Reader:** ops `/register-schedules` reconciliation on that host
-- **Format:** schema `1.0.0`; scheduler ID + definition fingerprint (now includes `requires_local_device` + `folders`) + `requires_local_device`/`folders` themselves + registration/verification timestamps
+- **Format:** schema `1.1.0` (ops 0.15.0); scheduler ID + definition fingerprint (includes `requires_local_device` + `folders`) + `runs_on` (`cloud` | `local-device`) + `requires_local_device`/`folders` themselves + `binding` (`verified` | `unverified-until-first-receipt`) + registration/verification timestamps. Readers treat a `1.0.0` record, which has neither new field, as `runs_on: local-device`, `binding: verified`; the writer upgrades a record when it next updates it. A `local-device` row's fingerprint is unchanged from `1.0.0`.
 - **Host boundary:** never sync an ID as if it were portable; live scheduler state wins over the cache
-- **Folder-binding invariant (2026-09-18):** every schedule reads/writes `<config-root>`, so registration requires verified access from the intended execution environment. In Cowork, `create_trigger`/`update_trigger` requests `requires_local_device=true` and `folders=[<config-root>]`; `list_triggers` must return both a non-`NONE` `derived_state.folders_state` and the resolved root in `derived_state.folders`. Failed verification must not produce an active registration record. `/register-schedules --verify` reads scheduler state without mutating the task (it may update local `last_verified_at`).
+- **Reachability invariant (2026-09-18, amended 2026-11-16):** every schedule reads/writes `<config-root>`, so registration requires verified access from the intended execution environment. That environment is now declared per row. **`cloud` rows:** `create_trigger`/`update_trigger` requests `requires_local_device=false` with no folders and both sync repositories attached; verification requires an enabled task with no device requirement, an empty folder list is expected, and when the scheduler cannot show attached repositories the record is `binding: unverified-until-first-receipt` until a succeeded receipt exists. The same schedule must not be registered in both modes. **`local-device` rows (unchanged):** in Cowork, `create_trigger`/`update_trigger` requests `requires_local_device=true` and `folders=[<config-root>]`; `list_triggers` must return both a non-`NONE` `derived_state.folders_state` and the resolved root in `derived_state.folders`. Failed verification must not produce an active registration record. `/register-schedules --verify` reads scheduler state without mutating the task (it may update local `last_verified_at`).
 - **OpenAI boundary:** those Cowork tool names and response fields are not portable APIs. A Codex local project setting or cached `ACTIVE` flag alone does not prove access. Require an exposed host scheduler's equivalent live environment/path verification plus a root read/write probe in the scheduled context; otherwise report binding verification unavailable and return manual definitions. Never fabricate Cowork fields or mark an unverifiable schedule healthy. See [OpenAI setup](OPENAI_SETUP.md#scheduled-listen-verification).
 
 `<config-root>/plugins/ops/schedule-runs/<schedule>/<run-id>.json`
 - **Writer:** scheduled workflow when the host permits local receipt writes. Cortex `/listen` Step 1.5j specifies `outcome`, `state_source` (`state.json | artifact-db | none`), and brief-mining counts; its Step 0 root gate specifies `status: "failed"`/`error_code: "config_root_unreachable"` here, at an authorized fallback, or on stdout if no writable location is reachable. The candidate has schema and lifecycle gaps noted below; it does not yet guarantee a terminal receipt on every exit.
-- **Readers:** `/diagnose`, ops `/status` (SCHEDULED LOOP section — requires a `<26h` succeeded receipt AND a verified live folder binding via `/register-schedules --verify`, never the scheduler's own success flag alone), humans auditing automation
+- **Readers:** `/diagnose`, ops `/status` (SCHEDULED LOOP section — requires a `<26h` succeeded receipt AND a verified live binding for the row's `runs_on` mode via `/register-schedules --verify`, never the scheduler's own success flag alone; for a `cloud` row a stale local receipt is reported as `local-copy-not-synced`), humans auditing automation
 - **Format:** metadata only — outcome, source coverage statuses, output paths/hashes, sanitized error codes; never connector payloads or memory content
 - **Path audit (2026-09-18):** both pinned writers use `plugins/ops/schedule-runs/`, not `memory/staged/queues/receipts/` as stated in the original handoff. No path migration shipped; do not introduce a second receipt store based on that handoff.
 - **Known candidate incompatibility:** Cortex 4.28.0 Step 1.5j emits `outcome: "succeeded"`, while ops 0.13.0 Step 5 defines `outcome: "success"` and `/status` accepts `status: "succeeded"` or `outcome: "success"`. The early failure path also adds singular `error_code` alongside a schema that defines `error_codes`. These must be reconciled in the owning plugins before promotion. Step 1.5j precedes the remaining ingest steps, so its receipt does not yet prove whole-run completion. The health contract requires a terminal receipt from the same host/task, not merely a brief-mining checkpoint or scheduler history.
