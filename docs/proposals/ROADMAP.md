@@ -82,7 +82,7 @@ Carried out of Phase 1, not yet proven in real use:
   list of business events and starts the matching workflow. Each trigger declares its
   event, workflow, risk tier and how it avoids firing twice.
 - First triggers: contract signed, meeting ended, client or prospect email received,
-  open deal quiet for N days, invoice overdue, Trello card moved to review.
+  open deal quiet for N days, invoice overdue.
 - Triggered work stages drafts or proposals under the Phase 1 tiers. Nothing is sent.
 - **Open decisions (owner):** N for the quiet-deal trigger; which triggers go on first.
 
@@ -96,7 +96,7 @@ Carried out of Phase 1, not yet proven in real use:
 
 ### Phase 4 — context coverage and self-improvement
 
-- `/listen` adapters for HubSpot, QuickBooks, Trello, GitHub and Airtable,
+- `/listen` adapters for HubSpot, QuickBooks, GitHub and Airtable,
   metadata-first.
 - A decision-record node type; `/morning` and `/remember` route decisions to it.
 - Every sub-agent call logged automatically to a file inside the config root.
