@@ -122,10 +122,8 @@ adapter behavior was added or altered. In ChatGPT the mentions are now `@Ops`,
 Not yet proven in real use: a parallel plan has only been exercised as a plan. No run
 has yet started several workers at once and assembled their results.
 
-Eval harness gap, open: the natural-language cases in the growth, clients, and briefing
-suites fail because the eval run has no config folder (five cases on 2026-11-16). Cortex
-has a fixture for this (`evals/_fixtures/seed-config-root.sh`); those three suites do
-not.
+Eval harness gap, closed in Phase 4 item 3: the growth, clients, and briefing suites
+now run against a copy of cortex's fixture config folder.
 
 ### Phase 4 — context coverage and self-improvement (in progress)
 
@@ -137,8 +135,8 @@ list earlier.
 | Item | Where | State |
 |---|---|---|
 | 1. Every sub-agent call logged automatically inside the config root | ops 0.21.0, briefing 0.12.5 + `contracts.md` | merged |
-| 2. A decision-record node type; `/morning` and `/remember` route decisions to it | cortex 4.38.0 + `contracts.md` | in review |
-| 3. Fixture config root for the growth, clients, and briefing eval suites; output-quality evals for `/morning`, `/listen`, `/brief`, `/relationships`, `/client-status` | those plugins | not started |
+| 2. A decision-record node type; `/morning` and `/remember` route decisions to it | cortex 4.38.0 + `contracts.md` | merged |
+| 3. Fixture config root for the growth, clients, and briefing eval suites; output-quality evals for `/morning`, `/listen`, `/brief`, `/relationships`, `/client-status` | cortex 4.38.1, growth 0.7.2, clients 0.9.2, briefing 0.12.6; fixture-copy check in nucleus | in review |
 | 4. Command files under 2,500 words, deterministic steps in `cortex_cli.py`, behavior confirmed by evals | cortex first | not started |
 | 5. `/listen` adapters for HubSpot, QuickBooks, GitHub, and Airtable, metadata-first | cortex | not started |
 | 6. A weekly agent that reads the run log and verifier results and opens improvement pull requests | to be decided | not started |

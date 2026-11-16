@@ -122,6 +122,23 @@ def check_skills(repo: Path, errors: list[str]) -> None:
 CLAUDE_ONLY_AGENTS = {("cortex", "verifier")}
 
 
+EVAL_FIXTURE = Path("evals") / "_fixtures" / "seed-config-root.sh"
+
+
+def check_eval_fixture_copies(repos: list[Path], errors: list[str]) -> None:
+    """The fictional eval config root is defined in cortex and copied into other
+    plugins, because an eval case cannot reference a file outside its own
+    repository. The copies must not drift."""
+    source = next((r / EVAL_FIXTURE for r in repos if r.name == "cortex"), None)
+    if source is None or not source.is_file():
+        return
+    canonical = source.read_bytes()
+    for repo in repos:
+        copy = repo / EVAL_FIXTURE
+        if repo.name != "cortex" and copy.is_file():
+            require(copy.read_bytes() == canonical, f"eval fixture differs from cortex's copy: {repo.name}/{EVAL_FIXTURE}", errors)
+
+
 def check_agent_tool_limits(repo: Path, errors: list[str]) -> None:
     """Every agent must declare its tool limits in frontmatter.
 
@@ -300,6 +317,7 @@ def main() -> int:
 
     claude = load_json(NUCLEUS_ROOT / ".claude-plugin" / "marketplace.json", errors)
     claude_versions = {entry.get("name"): str(entry.get("version")) for entry in claude.get("plugins", [])}
+    check_eval_fixture_copies([LAB_ROOT / name for _, name, _ in PLUGIN_REPOSITORIES], errors)
     for plugin_name, repo_name, claude_name in PLUGIN_REPOSITORIES:
         repo = LAB_ROOT / repo_name
         require(repo.is_dir(), f"missing repository: {repo_name}", errors)
