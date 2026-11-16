@@ -109,8 +109,8 @@ those files, or for the adapter freeze to lift.
 
 | Item | Where | State |
 |---|---|---|
-| 1. `/cos` parallel plans and `then` steps | ops 0.19.0 + `contracts.md` | in review |
-| 2. Routing by what a request is about, not by role name | ops | not started |
+| 1. `/cos` parallel plans and `then` steps | ops 0.19.0 + `contracts.md` | merged |
+| 2. Routing by what a request is about, not by role name | ops 0.20.0 + `contracts.md` | in review |
 | 3. Plugins described by what they own; two agent descriptions rewritten | plugin manifests, `marketplace.json`, READMEs | not started |
 
 ### Phase 4 — context coverage and self-improvement
