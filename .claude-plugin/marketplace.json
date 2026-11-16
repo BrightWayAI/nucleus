@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "cortex",
-      "version": "4.37.0",
+      "version": "4.37.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/cortex"
@@ -19,7 +19,7 @@
     },
     {
       "name": "alignment",
-      "version": "1.6.3",
+      "version": "1.6.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/alignment"
@@ -31,19 +31,19 @@
     },
     {
       "name": "ops",
-      "version": "0.20.0",
+      "version": "0.20.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/ops"
       },
-      "description": "Use a natural-language chief-of-staff front door, inspect Nucleus health, record agent metrics, and register schedules when the host supports them. Delegates CRM pipeline analysis and forecasting to the growth plugin when installed.",
+      "description": "Say what you need in plain language and get routed to the installed workflow that does it; inspect Nucleus health, record agent metrics, and register schedules when the host supports them. Delegates CRM pipeline analysis and forecasting to the growth plugin when installed.",
       "author": {
         "name": "BrightWay AI"
       }
     },
     {
       "name": "research",
-      "version": "0.5.4",
+      "version": "0.5.5",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/research"
@@ -55,7 +55,7 @@
     },
     {
       "name": "clients",
-      "version": "0.9.0",
+      "version": "0.9.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/clients"
@@ -67,7 +67,7 @@
     },
     {
       "name": "admin",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/admin"
@@ -79,7 +79,7 @@
     },
     {
       "name": "growth",
-      "version": "0.7.0",
+      "version": "0.7.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/growth"
@@ -91,7 +91,7 @@
     },
     {
       "name": "comms",
-      "version": "0.5.4",
+      "version": "0.5.5",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/comms"
@@ -103,7 +103,7 @@
     },
     {
       "name": "briefing",
-      "version": "0.12.3",
+      "version": "0.12.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/briefing"

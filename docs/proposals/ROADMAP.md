@@ -99,7 +99,7 @@ memory, and `daily-nudges` is not registered. The first run should be by hand
 Not built unless asked for: triggers that react to an event (contract signed, meeting
 ended, email received, invoice overdue).
 
-### Phase 3 — orchestration and framing (in progress)
+### Phase 3 — orchestration and framing (in review)
 
 Plan approved 2026-11-16. Decisions: plugins are shown by their plain names (Ops,
 Clients, Comms, Growth, Briefing, Admin, Research, Alignment); `/cos` keeps its name;
@@ -107,11 +107,17 @@ the agents `chief-of-staff` and `relationships-director` keep their names for no
 get descriptions with no role framing. Renaming them waits for another reason to touch
 those files, or for the adapter freeze to lift.
 
+The adapter freeze was crossed once, by owner decision on 2026-11-16: the display names
+live in `scripts/generate_openai_adapters.py`, so plain names required changing them
+there and regenerating. Only display names and one description sentence changed; no
+adapter behavior was added or altered. In ChatGPT the mentions are now `@Ops`,
+`@Clients`, `@Comms`, `@Growth`, `@Briefing`, `@Alignment`.
+
 | Item | Where | State |
 |---|---|---|
 | 1. `/cos` parallel plans and `then` steps | ops 0.19.0 + `contracts.md` | merged |
-| 2. Routing by what a request is about, not by role name | ops 0.20.0 + `contracts.md` | in review |
-| 3. Plugins described by what they own; two agent descriptions rewritten | plugin manifests, `marketplace.json`, READMEs | not started |
+| 2. Routing by what a request is about, not by role name | ops 0.20.0 + `contracts.md` | merged |
+| 3. Plain plugin names everywhere, including the ChatGPT/Codex display names (owner decision); descriptions say what each plugin covers | all nine plugins, the adapter generator, `marketplace.json`, READMEs | in review |
 
 ### Phase 4 — context coverage and self-improvement
 

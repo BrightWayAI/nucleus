@@ -11,14 +11,14 @@ Use this doc as a checklist before merging plugin changes that touch any path li
 ## Container rules
 
 - Research finds.
-- Comms Desk writes.
-- Growth Engine decides who.
-- Client Success owns the account after signature.
-- Chief of Staff routes and monitors, owns no domain.
+- Comms writes.
+- Growth decides who.
+- Clients owns the account after signature.
+- Ops routes and monitors, owns no domain.
 - Cortex remembers.
 - Today's Brief is every "what's going on" surface at any cadence.
 - Admin is money and paperwork.
-- Team Alignment is internal coherence.
+- Alignment is internal coherence.
 
 ## Where things live
 
