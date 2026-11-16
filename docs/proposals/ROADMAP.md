@@ -136,8 +136,8 @@ list earlier.
 
 | Item | Where | State |
 |---|---|---|
-| 1. Every sub-agent call logged automatically inside the config root | ops 0.21.0, briefing 0.12.5 + `contracts.md` | in review |
-| 2. A decision-record node type; `/morning` and `/remember` route decisions to it | cortex | not started |
+| 1. Every sub-agent call logged automatically inside the config root | ops 0.21.0, briefing 0.12.5 + `contracts.md` | merged |
+| 2. A decision-record node type; `/morning` and `/remember` route decisions to it | cortex 4.38.0 + `contracts.md` | in review |
 | 3. Fixture config root for the growth, clients, and briefing eval suites; output-quality evals for `/morning`, `/listen`, `/brief`, `/relationships`, `/client-status` | those plugins | not started |
 | 4. Command files under 2,500 words, deterministic steps in `cortex_cli.py`, behavior confirmed by evals | cortex first | not started |
 | 5. `/listen` adapters for HubSpot, QuickBooks, GitHub, and Airtable, metadata-first | cortex | not started |
