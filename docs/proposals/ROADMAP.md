@@ -36,7 +36,7 @@ growth `/draft-touchpoint`, the grader expects comms `/style`; an overlap to set
 Phase 3), `catch-me-up` (asks whether Acme is a client or a prospect), and three cases
 that pass 2 of 3. Run with `--judge-model sonnet`; see each repo's `evals/README.md`.
 
-### Phase 1 — verification and risk tiers (in progress)
+### Phase 1 — verification and risk tiers (merged 2026-11-16)
 
 Plan approved 2026-11-16. Unattended memory merges stay off for this phase.
 
@@ -48,7 +48,7 @@ Plan approved 2026-11-16. Unattended memory merges stay off for this phase.
 | 4. Three risk tiers (policy 2.0.0) | cortex 4.34.0, ops 0.16.0 + `contracts.md` | merged |
 | 5. `/morning` reviews failures and conflicts one at a time and the verified batch once; `triage-draft`; outcome log | cortex 4.35.0 + `contracts.md` | merged |
 | 6. Actor ID in every run receipt (receipt schema 1.1.0); `write-receipt` | cortex 4.36.0, ops 0.17.0 + `contracts.md` | merged |
-| 7. Tool limits on the eight agents that had none; a check that every agent declares them | cortex 4.36.1, ops 0.17.1, growth 0.6.6, comms 0.5.4, research 0.5.4, alignment 1.6.3 + `contracts.md` | in review |
+| 7. Tool limits on the eight agents that had none; a check that every agent declares them | cortex 4.36.1, ops 0.17.1, growth 0.6.6, comms 0.5.4, research 0.5.4, alignment 1.6.3 + `contracts.md` | merged |
 
 
 - A verifier sub-agent: fresh context, a different model from the producer, read-only
@@ -62,6 +62,19 @@ Plan approved 2026-11-16. Unattended memory merges stay off for this phase.
 - Every run receipt records the accountable actor ID.
 - **Open decision (owner):** exact criteria for unattended memory merges. Nothing
   merges unattended until that is approved.
+
+Carried out of Phase 1, not yet proven in real use:
+
+- No real overnight draft has been through `/listen` Step 4.5 or the new `/morning`
+  review. The first scheduled run on cortex 4.33.0 or later is that test.
+- The verifier steps in `/sow`, `/client-status` and `/invoices` have only been run as
+  scenario walk-throughs, not end to end with a live verifier.
+- Agent tool limits were confirmed in Claude Code only. Cowork's handling of `tools:` and
+  `disallowedTools:` for plugin agents is undocumented.
+- Open decisions (owner): whether `relationships-director` should stop writing person
+  pages directly; whether growth `/draft-touchpoint` or comms `/style` owns "draft a
+  check-in"; unattended memory merges, to revisit once
+  `memory/staged/verifier-outcomes.md` has two weeks of data.
 
 ### Phase 2 — signals
 
