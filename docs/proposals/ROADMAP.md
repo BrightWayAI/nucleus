@@ -99,7 +99,7 @@ memory, and `daily-nudges` is not registered. The first run should be by hand
 Not built unless asked for: triggers that react to an event (contract signed, meeting
 ended, email received, invoice overdue).
 
-### Phase 3 — orchestration and framing (in review)
+### Phase 3 — orchestration and framing (merged 2026-11-16)
 
 Plan approved 2026-11-16. Decisions: plugins are shown by their plain names (Ops,
 Clients, Comms, Growth, Briefing, Admin, Research, Alignment); `/cos` keeps its name;
@@ -117,7 +117,15 @@ adapter behavior was added or altered. In ChatGPT the mentions are now `@Ops`,
 |---|---|---|
 | 1. `/cos` parallel plans and `then` steps | ops 0.19.0 + `contracts.md` | merged |
 | 2. Routing by what a request is about, not by role name | ops 0.20.0 + `contracts.md` | merged |
-| 3. Plain plugin names everywhere, including the ChatGPT/Codex display names (owner decision); descriptions say what each plugin covers | all nine plugins, the adapter generator, `marketplace.json`, READMEs | in review |
+| 3. Plain plugin names everywhere, including the ChatGPT/Codex display names (owner decision); descriptions say what each plugin covers | all nine plugins, the adapter generator, `marketplace.json`, READMEs | merged |
+
+Not yet proven in real use: a parallel plan has only been exercised as a plan. No run
+has yet started several workers at once and assembled their results.
+
+Eval harness gap, open: the natural-language cases in the growth, clients, and briefing
+suites fail because the eval run has no config folder (five cases on 2026-11-16). Cortex
+has a fixture for this (`evals/_fixtures/seed-config-root.sh`); those three suites do
+not.
 
 ### Phase 4 — context coverage and self-improvement
 
