@@ -116,6 +116,13 @@ before claiming the new instructions are active.
 
 ---
 
+`<config-root>/memory/decision/<YYYY-MM-DD>-<slug>.md` (cortex 4.38.0+)
+- **Writer:** `cortex_cli.py record-decision` only, called by cortex `/remember` and `/morning`. Never hand-written; `/listen` proposes but does not write.
+- **Format:** frontmatter `type: decision`, `decided`, `decided_by` (Actor ID; required, never `unresolved`), `status` (`active` | `superseded`), optional `supersedes` / `superseded_by`, `affects`, `recorded_by`; sections Decision, Inputs, Why, Affects, Revisit when.
+- **Invariants:** a record is never deleted and never edited to change what was decided; a changed decision is a new record with `supersedes`, and the old one is marked `superseded` with its text intact; only the newest record in a chain can be superseded.
+- **Pointers:** each affected node carries one line, `DECISION [confirmed:<date>] <title> → [[decision/<id>]] [by:<actor>]`. Readers of inline `DECISION` entries keep working; entries written before 4.38.0 are not migrated.
+- **Index:** listed under "Decisions" in `memory/index.md`.
+
 ## Staged-state files (post-v4.8.1 reorg paths)
 
 `<config-root>/memory/staged/commit-drafts/<date>.md`
