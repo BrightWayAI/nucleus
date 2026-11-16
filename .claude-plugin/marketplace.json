@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "cortex",
-      "version": "4.36.0",
+      "version": "4.36.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/cortex"
@@ -19,7 +19,7 @@
     },
     {
       "name": "alignment",
-      "version": "1.6.2",
+      "version": "1.6.3",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/alignment"
@@ -31,7 +31,7 @@
     },
     {
       "name": "ops",
-      "version": "0.17.0",
+      "version": "0.17.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/ops"
@@ -43,7 +43,7 @@
     },
     {
       "name": "research",
-      "version": "0.5.3",
+      "version": "0.5.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/research"
@@ -79,7 +79,7 @@
     },
     {
       "name": "growth",
-      "version": "0.6.5",
+      "version": "0.6.6",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/growth"
@@ -91,7 +91,7 @@
     },
     {
       "name": "comms",
-      "version": "0.5.3",
+      "version": "0.5.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/comms"

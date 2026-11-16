@@ -122,6 +122,27 @@ def check_skills(repo: Path, errors: list[str]) -> None:
 CLAUDE_ONLY_AGENTS = {("cortex", "verifier")}
 
 
+def check_agent_tool_limits(repo: Path, errors: list[str]) -> None:
+    """Every agent must declare its tool limits in frontmatter.
+
+    Either a `tools:` allowlist or a `disallowedTools:` denylist. An agent with
+    neither inherits every tool the parent session has, so "read-only" would
+    rest on its instructions alone. A misspelled key is silently ignored by the
+    host, which is why this is checked here.
+    """
+    source = repo / "agents"
+    if not source.is_dir():
+        return
+    for role in source.glob("*.md"):
+        text = role.read_text()
+        if not text.startswith("---\n") or "\n---\n" not in text[4:]:
+            errors.append(f"agent has no frontmatter: {repo.name}/{role.stem}")
+            continue
+        frontmatter = text[4 : text.index("\n---\n", 4)].splitlines()
+        declared = any(line.startswith(("tools:", "disallowedTools:")) for line in frontmatter)
+        require(declared, f"agent declares no tool limits (tools: or disallowedTools:): {repo.name}/{role.stem}", errors)
+
+
 def check_agents(repo: Path, errors: list[str]) -> None:
     source = repo / "agents"
     if not source.is_dir():
@@ -288,6 +309,7 @@ def main() -> int:
         require(claude_versions.get(claude_name) == version, f"catalog version mismatch: {repo_name}", errors)
         check_skills(repo, errors)
         check_agents(repo, errors)
+        check_agent_tool_limits(repo, errors)
         check_active_architecture(repo, errors)
         require((repo / "AGENTS.md").exists(), f"missing AGENTS.md: {repo_name}", errors)
         require((repo / "references" / "openai-portability.md").exists() or repo_name == "cortex", f"missing portability contract: {repo_name}", errors)
