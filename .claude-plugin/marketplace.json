@@ -31,7 +31,7 @@
     },
     {
       "name": "ops",
-      "version": "0.17.1",
+      "version": "0.18.0",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/ops"
