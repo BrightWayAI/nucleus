@@ -1,36 +1,105 @@
 # Nucleus roadmap
 
-_Last updated: 2026-06-08_
+_Last updated: 2026-11-16_
 
-This is the active roadmap. **Top-level `docs/proposals/*.md` = open / not-yet-built.** Shipped specs live in `shipped/` (archived with a SHIPPED banner). Deferred-indefinitely specs live in `parked/` (not on this roadmap).
+**Top-level `docs/proposals/*.md` = open specs.** Built specs are in `shipped/`.
+Deferred specs are in `parked/` and are not on this roadmap. Past work is in
+`docs/HISTORY.md` and each plugin's `CHANGELOG.md`.
 
-## 🟢 Active / next up
+## Direction
 
-| Proposal | Status | Notes |
+A 2026-11-16 audit measured Nucleus against current practice for running agents in
+production. The conclusion: the durable asset is the shared context, not a roster of
+named agents. Context is the strong part. Verification, review scaled to risk, and
+event-driven starts are the weak parts. The refactor below fixes those in order. Each
+item is its own branch and pull request in the repo it touches, and a phase does not
+start until the one before it is merged.
+
+## Active: signal-driven, self-verifying refactor
+
+### Phase 0 — cleanup (in review)
+
+| Item | Where | State |
 |---|---|---|
-| `sweep-heartbeat.md` | Not started (~1–2 wk) | `/sweep` heartbeat every ~3h: mines the day's surfaces into staged proposals reviewed at `/end-day`. **Gated on** dogfooding `/listen` + `/morning` first. |
+| Note-source adapter reference moved out of `agents/` so it stops registering as an agent | cortex 4.30.1 | branch ready |
+| Regression tests for the hot-cache formats fixed in 4.28.1 | cortex 4.30.2 | branch ready |
+| `autonomy.md` merged into `autonomy-policy.md`; retired commands removed | cortex 4.30.3 | branch ready |
+| `/migrate-plugin-configs` for legacy files in `<config-root>/plugins/` | cortex 4.31.0 | branch ready; not yet run on a live root |
+| Agent-log schema examples use current names | ops 0.14.2 | branch ready |
+| Schedule library `Runs on` (`cloud` \| `local-device`); the local-device-only rule is gone | ops 0.15.0 + `contracts.md` | branch ready |
+| This roadmap; history moved out of `CLAUDE.md` | nucleus | branch ready |
 
-### Loose follow-ups (no standalone spec yet)
-- **cleanup-pass-1 items E–G** (deferred from cortex v4.8.1): mining-agent consolidation, `/end-day` decomposition, autonomy-slider coverage across all gated commands. See `shipped/cleanup-pass-1.md`.
+### Phase 1 — verification and risk tiers (next)
 
-## ✅ Recently shipped (see `shipped/`)
+- A verifier sub-agent: fresh context, a different model from the producer, read-only
+  tools enforced by an allowlist, pass/fail with evidence per claim. First wired into
+  `/listen` memory proposals, `clients:sow` and `client-status`, and `admin:invoices`.
+- Tool allowlists for the eight agent files that have none today.
+- Three risk tiers replacing the flat autonomy policy: low runs unattended and is
+  reversible, medium is batched for one review, high keeps per-item approval. Sends,
+  SOWs, invoices and CRM stage changes stay high.
+- `/morning` shows only verifier failures, conflicts and medium-risk items.
+- Every run receipt records the accountable actor ID.
+- **Open decision (owner):** exact criteria for unattended memory merges. Nothing
+  merges unattended until that is approved.
 
-| Shipped as | Spec |
+### Phase 2 — signals
+
+- `sweep-heartbeat.md` rewritten as an event dispatcher: a cloud task polls a defined
+  list of business events and starts the matching workflow. Each trigger declares its
+  event, workflow, risk tier and how it avoids firing twice.
+- First triggers: contract signed, meeting ended, client or prospect email received,
+  open deal quiet for N days, invoice overdue, Trello card moved to review.
+- Triggered work stages drafts or proposals under the Phase 1 tiers. Nothing is sent.
+- **Open decisions (owner):** N for the quiet-deal trigger; which triggers go on first.
+
+### Phase 3 — orchestration and framing
+
+- `/cos` can return a plan with several parallel workers, each with a narrow brief and
+  an output contract; the parent assembles results with evidence. Simple requests keep
+  the single route.
+- The staff metaphor comes out of the README, plugin descriptions and `/cos`. Plugins
+  are described by what they own.
+
+### Phase 4 — context coverage and self-improvement
+
+- `/listen` adapters for HubSpot, QuickBooks, Trello, GitHub and Airtable,
+  metadata-first.
+- A decision-record node type; `/morning` and `/remember` route decisions to it.
+- Every sub-agent call logged automatically to a file inside the config root.
+- Output-quality evals for the five most-used workflows, and a weekly agent that reads
+  the run log and verifier results and opens improvement pull requests.
+- Command files cut to under 2,500 words each, with deterministic steps moved into
+  `cortex_cli.py` and behavior confirmed by evals.
+- **Open decision (owner):** whether teammates will write to shared memory, which
+  sets how much of the collaborative-proposals contract gets built.
+
+## Open specs
+
+| Proposal | Status |
 |---|---|
-| briefing v0.5.0 + cortex v4.13.0 + ops v0.3.2 | `shipped/end-day-routine-improvement.md` |
-| cortex v4.12.0 + v4.13.0 + ops v0.3.2 (memory-as-git) | `shipped/memory-as-git.md` |
-| nucleus-router v0.2.0 + cortex v4.9.0 | `shipped/chief-of-staff-evolution.md` |
-| relationships v0.1.0 → v0.2.3 | `shipped/relationships-plugin.md` |
-| cortex v4.10.0 (wikilinks) | `shipped/wikilink-density.md` |
-| cortex v4.8.1 (items A–D) | `shipped/cleanup-pass-1.md` |
-| (earlier) cortex v4.5–4.7, nucleus-router v0.1, Obsidian, productization | other files in `shipped/` |
+| `sweep-heartbeat.md` | Not built. To be rewritten as the Phase 2 event dispatcher. |
 
-## ⏸️ Parked (see `parked/` — NOT on the roadmap)
+## Known loose ends (not scheduled)
+
+- All nine entries in `releases/index.json` are `candidate`. None has been promoted;
+  promotion needs live connector evidence and a tag.
+- `/end-day` does not read the hosted brief's shared state before asking for a paste
+  (`/brief` and `/listen` do).
+- cleanup-pass-1 item F (`/end-day` decomposition) is folded into the Phase 4 command
+  cut. Item E (mining-agent consolidation) shipped 2026-09-15. Item G (autonomy-slider
+  coverage) is superseded by the Phase 1 risk tiers.
+- About 30 files still mention retired commands or agents; many are legitimate
+  migration notes. Sweep them during the Phase 4 command cut.
+- Frozen: Codex and ChatGPT Work portability. Adapters are kept passing, not extended.
+
+## Parked (see `parked/`)
 
 | Proposal | Why parked |
 |---|---|
-| `parked/jarvis-app.md` | Standalone Tauri desktop app — separate product bet; revisit only on strong marketplace-demand signal. |
+| `parked/jarvis-app.md` | Standalone desktop app. A separate product bet; revisit only on strong demand. |
 
 ## Current plugin versions
 
-Authoritative source is each plugin's `plugin.json`; mirrored in `.claude-plugin/marketplace.json` and the README table for at-a-glance reference. See the README "Plugin versions" table.
+The source of truth is each plugin's `plugin.json`, mirrored in
+`.claude-plugin/marketplace.json` and the README "Plugin versions" table.
