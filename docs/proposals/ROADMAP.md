@@ -87,8 +87,8 @@ proposed; the reasons are in `sweep-heartbeat.md`.
 | Item | Where | State |
 |---|---|---|
 | 1. Spec and file formats | `sweep-heartbeat.md`, `contracts.md` | merged |
-| 2. Date math and "do not flag twice" script, with tests | growth 0.6.7 | in review |
-| 3. `/nudges` command and the user-owned thresholds file | growth | not started |
+| 2. Date math and "do not flag twice" script, with tests | growth 0.6.7 | merged |
+| 3. `/nudges` command and the user-owned thresholds file | growth 0.7.0 | in review |
 | 4. `daily-nudges` schedule row (cloud) | ops | not started |
 | 5. `/morning` shows **Needs a nudge** with snooze and dismiss | cortex | not started |
 

@@ -243,7 +243,7 @@ before claiming the new instructions are active.
 - **Route plans:** ops `/cos` `route_plan.risk_tier` is `low | medium | high | never` (ops 0.16.0; was `always | ask_first | never`). The value is the planner's estimate; the higher tier applies if the workflow does more.
 - **Confirmation modes** (`auto` / `suggest` / `confirm` / `manual`) belong to commands and never lower a tier.
 
-## Nudges (Phase 2; growth, planned)
+## Nudges (Phase 2; growth 0.7.0+)
 
 Spec: `docs/proposals/sweep-heartbeat.md`. Formats are fixed here before the code is written.
 
