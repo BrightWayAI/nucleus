@@ -76,7 +76,7 @@ Carried out of Phase 1, not yet proven in real use:
   check-in"; unattended memory merges, to revisit once
   `memory/staged/verifier-outcomes.md` has two weeks of data.
 
-### Phase 2 — nudges (in progress)
+### Phase 2 — nudges (merged 2026-11-16)
 
 Plan approved 2026-11-16. The owner chose two triggers: a deal that has gone quiet
 (15 days) and a follow-up that went blank. The second is built as two checks: no reply
@@ -90,7 +90,11 @@ proposed; the reasons are in `sweep-heartbeat.md`.
 | 2. Date math and "do not flag twice" script, with tests | growth 0.6.7 | merged |
 | 3. `/nudges` command and the user-owned thresholds file | growth 0.7.0 | merged |
 | 4. `daily-nudges` schedule row (cloud); two `--verify` fixes | ops 0.18.0 | merged |
-| 5. `/morning` shows **Needs a nudge** with snooze and dismiss; `open-nudges` | cortex 4.37.0 | in review |
+| 5. `/morning` shows **Needs a nudge** with snooze and dismiss; `open-nudges` | cortex 4.37.0 | merged |
+
+Not yet proven in real use: `/nudges` has not run against the live CRM, mailbox, or
+memory, and `daily-nudges` is not registered. The first run should be by hand
+("what's gone quiet?") before the schedule is turned on.
 
 Not built unless asked for: triggers that react to an event (contract signed, meeting
 ended, email received, invoice overdue).
