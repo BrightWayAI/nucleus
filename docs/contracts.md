@@ -256,9 +256,10 @@ Spec: `docs/proposals/sweep-heartbeat.md`. Formats are fixed here before the cod
 - **Format:** one `### Nudge <n>` block per item with `Trigger`, `Key`, `Subject` (deal, thread, or commitment), `Quiet since` (date), `Days quiet`, `Source` (CRM record ID, thread ID, or memory path), and `Draft` (the prepared message, or `none`). Private: syncs through the private repository only.
 
 `<config-root>/memory/staged/nudges/ledger.jsonl`
-- **Writer:** growth `/nudges` (flags) and cortex `/morning` (snooze, dismiss), append-only through `cortex_cli.py append-line`.
-- **Format:** one JSON object per line: `ts`, `key` (`<trigger>:<id>`), `event` (`flagged` | `snoozed` | `dismissed`), `as_of` (the last-activity date the flag was based on), `until` (snooze only), `by` (actor ID).
-- **Rule:** a key is flagged again only when its last-activity date is later than the `as_of` of its last `flagged` line, or the trigger's threshold has passed again since that line. A `dismissed` key is never flagged. A `snoozed` key is not flagged before `until`.
+- **Writer:** growth `/nudges` (flags) and cortex `/morning` Step 2.95 (acted, snooze, dismiss), append-only through `cortex_cli.py append-line`.
+- **Format:** one JSON object per line: `ts`, `key` (`<trigger>:<id>`), `event` (`flagged` | `acted` | `snoozed` | `dismissed`), `as_of` (the last-activity date the flag was based on; `flagged` only), `until` (snooze only), `by` (actor ID).
+- **Rule:** a key is flagged again only when its last-activity date is later than the `as_of` of its last `flagged` line, or the trigger's threshold has passed again since that line. A `dismissed` key is never flagged. A `snoozed` key is not flagged before `until`. `acted` (cortex 4.37.0) means the user used the draft; it closes the item in `/morning` but does not suppress a later flag, because acting on it creates new activity and the item is only flagged again if that goes quiet too.
+- **Open items:** cortex `cortex_cli.py open-nudges` (read-only) lists items in the day files with no `acted`, `snoozed`, or `dismissed` line for their key dated on or after that file. `/morning` Step 2.95 walks them and moves a fully handled day file to `staged/nudges/archive/<date>.md`.
 
 ## Daily flow contracts
 
