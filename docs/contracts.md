@@ -228,6 +228,17 @@ before claiming the new instructions are active.
 
 ---
 
+## Autonomy policy and risk tiers (policy 2.0.0, cortex 4.34.0+)
+
+- **Default text:** cortex `references/autonomy-policy.md`, between the `policy:start` and `policy:end` markers. Five sections: `## Always`, `## Low risk: runs without asking`, `## Medium risk: one review for the batch`, `## High risk: approval for each item`, `## Never`.
+- **User copy:** the Autonomy policy section of `<config-root>/memory/CLAUDE.md`. The user copy governs; its normalized SHA-256 controls re-acknowledgment.
+- **Acknowledgment:** `<config-root>/memory/me/autonomy-acknowledgment.json`, `policy_version` `2.0.0`, or `1.0.0-kept` for a user who chose to keep the 1.0.0 shape (`Always` / `Ask first` / `Never`).
+- **Tier of an action:** the highest tier of anything it does; `high` when unsure. Low runs without asking. Medium is shown once as a batch with evidence and written only after the user accepts. High is previewed and approved immediately before each item. Sends, SOWs, proposals, invoices, billing packets, CRM changes, schedule changes, deletions, and metered spend are high.
+- **1.0.0-shape policy:** has no medium tier. Every `Ask first` item, and anything that would be medium, is handled as high.
+- **Unattended runs:** low-risk work only; everything else is staged. Durable memory is never written unattended. The medium tier does not change this.
+- **Route plans:** ops `/cos` `route_plan.risk_tier` is `low | medium | high | never` (ops 0.16.0; was `always | ask_first | never`). The value is the planner's estimate; the higher tier applies if the workflow does more.
+- **Confirmation modes** (`auto` / `suggest` / `confirm` / `manual`) belong to commands and never lower a tier.
+
 ## Daily flow contracts
 
 `<config-root>/briefs/<date>.md`
