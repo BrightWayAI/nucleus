@@ -32,7 +32,7 @@ PLUGINS = {
         "degraded": "Direct local-memory access requires a filesystem-capable host and permission to the resolved config root. Cloud sessions require the approved bounded bridge; never redirect memory to another store silently.",
     },
     "alignment": {
-        "display": "Team Alignment",
+        "display": "Alignment",
         "short": "Find cross-team overlaps, conflicts, and decision risks",
         "long": "Scan configured Slack sources for cross-team alignment signals and produce daily pulses, weekly reports, and risk updates.",
         "category": "Teamwork",
@@ -42,9 +42,9 @@ PLUGINS = {
         "skill_names": {"daily-pulse": "daily-pulse", "report": "report", "scan": "scan", "setup": "setup", "update-risks": "update-risks"},
     },
     "ops": {
-        "display": "Chief of Staff",
+        "display": "Ops",
         "short": "Route work and run stack operations",
-        "long": "Use a natural-language chief-of-staff front door, inspect Nucleus health, record agent metrics, and register schedules when the host supports them. Delegates CRM pipeline analysis and forecasting to the growth plugin when installed.",
+        "long": "Say what you need in plain language and get routed to the installed workflow that does it; inspect Nucleus health, record agent metrics, and register schedules when the host supports them. Delegates CRM pipeline analysis and forecasting to the growth plugin when installed.",
         "category": "Business",
         "capabilities": ["Read", "Write", "Interactive"],
         "prompts": ["What can Nucleus do?", "Diagnose my Nucleus setup.", "Register my Nucleus schedules."],
@@ -72,7 +72,7 @@ successful workflow receipt from a verified scheduler binding.
         "degraded": "Web search is required for fresh research. Mail/newsletter connectors are optional. If delegation is unavailable, run the curator stage inline and preserve source citations.",
     },
     "clients": {
-        "display": "Client Success",
+        "display": "Clients",
         "short": "Start, support, document, and QA client engagements",
         "long": "Set up engagements from executed contracts with separate finance and project access zones, maintain the Cortex project record, draft client-status updates, review deliverables, and generate Statements of Work.",
         "category": "Productivity",
@@ -121,7 +121,7 @@ does not replace rendered-page inspection.
         "degraded": "A calendar connector is optional: accept pasted events when absent. An accounting connector (for /seed-register) and Airtable (for the register backend) are also optional: fall back to local files and manual entry, marking unconfirmed fields NEEDS CONFIRMATION rather than guessing. Generate Markdown or structured packet data if document tooling is unavailable. Never send invoices or the accountant packet automatically.",
     },
     "growth": {
-        "display": "Growth Engine",
+        "display": "Growth",
         "short": "Prioritize relationship actions and draft useful touchpoints",
         "long": "Build a daily relationship cockpit, research contacts, act on buying signals and referral opportunities, rebalance a network, rank and forecast pipeline, and create context-aware touchpoint drafts.",
         "category": "Sales",
@@ -131,7 +131,7 @@ does not replace rendered-page inspection.
         "skill_names": {"setup": "setup"},
     },
     "comms": {
-        "display": "Comms Desk",
+        "display": "Comms",
         "short": "Draft in your voice and learn from approved edits",
         "long": "Create voice-matched drafts, assemble the weekly roundup post from staged research candidates, compare drafts with final edits, and propose durable style-rule updates only after repeated evidence.",
         "category": "Writing",
@@ -140,7 +140,7 @@ does not replace rendered-page inspection.
         "degraded": "Mail and publishing connectors are optional. Accept pasted samples and return copy-ready text when absent. Never send or publish automatically; style-file changes require user approval.",
     },
     "briefing": {
-        "display": "Today's Brief",
+        "display": "Briefing",
         "short": "Build and process a daily operating brief",
         "long": "Combine calendar, tasks, outreach, inbox, CRM, and Cortex context into a daily brief, then process user-approved annotations and plan tomorrow.",
         "category": "Productivity",
