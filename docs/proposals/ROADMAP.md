@@ -99,13 +99,19 @@ memory, and `daily-nudges` is not registered. The first run should be by hand
 Not built unless asked for: triggers that react to an event (contract signed, meeting
 ended, email received, invoice overdue).
 
-### Phase 3 — orchestration and framing
+### Phase 3 — orchestration and framing (in progress)
 
-- `/cos` can return a plan with several parallel workers, each with a narrow brief and
-  an output contract; the parent assembles results with evidence. Simple requests keep
-  the single route.
-- The staff metaphor comes out of the README, plugin descriptions and `/cos`. Plugins
-  are described by what they own.
+Plan approved 2026-11-16. Decisions: plugins are shown by their plain names (Ops,
+Clients, Comms, Growth, Briefing, Admin, Research, Alignment); `/cos` keeps its name;
+the agents `chief-of-staff` and `relationships-director` keep their names for now and
+get descriptions with no role framing. Renaming them waits for another reason to touch
+those files, or for the adapter freeze to lift.
+
+| Item | Where | State |
+|---|---|---|
+| 1. `/cos` parallel plans and `then` steps | ops 0.19.0 + `contracts.md` | in review |
+| 2. Routing by what a request is about, not by role name | ops | not started |
+| 3. Plugins described by what they own; two agent descriptions rewritten | plugin manifests, `marketplace.json`, READMEs | not started |
 
 ### Phase 4 — context coverage and self-improvement
 
