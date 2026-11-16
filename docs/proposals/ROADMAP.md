@@ -36,7 +36,20 @@ growth `/draft-touchpoint`, the grader expects comms `/style`; an overlap to set
 Phase 3), `catch-me-up` (asks whether Acme is a client or a prospect), and three cases
 that pass 2 of 3. Run with `--judge-model sonnet`; see each repo's `evals/README.md`.
 
-### Phase 1 — verification and risk tiers (next)
+### Phase 1 — verification and risk tiers (in progress)
+
+Plan approved 2026-11-16. Unattended memory merges stay off for this phase.
+
+| Item | Where | State |
+|---|---|---|
+| 1. `verifier` agent, `check-citations`, `references/verification.md` | cortex 4.32.0 + `contracts.md` | in review |
+| 2. `/listen` runs the verifier on every proposal | cortex | not started |
+| 3. Verifier on `/sow`, `/client-status`, `/invoices` | clients, admin | not started |
+| 4. Three risk tiers | cortex, ops, `contracts.md` | not started |
+| 5. `/morning` shows failures, conflicts, medium-risk only | cortex | not started |
+| 6. Actor ID in every run receipt | cortex, ops, `contracts.md` | not started |
+| 7. Tool allowlists for agents that have none | all plugins with agents | not started |
+
 
 - A verifier sub-agent: fresh context, a different model from the producer, read-only
   tools enforced by an allowlist, pass/fail with evidence per claim. First wired into
