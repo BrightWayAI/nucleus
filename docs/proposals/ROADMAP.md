@@ -45,8 +45,8 @@ Plan approved 2026-11-16. Unattended memory merges stay off for this phase.
 | 1. `verifier` agent, `check-citations`, `references/verification.md` | cortex 4.32.0 + `contracts.md` | merged |
 | 2. `/listen` Step 4.5 runs the verifier on every proposal; `record-verification`; `/morning` shows the result | cortex 4.33.0 + `contracts.md` | merged |
 | 3. Verifier on `/sow`, `/client-status`, `/invoices` | clients 0.9.0, admin 0.6.0, cortex 4.33.1 + `contracts.md` | merged |
-| 4. Three risk tiers (policy 2.0.0) | cortex 4.34.0, ops 0.16.0 + `contracts.md` | in review |
-| 5. `/morning` shows failures, conflicts, medium-risk only | cortex | not started |
+| 4. Three risk tiers (policy 2.0.0) | cortex 4.34.0, ops 0.16.0 + `contracts.md` | merged |
+| 5. `/morning` reviews failures and conflicts one at a time and the verified batch once; `triage-draft`; outcome log | cortex 4.35.0 + `contracts.md` | in review |
 | 6. Actor ID in every run receipt | cortex, ops, `contracts.md` | not started |
 | 7. Tool allowlists for agents that have none | all plugins with agents | not started |
 
