@@ -42,8 +42,8 @@ Plan approved 2026-11-16. Unattended memory merges stay off for this phase.
 
 | Item | Where | State |
 |---|---|---|
-| 1. `verifier` agent, `check-citations`, `references/verification.md` | cortex 4.32.0 + `contracts.md` | in review |
-| 2. `/listen` runs the verifier on every proposal | cortex | not started |
+| 1. `verifier` agent, `check-citations`, `references/verification.md` | cortex 4.32.0 + `contracts.md` | merged |
+| 2. `/listen` Step 4.5 runs the verifier on every proposal; `record-verification`; `/morning` shows the result | cortex 4.33.0 + `contracts.md` | in review |
 | 3. Verifier on `/sow`, `/client-status`, `/invoices` | clients, admin | not started |
 | 4. Three risk tiers | cortex, ops, `contracts.md` | not started |
 | 5. `/morning` shows failures, conflicts, medium-risk only | cortex | not started |
