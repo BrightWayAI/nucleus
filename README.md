@@ -189,7 +189,7 @@ The nightly refresh is what makes Nucleus feel like it learns while you sleep. I
 /register-schedules
 ```
 
-This registers `nightly-listen` (runs `/listen` at 11 pm) as a Cowork scheduled task. Two things to know: the task needs your computer awake with the Claude app open at run time (it catches up on the next wake if it missed), and on its first run Cowork will ask you to approve each tool it uses — approve with "always allow" so later runs don't stall.
+This registers `nightly-listen` (runs `/listen` at 11 pm). By default it runs in the cloud with no computer attached: it pulls your two memory repositories at the start of the run and publishes at the end, so it works with your laptop closed. That requires git sync to be set up (`/start-nucleus` offers it); a small local sync job keeps the copy on your computer current. If you don't use git sync, set the row's `Runs on` value to `local-device` in `<config-root>/plugins/ops/schedules.md`. A local-device task needs your computer awake with the Claude app open at run time, and on its first run Cowork will ask you to approve each tool it uses — approve with "always allow" so later runs don't stall.
 
 ---
 
@@ -264,7 +264,7 @@ Each plugin's setup writes its settings to `<your folder>/plugins/`. Updating a 
 | Commands not recognized after install | Start a new Cowork session; plugins load at session start. |
 | "Can't find memory" / setup asks for a folder again | The pointer file (`~/.cortex/config-root`) is missing or points to a moved folder. Run `/start-nucleus` and re-point it. |
 | A plugin appears twice | It was installed from two marketplace sources. Uninstall one copy under **Customize → Plugins**. |
-| Overnight refresh never runs | Your computer was asleep or the app was closed at 11 pm, or the first run is still waiting for tool approvals. Run the task once manually from the Scheduled tasks list and approve with "always allow". |
+| Overnight refresh never runs | Run `/status` and read the SCHEDULED LOOP line. For a cloud task, check that both memory repositories are attached to it; if it says `local-copy-not-synced`, the run happened and your computer just hasn't pulled it. For a local-device task, your computer was asleep or the app was closed at run time, or the first run is still waiting for tool approvals: run it once manually from the Scheduled tasks list and approve with "always allow". |
 | Drafts don't sound like you | Re-run `/setup-voice` with two or three fresh samples; Comms Desk improves from your edits over time. |
 | Upgrading from a pre-rename install (`claude-cortex`, `core-ops`, `daily-brief`, …) | Install the new plugins, then uninstall the old ones. Your memory folder and settings carry over automatically. |
 | Team/Enterprise admin can't add the marketplace | Organization-managed marketplaces must be private repos. Members can add Nucleus individually under **Customize → Plugins → Add marketplace** instead. |
@@ -369,6 +369,7 @@ Specialist agents inside the plugins (`note-taker` and `memory-librarian` in Cor
 - [docs/CONNECTOR_INTEGRATION_TESTING.md](docs/CONNECTOR_INTEGRATION_TESTING.md) — live connector certification
 - [docs/multi-agent-patterns.md](docs/multi-agent-patterns.md) — how subagents are chained inside plugins
 - [docs/proposals/ROADMAP.md](docs/proposals/ROADMAP.md) — what's next
+- [docs/HISTORY.md](docs/HISTORY.md) — what shipped before, moved out of `CLAUDE.md`
 - [llms.txt](llms.txt) — one-file onboarding for an AI agent working on this repo
 
 You don't need to fork to customize: every plugin's `/setup-*` interview writes your settings to your memory folder, and updates never overwrite them. Fork only to change methodology or add a capability.
