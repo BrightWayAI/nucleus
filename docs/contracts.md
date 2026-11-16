@@ -322,7 +322,7 @@ before claiming the new instructions are active.
 - **Contract:** writes only to `staged/research-drafts/` (post-reorg)
 
 `verifier` (cortex 4.32.0+)
-- **Called by:** cortex `/listen` Step 4.5 (4.33.0+; every mined memory proposal, explicit brief marks skipped). Planned: clients `/sow` and `/client-status`, admin `/invoices`.
+- **Called by:** cortex `/listen` Step 4.5 (4.33.0+; every mined memory proposal, explicit brief marks skipped). clients `/sow` Step 5.5 and `/client-status` Step 3.5 (0.9.0+); admin `/invoices` Step 4.5 (0.6.0+). Document callers follow "Checking a drafted document" in cortex `references/verification.md`: claims are the facts a reader acts on, sources are files (connector or pasted material is saved to a temporary file outside `<config-root>`), failures are shown with evidence and never fixed silently, and a caller without cortex prints "Not independently checked".
 - **Input:** config root; numbered claims, each with its cited sources and optional target; optional output of `cortex_cli.py check-citations`; optional reference material (a contract, a billing register).
 - **Returns:** JSON, schema `1.0.0`: per claim a `verdict` (`pass` | `fail` | `unverifiable`), `confidence` (`high` | `medium` | `low`), quoted `evidence` (source, locator, quote of 25 words or fewer), and `reasons` codes. Partial support is `fail`. A `pass` at `low` confidence is not allowed.
 - **Contract:** read-only by tool allowlist (`Read, Grep, Glob`); invoked with fresh context (never given the producer's reasoning); a different model from the producer; never rewrites a failed claim. A verdict is evidence for the user and authorizes no write. Full rules in cortex `references/verification.md`.
