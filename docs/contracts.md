@@ -123,6 +123,7 @@ before claiming the new instructions are active.
 - **Reader:** cortex `/morning`
 - **Format:** structured proposals with type / target node / confidence / source
 - **Pre-v4.8.1 path:** `<config-root>/memory/.commit-drafts/<date>.md` (auto-migrated on next load)
+- **Verification fields (cortex 4.33.0+):** `/listen` Step 4.5 runs `cortex_cli.py record-verification`, which adds five bullets under each proposal (`Citation check`, `Verification`, `Verifier confidence`, `Evidence`, `Verification reasons`) and a `## Verification` count section above `## Proposals`. Readers must treat a draft without them as `not run`. The fields are evidence for review; they are never copied into a node on accept, and no reader may merge or drop a proposal because of them.
 
 `<config-root>/memory/staged/research-drafts/<date>-research-gaps.md`
 - **Writer:** cortex `gap-researcher` agent (invoked by `/research-gaps`)
@@ -321,7 +322,7 @@ before claiming the new instructions are active.
 - **Contract:** writes only to `staged/research-drafts/` (post-reorg)
 
 `verifier` (cortex 4.32.0+)
-- **Called by:** nothing yet. Planned callers, one release each: cortex `/listen` (memory proposals), clients `/sow` and `/client-status`, admin `/invoices`.
+- **Called by:** cortex `/listen` Step 4.5 (4.33.0+; every mined memory proposal, explicit brief marks skipped). Planned: clients `/sow` and `/client-status`, admin `/invoices`.
 - **Input:** config root; numbered claims, each with its cited sources and optional target; optional output of `cortex_cli.py check-citations`; optional reference material (a contract, a billing register).
 - **Returns:** JSON, schema `1.0.0`: per claim a `verdict` (`pass` | `fail` | `unverifiable`), `confidence` (`high` | `medium` | `low`), quoted `evidence` (source, locator, quote of 25 words or fewer), and `reasons` codes. Partial support is `fail`. A `pass` at `low` confidence is not allowed.
 - **Contract:** read-only by tool allowlist (`Read, Grep, Glob`); invoked with fresh context (never given the producer's reasoning); a different model from the producer; never rewrites a failed claim. A verdict is evidence for the user and authorizes no write. Full rules in cortex `references/verification.md`.
