@@ -325,6 +325,23 @@ before claiming the new instructions are active.
 
 ## Subagents (cross-command contracts)
 
+**Tool limits (2026-11-16).** Every agent declares its limits in frontmatter; `scripts/check_openai_ecosystem.py` fails if one does not.
+
+| Agent | Limit | Enforced |
+|---|---|---|
+| cortex `memory-librarian`, `verifier`; ops `chief-of-staff`; comms `post-assembler` | `tools: Read, Grep, Glob` | Allowlist: no write, shell, web, send, or connector tools |
+| research `news-curator` | `tools: WebSearch, WebFetch, Read, Grep, Glob` | Allowlist |
+| cortex `gap-researcher` | `tools: WebSearch, WebFetch, Read, Grep, Glob, Write` | Allowlist; `Write` is for its staged draft |
+| cortex `note-taker`; alignment `alignment-scanner`; growth `pipeline-analyst`, `pipeline-forecast` | `disallowedTools:` `Write`, `Edit`, `NotebookEdit`, `Agent`, plus named connector send/write tools | Denylist; connector reads are inherited |
+| growth `relationships-director` | `disallowedTools:` `NotebookEdit`, `Agent`, plus named connector send/write tools | Denylist; keeps `Write`/`Edit` because `mode: research` persists a person page |
+
+- An allowlist cannot express "every connector the user has", and connector tool names vary by user and host, so agents that read connectors use a denylist.
+- Denylist agents keep the shell: on Claude Code, withholding `Bash` also removed file search for the agent (tested 2026-11-16), and an agent left with `Agent` handed the search to a sub-agent that had a shell. So `Agent` is withheld and the shell is not. Not writing through the shell is a rule in each agent file, not an enforced limit.
+- The named connector tools use the claude.ai connector names (`mcp__claude_ai_Gmail__send_message`, `..._reply`, `..._forward`; `mcp__claude_ai_Slack__slack_send_message`, `..._schedule_message`, `..._create_canvas`, `..._update_canvas`; `mcp__claude_ai_HubSpot__manage_crm_objects`; `mcp__claude_ai_Google_Calendar__create_event`, `..._update_event`, `..._delete_event`, `..._respond_to_event`). A connector installed under another name is not covered.
+- Whether Cowork honors `tools:` / `disallowedTools:` for plugin agents is not documented. Enforcement was confirmed in Claude Code only.
+- **Open:** `relationships-director` describes itself as read-only yet writes person pages and `DASHBOARD.md` directly rather than through `cortex_cli.py`. Unchanged here; owner decision.
+
+
 `memory-librarian` (cortex)
 - **Called by:** `/recall`, `/search`, `/research-gaps`
 - **Returns:** synthesized summary with citations + confidence rating

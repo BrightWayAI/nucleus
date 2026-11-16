@@ -47,8 +47,8 @@ Plan approved 2026-11-16. Unattended memory merges stay off for this phase.
 | 3. Verifier on `/sow`, `/client-status`, `/invoices` | clients 0.9.0, admin 0.6.0, cortex 4.33.1 + `contracts.md` | merged |
 | 4. Three risk tiers (policy 2.0.0) | cortex 4.34.0, ops 0.16.0 + `contracts.md` | merged |
 | 5. `/morning` reviews failures and conflicts one at a time and the verified batch once; `triage-draft`; outcome log | cortex 4.35.0 + `contracts.md` | merged |
-| 6. Actor ID in every run receipt (receipt schema 1.1.0); `write-receipt` | cortex 4.36.0, ops 0.17.0 + `contracts.md` | in review |
-| 7. Tool allowlists for agents that have none | all plugins with agents | not started |
+| 6. Actor ID in every run receipt (receipt schema 1.1.0); `write-receipt` | cortex 4.36.0, ops 0.17.0 + `contracts.md` | merged |
+| 7. Tool limits on the eight agents that had none; a check that every agent declares them | cortex 4.36.1, ops 0.17.1, growth 0.6.6, comms 0.5.4, research 0.5.4, alignment 1.6.3 + `contracts.md` | in review |
 
 
 - A verifier sub-agent: fresh context, a different model from the producer, read-only
