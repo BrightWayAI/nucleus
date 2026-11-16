@@ -245,6 +245,19 @@ before claiming the new instructions are active.
 - **Confirmation modes** (`auto` / `suggest` / `confirm` / `manual`) belong to commands and never lower a tier.
 - **Routing is by subject (ops 0.20.0):** `/cos` routes by what a request is about. A plugin named in the request is a hint; a job title or persona carries no routing weight, and when it conflicts with the subject the subject wins. `route_plan.target.role` names a read-only agent to use, or is `null`; it is not a staff role.
 
+## Agent run log (ops 0.21.0+)
+
+`<config-root>/plugins/ops/agent-runs/<YYYY-MM>.jsonl`
+- **Writer:** ops `hooks/log_agent_run.py`, run by the plugin's `SubagentStart` and `SubagentStop` hooks. Automatic, background, silent, always exits 0. Writes nothing when the config root is unresolved or unreachable and never creates one.
+- **Format:** schema `2.0.0`, one JSON object per line: `ts` (UTC), `event` (`start` | `stop`), `agent` (`plugin:agent`), `agent_id` (pairs a start with its stop), `session_id`, `actor_id` (from `memory/me/identity.md`, else `unresolved`), `source: hook`.
+- **Never contains:** prompts, replies, file paths, names, or any content.
+- **Readers:** ops `/agent-metrics` and `/status`, briefing `/dashboard`.
+- **Sync:** under `plugins/`, so it syncs through the private repository only.
+
+`<config-root>/plugins/ops/agent-runs/notes.jsonl`
+- **Writer:** ops `/log-agent-run`. Judgment entries: `timestamp`, `actor_id`, `agent`, `parent_skill`, `confidence`, `user_action`, optional `notes`.
+- **Retired:** `~/.brightway-state/agent-log.jsonl`. Nothing writes it; `/agent-metrics` reads it if present.
+
 ## Nudges (Phase 2; growth 0.7.0+)
 
 Spec: `docs/proposals/sweep-heartbeat.md`. Formats are fixed here before the code is written.

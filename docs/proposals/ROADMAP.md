@@ -127,18 +127,21 @@ suites fail because the eval run has no config folder (five cases on 2026-11-16)
 has a fixture for this (`evals/_fixtures/seed-config-root.sh`); those three suites do
 not.
 
-### Phase 4 — context coverage and self-improvement
+### Phase 4 — context coverage and self-improvement (in progress)
 
-- `/listen` adapters for HubSpot, QuickBooks, GitHub and Airtable,
-  metadata-first.
-- A decision-record node type; `/morning` and `/remember` route decisions to it.
-- Every sub-agent call logged automatically to a file inside the config root.
-- Output-quality evals for the five most-used workflows, and a weekly agent that reads
-  the run log and verifier results and opens improvement pull requests.
-- Command files cut to under 2,500 words each, with deterministic steps moved into
-  `cortex_cli.py` and behavior confirmed by evals.
-- **Open decision (owner):** whether teammates will write to shared memory, which
-  sets how much of the collaborative-proposals contract gets built.
+Started 2026-11-16 on the owner's instruction to keep going. Assumption, because the
+question went unanswered: the owner is the only person writing to memory, so none of the
+collaborative-proposals machinery is being built. Trello was dropped from the adapter
+list earlier.
+
+| Item | Where | State |
+|---|---|---|
+| 1. Every sub-agent call logged automatically inside the config root | ops 0.21.0, briefing 0.12.5 + `contracts.md` | in review |
+| 2. A decision-record node type; `/morning` and `/remember` route decisions to it | cortex | not started |
+| 3. Fixture config root for the growth, clients, and briefing eval suites; output-quality evals for `/morning`, `/listen`, `/brief`, `/relationships`, `/client-status` | those plugins | not started |
+| 4. Command files under 2,500 words, deterministic steps in `cortex_cli.py`, behavior confirmed by evals | cortex first | not started |
+| 5. `/listen` adapters for HubSpot, QuickBooks, GitHub, and Airtable, metadata-first | cortex | not started |
+| 6. A weekly agent that reads the run log and verifier results and opens improvement pull requests | to be decided | not started |
 
 ## Open specs
 
