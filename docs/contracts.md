@@ -320,6 +320,14 @@ before claiming the new instructions are active.
 - **Returns:** web-researched proposals with ≥2-source rule + privacy rules
 - **Contract:** writes only to `staged/research-drafts/` (post-reorg)
 
+`verifier` (cortex 4.32.0+)
+- **Called by:** nothing yet. Planned callers, one release each: cortex `/listen` (memory proposals), clients `/sow` and `/client-status`, admin `/invoices`.
+- **Input:** config root; numbered claims, each with its cited sources and optional target; optional output of `cortex_cli.py check-citations`; optional reference material (a contract, a billing register).
+- **Returns:** JSON, schema `1.0.0`: per claim a `verdict` (`pass` | `fail` | `unverifiable`), `confidence` (`high` | `medium` | `low`), quoted `evidence` (source, locator, quote of 25 words or fewer), and `reasons` codes. Partial support is `fail`. A `pass` at `low` confidence is not allowed.
+- **Contract:** read-only by tool allowlist (`Read, Grep, Glob`); invoked with fresh context (never given the producer's reasoning); a different model from the producer; never rewrites a failed claim. A verdict is evidence for the user and authorizes no write. Full rules in cortex `references/verification.md`.
+- **Deterministic first pass:** `cortex_cli.py check-citations --config-root <root> --draft <date|path>` reports `fail` | `pass-verbatim` | `needs-verifier` and a `citation_count` per proposal, names and statuses only.
+- **Recorded as:** `Verification:` (`pass` | `fail` | `unverifiable` | `not-run`), `Verifier confidence:`, `Evidence:`, `Verification reasons:` next to the claim. `not-run` when the verifier was unavailable; never `pass` for an unchecked claim.
+
 `relationships-director` (growth; mode: rank / research)
 - **Called by:** growth ranking and touchpoint workflows, including the absorbed signal and referral flows
 - **Returns:** ranked relationship actions or a deep single-contact research summary, according to the caller-selected mode

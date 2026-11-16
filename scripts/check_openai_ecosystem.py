@@ -116,11 +116,19 @@ def check_skills(repo: Path, errors: list[str]) -> None:
             require(command.stem in skills, f"command has no GPT skill: {repo.name}/{command.stem}", errors)
 
 
+# Agents added while ChatGPT Work / Codex portability work is frozen. They are
+# Claude/Cowork only and deliberately have no Codex binding. Remove an entry
+# when the freeze lifts and the binding is written.
+CLAUDE_ONLY_AGENTS = {("cortex", "verifier")}
+
+
 def check_agents(repo: Path, errors: list[str]) -> None:
     source = repo / "agents"
     if not source.is_dir():
         return
     for role in source.glob("*.md"):
+        if (repo.name, role.stem) in CLAUDE_ONLY_AGENTS:
+            continue
         binding = repo / ".codex" / "agents" / f"{role.stem}.toml"
         require(binding.exists(), f"agent has no Codex binding: {repo.name}/{role.stem}", errors)
         if binding.exists():
