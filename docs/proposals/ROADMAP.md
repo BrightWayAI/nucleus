@@ -28,7 +28,7 @@ start until the one before it is merged.
 | Agent-log schema examples use current names | ops 0.14.2 | merged |
 | Schedule library `Runs on` (`cloud` \| `local-device`); the local-device-only rule is gone | ops 0.15.0 + `contracts.md` | merged |
 | This roadmap; history moved out of `CLAUDE.md` | nucleus | merged |
-| Eval setup: fixture config root for the morning cases; routing cases carry a plugin catalog | cortex 4.31.1, ops 0.15.1 | branch ready |
+| Eval setup: fixture config root for the morning cases; routing cases carry a plugin catalog | cortex 4.31.1, ops 0.15.1 | merged |
 
 Evals after the fix (3 runs per case, all runs must pass): cortex 3 of 5 cases, ops 5 of
 9 with the default judge. Still failing: `draft-checkin-routing` (the router picks
