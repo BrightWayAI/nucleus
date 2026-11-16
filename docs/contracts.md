@@ -137,10 +137,8 @@ before claiming the new instructions are active.
 - **Format:** see `cortex/agents/gap-researcher.md` output section
 - **Pre-v4.8.1 path:** `<config-root>/memory/.research-drafts/<date>-research-gaps.md`
 
-`<config-root>/memory/staged/heartbeat-drafts/<today>.md` (proposed; not yet shipped)
-- **Writer:** cortex `/sweep` (future)
-- **Reader:** cortex `/end-day` Step 3.5 (future)
-- **Spec:** `nucleus/docs/proposals/sweep-heartbeat.md`
+`<config-root>/memory/staged/heartbeat-drafts/<today>.md` (withdrawn 2026-11-16)
+- Proposed for a `/sweep` heartbeat that was never built. Nothing writes or reads this path. The proposal was replaced by the daily nudges check; see "Nudges" below.
 
 `<config-root>/memory/staged/queues/reindex`
 - **Writer:** cortex `/remember` Step 3.5 (deferred refresh marker)

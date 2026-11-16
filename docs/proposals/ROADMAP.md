@@ -120,7 +120,7 @@ ended, email received, invoice overdue).
 
 | Proposal | Status |
 |---|---|
-| `sweep-heartbeat.md` | Not built. To be rewritten as the Phase 2 event dispatcher. |
+| `sweep-heartbeat.md` | Rewritten 2026-11-16 as the Phase 2 nudges spec. The `/sweep` heartbeat it used to describe was not built. |
 
 ## Known loose ends (not scheduled)
 
