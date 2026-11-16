@@ -124,6 +124,12 @@ before claiming the new instructions are active.
 - **Format:** structured proposals with type / target node / confidence / source
 - **Pre-v4.8.1 path:** `<config-root>/memory/.commit-drafts/<date>.md` (auto-migrated on next load)
 - **Verification fields (cortex 4.33.0+):** `/listen` Step 4.5 runs `cortex_cli.py record-verification`, which adds five bullets under each proposal (`Citation check`, `Verification`, `Verifier confidence`, `Evidence`, `Verification reasons`) and a `## Verification` count section above `## Proposals`. Readers must treat a draft without them as `not run`. The fields are evidence for review; they are never copied into a node on accept, and no reader may merge or drop a proposal because of them.
+- **Review grouping (cortex 4.35.0+):** `cortex_cli.py triage-draft --config-root <root> --draft <date>` (read-only) sorts open proposals into `brief` (from yesterday's brief), `batch` (`Verification: pass` and `Conflicts: none`), and `review` (everything else, including every proposal in an unchecked draft). `/morning` walks `review` one at a time and shows `batch` once as a list for a single accept (medium risk). A user whose policy has no medium tier gets no batch. A conflict found at write time removes that proposal from the batch.
+
+`<config-root>/memory/staged/verifier-outcomes.md`
+- **Writer:** cortex `/morning` Step 2.9, via `cortex_cli.py append-line` (4.35.0+)
+- **Format:** one line per review: date, draft date, and counts by recorded verification and user decision (`pass:accepted`, `pass:edited`, `pass:rejected`, `fail:rejected`, `fail:accepted`, `unverifiable:*`, `notrun`, `deferred`). Counts only; no proposal text or names.
+- **Purpose:** the evidence for any later decision about unattended merges. `pass:edited` + `pass:rejected` over all `pass` is the overturn rate.
 
 `<config-root>/memory/staged/research-drafts/<date>-research-gaps.md`
 - **Writer:** cortex `gap-researcher` agent (invoked by `/research-gaps`)
