@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "release": "2026.11.0",
+  "status": "released",
+  "createdAt": "2026-11-17",
+  "plugins": [
+    {
+      "name": "cortex",
+      "repository": "https://github.com/BrightWayAI/cortex.git",
+      "version": "4.45.1",
+      "commit": "bcd0e1127e4ebea85645f6e2259d744d094b2a51"
+    },
+    {
+      "name": "alignment",
+      "repository": "https://github.com/BrightWayAI/alignment.git",
+      "version": "1.6.5",
+      "commit": "c8db8d1780e1bc43f26d53acb5ddeec0af90b0ff"
+    },
+    {
+      "name": "ops",
+      "repository": "https://github.com/BrightWayAI/ops.git",
+      "version": "0.21.1",
+      "commit": "16715f6678c4031afceb40b7ee6c2755e21af46f"
+    },
+    {
+      "name": "research",
+      "repository": "https://github.com/BrightWayAI/research.git",
+      "version": "0.5.6",
+      "commit": "93919677ead2cc28b74e09b0c5fa1651725f1cfb"
+    },
+    {
+      "name": "clients",
+      "repository": "https://github.com/BrightWayAI/clients.git",
+      "version": "0.9.4",
+      "commit": "e71a40ff00ecd79ec0ee7f63a33cb4b6e5d63c2c"
+    },
+    {
+      "name": "admin",
+      "repository": "https://github.com/BrightWayAI/admin.git",
+      "version": "0.6.2",
+      "commit": "52aaf50969add41f09768d4ad8618db884e431df"
+    },
+    {
+      "name": "growth",
+      "repository": "https://github.com/BrightWayAI/growth.git",
+      "version": "0.7.5",
+      "commit": "17478e88608d456d6a771de4d005fedc50b92a0d"
+    },
+    {
+      "name": "comms",
+      "repository": "https://github.com/BrightWayAI/comms.git",
+      "version": "0.5.5",
+      "commit": "d7be4d86633b393e116643f748b12f4480709bfa"
+    },
+    {
+      "name": "briefing",
+      "repository": "https://github.com/BrightWayAI/briefing.git",
+      "version": "0.12.9",
+      "commit": "d8e2b671368f6ee73d3d14ffdd7dcbad77320e1c"
+    }
+  ],
+  "requiredConnectorProfiles": [
+    {
+      "host": "claude",
+      "profile": "operator"
+    },
+    {
+      "host": "chatgpt",
+      "profile": "operator"
+    }
+  ],
+  "connectorEvidence": [],
+  "liveConnectorCheck": {
+    "status": "waived",
+    "by": "owner",
+    "date": "2026-11-17",
+    "reason": "Released on the owner's explicit instruction without live /test-connectors reports for the claude and chatgpt hosts. Sole user; ChatGPT and Codex portability work is frozen."
+  }
+}
