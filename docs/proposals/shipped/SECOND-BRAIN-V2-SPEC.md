@@ -431,7 +431,7 @@ _Auto-appended by cortex's two-stage commit triage. Audit weekly._
 
 ## 2026-05-12 16:08
 - Decision: commit
-- Nodes: [client:cureate, person:kim-bryden]
+- Nodes: [client:northwind, person:dana-reyes]
 - Reason: pricing discussion + scope change
 ```
 
