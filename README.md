@@ -23,9 +23,9 @@ Nucleus is nine plugins, each named for the work it covers. You start with three
 | Add when you need it | ID | What it does |
 |---|---|---|
 | **Briefing** | `briefing` | Your morning working surface: calendar, priorities, outreach queue, yesterday's reflection. Also the weekly review and the dashboard. |
-| **Growth** | `growth` | Who to reach out to today and what to say. Signal-driven outreach, referral asks, pre-call briefs, pipeline analysis. |
+| **Growth** | `growth` | Who to reach out to today and what to say. Signal-driven outreach, referral asks, pre-call briefs, pipeline analysis, and a daily check for deals and follow-ups that went quiet. |
 | **Clients** | `clients` | Everything after the contract is signed: kickoff plans, weekly status drafts, deliverable QA. |
-| **Admin** (hours and invoices) | `admin` | Turns your calendar into a time log and invoice drafts. The back office. |
+| **Admin** (hours and billing) | `admin` | Turns your calendar into a time log and a checked month-end billing packet for your accountant. The back office. |
 | **Research** | `research` | Finds and cites material: news roundups, market and competitor research, pre-meeting research. |
 | **Alignment** | `alignment` | Scans Slack for cross-team conflicts, decisions, and risks. |
 
@@ -171,8 +171,10 @@ If a plugin or connector you'd need isn't installed or connected, `/cos` tells y
 ### The daily rhythm
 
 ```
-Overnight      Cortex reads yesterday's meetings, inbox, and calendar and
-               stages what it learned as proposals   (needs the nightly schedule, below)
+Overnight      Cortex reads yesterday's meetings, inbox, and calendar (and, if
+               connected, what changed in your CRM), has a second agent check
+               each finding against its source, and stages the results as
+               proposals                             (needs the nightly schedule, below)
 Morning        /morning — review proposals, reflect, set priorities   (5 min, required)
 During work    ask /cos for context, drafts, and captures
 Friday         /end-week — weekly review, cleanup, next-week prep     (optional)
