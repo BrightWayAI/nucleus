@@ -315,6 +315,7 @@ Spec: `docs/proposals/sweep-heartbeat.md`. Formats are fixed here before the cod
 - **Readers:** cortex mining agents (read-only against own archive), `/listen --remine`
 - **Format:** see `cortex/references/archive-layout.md`
 - **Immutability rule:** archives are append-only after creation; `/listen` refuses to overwrite an existing date unless `--rewrite`.
+- **Business sources (cortex 4.45.0+):** optional `crm.md`, `finance.md` and `airtable.md` hold metadata for records changed that day (names, IDs, dates, statuses, amounts; no note or comment text). `/listen` is read-only against those systems. CRM is on when connected; finance and Airtable need `listen.business_sources` in `cortex.user-context.md`. Amounts in `finance.md` never appear in a memory proposal. Formats: `cortex/references/listen-business-sources.md`.
 - **Privacy:** the most sensitive directory in `<config-root>/`. Always excluded from git via the v4.7.2 gitignore template.
 
 ---
