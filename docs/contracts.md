@@ -252,6 +252,10 @@ before claiming the new instructions are active.
 - **Confirmation modes** (`auto` / `suggest` / `confirm` / `manual`) belong to commands and never lower a tier.
 - **Routing is by subject (ops 0.20.0):** `/cos` routes by what a request is about. A plugin named in the request is a hint; a job title or persona carries no routing weight, and when it conflicts with the subject the subject wins. `route_plan.target.role` names a read-only agent to use, or is `null`; it is not a staff role.
 
+## Read-only helper scripts used by `/morning` (cortex)
+
+`cortex_cli.py memory-diff` (4.39.0), `triage-draft` (4.35.0), `open-nudges` (4.37.0), and `check-citations` (4.32.0) only read, and report names, counts and statuses, never content. `/morning` acts on their output rather than re-deriving it. On a host that cannot run them, the command does the same reading by hand and says so; only the config-root guard stops a run. Display layouts for `/morning` live in cortex `references/morning-formats.md`.
+
 ## Agent run log (ops 0.21.0+)
 
 `<config-root>/plugins/ops/agent-runs/<YYYY-MM>.jsonl`
