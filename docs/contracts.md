@@ -252,6 +252,14 @@ before claiming the new instructions are active.
 - **Confirmation modes** (`auto` / `suggest` / `confirm` / `manual`) belong to commands and never lower a tier.
 - **Routing is by subject (ops 0.20.0):** `/cos` routes by what a request is about. A plugin named in the request is a hint; a job title or persona carries no routing weight, and when it conflicts with the subject the subject wins. `route_plan.target.role` names a read-only agent to use, or is `null`; it is not a staff role.
 
+## `/listen` run lifecycle (cortex 4.40.0+)
+
+- `cortex_cli.py listen-start --config-root <root>` probes that the root is readable and writable, ensures `<root>/.gitignore` protects `archive/` and `memory/staged/`, writes `memory/staged/queues/listen-in-progress` as `<started>|<expected-completion>|<token>`, and writes `memory/.lock` as `listen|<started>|<token>`. Exit codes: 0 `ok` (returns `token`), 3 `unreachable`, 4 `already-running`, 5 `busy`.
+- `cortex_cli.py listen-finish --config-root <root> --token <token>` removes the marker and lock only if their last field is that token.
+- A run that did not get `ok` created nothing and must not call `listen-finish`.
+- Readers of the marker (cortex `/morning` via `memory-diff`) use only the first two fields.
+- The brief-mining procedure is cortex `references/listen-brief-mining.md`; `/listen` reads it in full at Step 1.5 and records `brief_mining_skipped` with a `partial` receipt if it cannot.
+
 ## Read-only helper scripts used by `/morning` (cortex)
 
 `cortex_cli.py memory-diff` (4.39.0), `triage-draft` (4.35.0), `open-nudges` (4.37.0), and `check-citations` (4.32.0) only read, and report names, counts and statuses, never content. `/morning` acts on their output rather than re-deriving it. On a host that cannot run them, the command does the same reading by hand and says so; only the config-root guard stops a run. Display layouts for `/morning` live in cortex `references/morning-formats.md`.
@@ -332,7 +340,7 @@ Spec: `docs/proposals/sweep-heartbeat.md`. Formats are fixed here before the cod
 - **OpenAI boundary:** those Cowork tool names and response fields are not portable APIs. A Codex local project setting or cached `ACTIVE` flag alone does not prove access. Require an exposed host scheduler's equivalent live environment/path verification plus a root read/write probe in the scheduled context; otherwise report binding verification unavailable and return manual definitions. Never fabricate Cowork fields or mark an unverifiable schedule healthy. See [OpenAI setup](OPENAI_SETUP.md#scheduled-listen-verification).
 
 `<config-root>/plugins/ops/schedule-runs/<schedule>/<run-id>.json`
-- **Writer:** scheduled workflow when the host permits local receipt writes. Cortex `/listen` Step 1.5j specifies `outcome`, `state_source` (`state.json | artifact-db | none`), and brief-mining counts; its Step 0 root gate specifies `status: "failed"`/`error_code: "config_root_unreachable"` here, at an authorized fallback, or on stdout if no writable location is reachable. The candidate has schema and lifecycle gaps noted below; it does not yet guarantee a terminal receipt on every exit.
+- **Writer:** scheduled workflow when the host permits local receipt writes. Cortex `/listen` Step 1.6 (was 1.5j before 4.40.0) specifies `outcome`, `state_source` (`state.json | artifact-db | none`), and brief-mining counts; its Step 0 root gate specifies `status: "failed"`/`error_code: "config_root_unreachable"` here, at an authorized fallback, or on stdout if no writable location is reachable. The candidate has schema and lifecycle gaps noted below; it does not yet guarantee a terminal receipt on every exit.
 - **Readers:** `/diagnose`, ops `/status` (SCHEDULED LOOP section — requires a `<26h` succeeded receipt AND a verified live binding for the row's `runs_on` mode via `/register-schedules --verify`, never the scheduler's own success flag alone; for a `cloud` row a stale local receipt is reported as `local-copy-not-synced`), humans auditing automation
 - **Format:** metadata only — outcome, source coverage statuses, output paths/hashes, sanitized error codes; never connector payloads or memory content
 - **Path audit (2026-09-18):** both pinned writers use `plugins/ops/schedule-runs/`, not `memory/staged/queues/receipts/` as stated in the original handoff. No path migration shipped; do not introduce a second receipt store based on that handoff.
