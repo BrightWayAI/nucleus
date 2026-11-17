@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "cortex",
-      "version": "4.42.0",
+      "version": "4.42.1",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/cortex"
@@ -55,7 +55,7 @@
     },
     {
       "name": "clients",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/clients"
@@ -79,7 +79,7 @@
     },
     {
       "name": "growth",
-      "version": "0.7.3",
+      "version": "0.7.4",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/growth"
@@ -103,7 +103,7 @@
     },
     {
       "name": "briefing",
-      "version": "0.12.7",
+      "version": "0.12.8",
       "source": {
         "source": "github",
         "repo": "BrightWayAI/briefing"
