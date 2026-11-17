@@ -137,9 +137,30 @@ list earlier.
 | 1. Every sub-agent call logged automatically inside the config root | ops 0.21.0, briefing 0.12.5 + `contracts.md` | merged |
 | 2. A decision-record node type; `/morning` and `/remember` route decisions to it | cortex 4.38.0 + `contracts.md` | merged |
 | 3. Fixture config root for the growth, clients, and briefing eval suites; output-quality evals for `/morning`, `/listen`, `/brief`, `/relationships`, `/client-status` | cortex 4.38.1, growth 0.7.2, clients 0.9.2, briefing 0.12.6; fixture-copy check in nucleus | merged |
-| 4. Command files under 2,500 words, deterministic steps in `cortex_cli.py`, behavior confirmed by evals | 4a `/morning` 4,422 → 2,500 (cortex 4.39.0) merged. 4b `/listen` 5,226 → 2,411 (cortex 4.40.0) in review. Still over: `/end-day` 8,913, `/remember` about 7,000, `/cleanup` 3,230, `/recall` 3,105; none of the last three has an eval | in progress |
+| 4. Command files under 2,500 words, deterministic steps in `cortex_cli.py`, behavior confirmed by evals | 4a `/morning` 4,422 → 2,500 (cortex 4.39.0) merged. 4b `/listen` 5,226 → 2,411 (cortex 4.40.0) merged. 4c baseline evals for the remaining four (cortex 4.40.1) in review. Still over: `/end-day` 8,913, `/remember` 7,019, `/cleanup` 3,230, `/recall` 3,105 | in progress |
 | 5. `/listen` adapters for HubSpot, QuickBooks, GitHub, and Airtable, metadata-first | cortex | not started |
 | 6. A weekly agent that reads the run log and verifier results and opens improvement pull requests | to be decided | not started |
+
+Found while reading the four remaining long commands (2026-11-17). These are places
+where a command disagrees with itself or with another command. A trim has to pick one
+side, so each needs an owner decision or an explicit choice in the trim PR:
+
+- `/end-day`: the quick-mode step list omits brief mining, which "ALWAYS runs, both
+  modes"; quick mode says CRM activity is in scope while the activity-mining step says it
+  is full mode only; a step cites a section "B.4" that does not exist; "the chain ends
+  after Step 4" without briefing conflicts with "this step always runs" for the index
+  refresh.
+- `/remember`: "append" in the text where the tool named is `prepend-section` (twice);
+  memory hygiene says "remove outdated entries" while the conflict step says move them
+  to Demoted knowledge; knowledge mode still points at the pre-4.38 inline decision
+  format.
+- `/recall`: hard-codes `~/Documents/Claude` in one call while everything else uses the
+  resolved config root; says "no new file writes" yet creates two files; names no write
+  tool or lock for its tag updates.
+- `/cleanup`: "never auto-execute" against an `auto` mode that executes without the
+  gate; "default to archive over delete" against three steps that delete; its decision
+  step edits a decision's status, where 4.38 says a changed decision is superseded, not
+  edited; it cites a `/recall --unarchive` flag that `/recall` does not define.
 
 ## Open specs
 
