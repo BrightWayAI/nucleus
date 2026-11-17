@@ -137,20 +137,20 @@ list earlier.
 | 1. Every sub-agent call logged automatically inside the config root | ops 0.21.0, briefing 0.12.5 + `contracts.md` | merged |
 | 2. A decision-record node type; `/morning` and `/remember` route decisions to it | cortex 4.38.0 + `contracts.md` | merged |
 | 3. Fixture config root for the growth, clients, and briefing eval suites; output-quality evals for `/morning`, `/listen`, `/brief`, `/relationships`, `/client-status` | cortex 4.38.1, growth 0.7.2, clients 0.9.2, briefing 0.12.6; fixture-copy check in nucleus | merged |
-| 4. Command files under 2,500 words, deterministic steps in `cortex_cli.py`, behavior confirmed by evals | 4a `/morning` 4,422 → 2,500 (cortex 4.39.0) merged. 4b `/listen` 5,226 → 2,411 (cortex 4.40.0) merged. 4c baseline evals for the remaining four (cortex 4.40.1) merged. 4d `/recall` 3,105 → 1,694 (cortex 4.41.0) merged. 4e `/cleanup` 3,230 → 1,687 (cortex 4.42.0) in review. Still over: `/end-day` 8,913, `/remember` 7,019 | in progress |
-| 5. `/listen` adapters for HubSpot, QuickBooks, GitHub, and Airtable, metadata-first | cortex | not started |
+| 4. Command files under 2,500 words, deterministic steps in `cortex_cli.py`, behavior confirmed by evals | 4a `/morning` 4,422 → 2,500 (cortex 4.39.0) merged. 4b `/listen` 5,226 → 2,411 (cortex 4.40.0) merged. 4c baseline evals for the remaining four (cortex 4.40.1) merged. 4d `/recall` 3,105 → 1,694 (cortex 4.41.0) merged. 4e `/cleanup` 3,230 → 1,687 (cortex 4.42.0) merged. 4f `/end-day` 8,913 → 2,493 (cortex 4.43.0) and 4g `/remember` 7,019 → 2,107 (cortex 4.44.0) in review, with the owner's three decisions applied (quick close mines CRM; nothing mined is saved unreviewed; a typed `/remember` reports when nothing was worth saving). | in progress |
+| 5. `/listen` sources for HubSpot, QuickBooks and Airtable, metadata-first and read-only (GitHub dropped by owner decision, 2026-11-17) | cortex 4.45.0 + `contracts.md` | in review; not yet run on real data |
 | 6. A weekly agent that reads the run log and verifier results and opens improvement pull requests | to be decided | not started |
 
 Found while reading the four remaining long commands (2026-11-17). These are places
 where a command disagrees with itself or with another command. A trim has to pick one
 side, so each needs an owner decision or an explicit choice in the trim PR:
 
-- `/end-day`: the quick-mode step list omits brief mining, which "ALWAYS runs, both
+- `/end-day` (resolved in cortex 4.43.0: brief mined first in both modes, quick mode mines CRM, close-out always runs, CRM writes approved per item): the quick-mode step list omitted brief mining, which "ALWAYS runs, both
   modes"; quick mode says CRM activity is in scope while the activity-mining step says it
   is full mode only; a step cites a section "B.4" that does not exist; "the chain ends
   after Step 4" without briefing conflicts with "this step always runs" for the index
   refresh.
-- `/remember`: "append" in the text where the tool named is `prepend-section` (twice);
+- `/remember` (resolved in cortex 4.44.0: text matches the CLI, entries are demoted not removed, decisions always use `record-decision`): "append" in the text where the tool named is `prepend-section` (twice);
   memory hygiene says "remove outdated entries" while the conflict step says move them
   to Demoted knowledge; knowledge mode still points at the pre-4.38 inline decision
   format.
